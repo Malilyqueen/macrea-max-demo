@@ -383,7 +383,7 @@ export default function DemoBoardReports() {
               { name: 'Relance panier abandonné', conv: '12.4%', revenue: '28 450 €' },
               { name: 'WhatsApp Black Friday', conv: '18.7%', revenue: '42 180 €' },
               { name: 'Email bienvenue série', conv: '9.8%', revenue: '15 320 €' }
-            ].map((campaign, index) => (
+            ].map((campaign) => (
               <div key={campaign.name} className="flex items-center justify-between p-3 bg-[#F6FAFF] rounded-xl">
                 <div>
                   <p className="text-sm font-semibold text-[#1e293b]">{campaign.name}</p>

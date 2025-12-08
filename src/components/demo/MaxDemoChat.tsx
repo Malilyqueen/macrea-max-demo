@@ -3,8 +3,8 @@ import ScenarioSelector from './ScenarioSelector';
 import { DemoMessage } from '../../demo/scenarios';
 
 export default function MaxDemoChat() {
-  const [messages, setMessages] = useState<DemoMessage[]>([]);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [messages] = useState<DemoMessage[]>([]);
+  const [isPlaying] = useState(false);
 
   return (
     <div className="flex gap-6 h-full">

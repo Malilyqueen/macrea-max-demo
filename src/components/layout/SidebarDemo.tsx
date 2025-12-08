@@ -1,7 +1,7 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function SidebarDemo() {
-  const location = useLocation();
+  // const location = useLocation();
   
   const menuItems = [
     { name: 'Dashboard', path: '/demo', icon: '📊' },
