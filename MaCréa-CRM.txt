@@ -1,0 +1,185 @@
+
+3. **⭐ Section “MaCréa CRM + M.A.X.”** ← **celle qu’on construit maintenant**
+
+
+---
+
+## 2️⃣ Préparer l’asset de la scène CRM + MAX
+
+Enregistre ton illustration (celle que tu as envoyée) dans `docs/readme-assets/`, par ex :
+
+```text
+docs/readme-assets/macrea-crm-max.png
+```
+
+Puis, dans ton module d’assets :
+
+```ts
+// src/assets/max.ts
+
+export { default as MacreaCrmMaxScene } from '../../docs/readme-assets/macrea-crm-max.png'
+
+
+
+---
+
+## 3️⃣ Texte de la section (à comprendre / adapter si besoin)
+
+**Titre :**
+
+> **MaCréa CRM organise votre business.
+> MAX le fait travailler pour vous.**
+
+**Intro :**
+
+> MaCréa CRM est déjà une base solide pour gérer vos clients, vos prospects et vos activités.
+> Quand vous ajoutez MAX par-dessus, votre CRM devient intelligent, auto-correcteur et capable d’exécuter des actions tout seul.
+
+**Colonne gauche – “Ce que MaCréa CRM fait déjà” :**
+
+* Gestion des **comptes, contacts, prospects et opportunités**
+* Suivi des **emails, rendez-vous, appels, tâches et calendrier**
+* **Pipelines** et vues personnalisées
+* **Champs personnalisables** pour adapter le CRM à votre métier
+* **Imports CSV / exports** propres
+* Gestion des **rôles, permissions et sécurité**
+
+**Colonne droite – “Ce qui change quand vous ajoutez MAX” :**
+
+* Analyse IA de vos données : erreurs, doublons, champs manquants
+* **Self-Healing** : MAX corrige et crée les bons champs dans MaCréa CRM
+* Import CSV **intelligent** : nettoyage, enrichissement, insertion propre
+* Exécution automatique : **WhatsApp, SMS, emails, workflows n8n**
+* Priorisation IA des leads et suggestions de relance
+* Modes **Auto, Assisté, Conseil** selon le niveau d’autonomie souhaité
+
+**Texte de conclusion :**
+
+> Sans MAX, vous avez un CRM structuré.
+> Avec MAX, vous avez un CRM qui pense et agit pour vous.
+
+---
+
+## 4️⃣ Composant React : `CrmPlusMaxSection.tsx`
+
+Tu peux créer ce fichier :
+
+```tsx
+// src/components/sections/CrmPlusMaxSection.tsx
+import { MacreaCrmMaxScene } from '@/assets/max'
+import { motion } from 'framer-motion'
+
+export default function CrmPlusMaxSection() {
+  return (
+    <section className="bg-max-bg/40 py-12 md:py-16">
+      <div className="mx-auto max-w-6xl px-6">
+        {/* Titre + intro */}
+        <div className="mb-10 text-center">
+          <h2 className="text-2xl font-semibold text-max-grayDark md:text-3xl">
+            MaCréa CRM organise votre business.
+            <span className="block text-max-blue">
+              M.A.X. le fait travailler pour vous.
+            </span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-sm text-max-gray md:text-base">
+            MaCréa CRM est votre base solide pour gérer clients, prospects et activités.
+            Quand vous ajoutez M.A.X. par-dessus, votre CRM devient intelligent,
+            auto-correcteur et capable d’exécuter des actions à votre place.
+          </p>
+        </div>
+
+        {/* 2 colonnes + visuel */}
+        <div className="grid gap-8 lg:grid-cols-[1.1fr_minmax(0,1.2fr)] lg:items-center">
+          {/* Colonne gauche : MaCréa CRM seul */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.6 }}
+            className="rounded-2xl bg-white/90 p-6 shadow-sm"
+          >
+            <p className="text-xs font-semibold uppercase tracking-wide text-max-grayLight">
+              Sans M.A.X.
+            </p>
+            <h3 className="mt-1 text-base font-semibold text-max-grayDark md:text-lg">
+              Ce que MaCréa CRM fait déjà pour vous
+            </h3>
+
+            <ul className="mt-4 space-y-2 text-sm text-max-gray">
+              <li>• Gestion des comptes, contacts, prospects et opportunités.</li>
+              <li>• Suivi des emails, rendez-vous, appels, tâches et calendrier.</li>
+              <li>• Pipelines, vues filtrées et tableaux personnalisés.</li>
+              <li>• Champs personnalisables pour adapter le CRM à votre métier.</li>
+              <li>• Imports / exports CSV pour garder vos données à jour.</li>
+              <li>• Rôles, permissions et sécurité au niveau entreprise.</li>
+            </ul>
+          </motion.div>
+
+          {/* Colonne droite : visuel + MaCréa CRM + MAX */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-5"
+          >
+            <div className="relative">
+              <div className="pointer-events-none absolute inset-0 rounded-[2rem] bg-max-electric/20 blur-2xl" />
+              <img
+                src={MacreaCrmMaxScene}
+                alt="M.A.X. qui agit sur MaCréa CRM"
+                className="relative w-full rounded-[2rem] shadow-xl"
+              />
+            </div>
+
+            <div className="rounded-2xl bg-white/95 p-6 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-wide text-max-grayLight">
+                Avec M.A.X. par-dessus
+              </p>
+              <h3 className="mt-1 text-base font-semibold text-max-grayDark md:text-lg">
+                Ce que devient votre CRM quand vous ajoutez M.A.X.
+              </h3>
+
+              <ul className="mt-4 space-y-2 text-sm text-max-gray">
+                <li>• Analyse IA de vos données : erreurs, doublons, champs manquants.</li>
+                <li>• Self-Healing : M.A.X. propose et applique des corrections dans MaCréa CRM.</li>
+                <li>• Import CSV intelligent : nettoyage, enrichissement, insertion propre.</li>
+                <li>• Exécution automatique : WhatsApp, SMS, emails, workflows n8n.</li>
+                <li>• Priorisation IA des leads et suggestions de relance ciblée.</li>
+                <li>• Modes Auto, Assisté et Conseil selon le niveau d’autonomie souhaité.</li>
+              </ul>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Conclusion */}
+        <p className="mt-8 text-center text-xs text-max-grayLight md:text-sm">
+          Sans M.A.X., vous avez un CRM structuré. Avec M.A.X., vous avez un CRM qui pense et agit pour vous.
+        </p>
+      </div>
+    </section>
+  )
+}
+```
+
+Et dans ta `HomePage` :
+
+```tsx
+import MaxHeroSection from '@/components/hero/MaxHeroSection'
+import MaxHowItWorksSection from '@/components/hero/MaxHowItWorksSection'
+import CrmPlusMaxSection from '@/components/sections/CrmPlusMaxSection'
+
+export default function HomePage() {
+  return (
+    <>
+      <MaxHeroSection />
+      <MaxHowItWorksSection />
+      <CrmPlusMaxSection />
+      {/* autres sections… */}
+    </>
+  )
+}
+```
+
+---
+

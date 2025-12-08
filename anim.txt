@@ -1,0 +1,192 @@
+
+
+## 🧭 1. Message COMPLET à donner à Copilot
+
+Tu peux lui coller ça tel quel :
+
+---
+
+> Copilot, voici la règle la plus importante :
+> **Toutes les images de la mascotte M.A.X. sont déjà présentes dans `docs/readme-assets/` et leurs noms NE DOIVENT PAS être modifiés.**
+>
+> Les fichiers existants sont (noms inchangés) :
+>
+> * `docs/readme-assets/Gemini_Generated_Image_upht7oupht7oupht.png`        // MAX qui saute (joyeux)
+> * `docs/readme-assets/Gemini_Generated_Image_q6osr7q6osr7q6os.png`        // MAX qui réfléchit
+> * `docs/readme-assets/Gemini_Generated_Image_vv0zp1vv0zp1vv0z.png`        // MAX bras ouverts (accueil)
+> * `docs/readme-assets/Gemini_Generated_Image_7zqcoz7zqcoz7zqc.png`        // MAX qui montre du doigt / idée
+> * `docs/readme-assets/Copie de UI Futuriste pour SaaS M.A.X.  Maquettage et Identité Visuelle Premium.png`  // maquette UI
+>
+> Tu ne dois PAS renommer ces fichiers, seulement les réutiliser dans le code.
+>
+> ### 1) Crée un module d’assets pour MAX
+>
+> Crée le fichier :
+>
+> `src/assets/max.ts`
+>
+> Dans ce fichier, importe les images depuis `docs/readme-assets` en gardant les noms d’origine, mais en leur donnant des **alias TypeScript lisibles** :
+>
+> ```ts
+> // src/assets/max.ts
+>
+> export { default as MaxHeroJump } from '../../docs/readme-assets/Gemini_Generated_Image_upht7oupht7oupht.png'
+> export { default as MaxHeroThinking } from '../../docs/readme-assets/Gemini_Generated_Image_q6osr7q6osr7q6os.png'
+> export { default as MaxHeroWelcome } from '../../docs/readme-assets/Gemini_Generated_Image_vv0zp1vv0zp1vv0z.png'
+> export { default as MaxHeroIdea } from '../../docs/readme-assets/Gemini_Generated_Image_7zqcoz7zqcoz7zqc.png'
+> export { default as MaxUiMock } from '../../docs/readme-assets/Copie de UI Futuriste pour SaaS M.A.X.  Maquettage et Identité Visuelle Premium.png'
+> ```
+>
+> Les chemins doivent être **relatifs** à `src/assets/max.ts` :
+>
+> * `src/assets/max.ts` → remonter à la racine → aller dans `docs/readme-assets`
+> * d’où le `../../docs/readme-assets/...`
+>
+> ### 2) Mettre en place l’alias `@` pour `src`
+>
+> Dans `tsconfig.json` et/ou `vite.config.ts`, ajoute l’alias :
+>
+> ```ts
+> // tsconfig.json (paths)
+> "paths": {
+>   "@/*": ["src/*"]
+> }
+> ```
+>
+> ```ts
+> // vite.config.ts
+> import { defineConfig } from 'vite'
+> import react from '@vitejs/plugin-react'
+> import path from 'node:path'
+>
+> export default defineConfig({
+>   plugins: [react()],
+>   resolve: {
+>     alias: {
+>       '@': path.resolve(__dirname, 'src')
+>     }
+>   },
+>   server: {
+>     port: 5181
+>   }
+> })
+> ```
+>
+> Ensuite, dans les composants React, on importera les images ainsi :
+>
+> ```ts
+> import { MaxHeroWelcome, MaxHeroThinking } from '@/assets/max'
+> ```
+>
+> ### 3) Utiliser MAX dans la Hero Section
+>
+> Dans `src/components/hero/MaxHeroSection.tsx`, utilise `MaxHeroWelcome` comme image principale.
+> **Ne réimporte jamais directement depuis `docs/readme-assets` dans les composants** : passe toujours par `src/assets/max.ts`.
+>
+> ### 4) README
+>
+> Pour le README, tu peux continuer à référencer directement :
+>
+> ```md
+> ![MAX](./docs/readme-assets/Gemini_Generated_Image_upht7oupht7oupht.png)
+> ```
+>
+> Mais pour tout ce qui est **code React**, tu passes par le module `src/assets/max.ts`.
+
+---
+
+## 🧩 2. Exemple de Hero avec ces imports (adapté)
+
+Voici la version mise à jour de `MaxHeroSection.tsx` qui respecte exactement ce qu’on vient de dire :
+
+```tsx
+// src/components/hero/MaxHeroSection.tsx
+import { MaxHeroWelcome } from '@/assets/max'
+
+export default function MaxHeroSection() {
+  return (
+    <section className="bg-max-bg">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-10 px-6 py-16 md:flex-row md:py-20">
+        {/* Colonne gauche : texte */}
+        <div className="flex-1 space-y-6">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-1 text-xs font-medium text-max-blue shadow-sm">
+            <span className="h-2 w-2 rounded-full bg-max-electric" />
+            <span>Nouveau · Self-Healing CRM™</span>
+          </div>
+
+          <h1 className="text-3xl font-semibold leading-tight text-max-grayDark md:text-4xl lg:text-5xl">
+            M.A.X., le CRM qui se répare
+            <span className="block text-max-blue">et travaille tout seul.</span>
+          </h1>
+
+          <p className="max-w-xl text-sm text-max-gray md:text-base">
+            M.A.X. n’est pas un simple assistant. C’est un moteur IA relié à MaCréa CRM
+            qui corrige vos données, crée les bons champs, lance vos campagnes WhatsApp
+            et priorise vos leads pendant que vous faites autre chose.
+          </p>
+
+          <ul className="space-y-2 text-sm text-max-gray">
+            <li className="flex gap-2">
+              <span className="mt-1 h-2 w-2 rounded-full bg-max-electric" />
+              <span>Corrige et structure automatiquement votre base MaCréa CRM.</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="mt-1 h-2 w-2 rounded-full bg-max-electric" />
+              <span>Automatise WhatsApp, SMS, emails et appels avec vos modèles.</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="mt-1 h-2 w-2 rounded-full bg-max-electric" />
+              <span>Nettoie vos fichiers CSV (20 000+ lignes) avant insertion.</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="mt-1 h-2 w-2 rounded-full bg-max-electric" />
+              <span>Agit comme un directeur marketing IA qui priorise vos leads.</span>
+            </li>
+          </ul>
+
+          <div className="flex flex-wrap items-center gap-4 pt-2">
+            <button className="rounded-full bg-max-blue px-6 py-2 text-sm font-medium text-white shadow-md hover:bg-max-electric">
+              Voir la démo interactive
+            </button>
+            <button className="text-sm font-medium text-max-blue underline-offset-2 hover:underline">
+              Parler à un humain
+            </button>
+          </div>
+
+          <p className="text-xs text-max-grayLight">
+            Aucun engagement. Démo guidée + aperçu de votre cas réel.
+          </p>
+        </div>
+
+        {/* Colonne droite : visuel MAX */}
+        <div className="relative flex-1">
+          <div className="relative mx-auto flex max-w-sm justify-center">
+            <img
+              src={MaxHeroWelcome}
+              alt="Mascotte M.A.X."
+              className="drop-shadow-xl"
+            />
+          </div>
+
+          <div className="absolute bottom-6 right-4 rounded-2xl bg-white/90 px-4 py-3 text-xs shadow-lg backdrop-blur">
+            <p className="font-semibold text-max-grayDark">Self-Healing activé</p>
+            <p className="text-[11px] text-max-gray">
+              184 champs corrigés · 3 workflows réparés cette semaine.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+```
+
+---
+
+Avec ça :
+
+* ✅ Les fichiers restent dans `docs/readme-assets`
+* ✅ Tu ne touches pas aux noms
+* ✅ Copilot a une manière propre de les reconsommer dans le front
+* ✅ Le Hero est prêt à être stylé et ajusté
+

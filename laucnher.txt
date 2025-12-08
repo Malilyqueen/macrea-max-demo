@@ -1,0 +1,1 @@
+cd D:\Macrea\macrea-max-landing ; npm run dev

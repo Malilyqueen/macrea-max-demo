@@ -1,0 +1,187 @@
+Texte complet du Hero
+
+Badge au-dessus du titre :
+
+Nouveau · Self-Healing CRM™
+
+Titre (H1) :
+
+M.A.X., le CRM qui se répare et travaille tout seul.
+
+Sous-titre :
+
+M.A.X. n’est pas un simple assistant.
+C’est un moteur IA branché à votre CRM qui corrige vos données, crée les bons champs, lance vos campagnes WhatsApp et priorise vos leads pendant que vous faites autre chose.
+
+Bullets :
+
+💠 Corrige et structure automatiquement votre base MaCréa CRM
+
+📲 Automatise WhatsApp, SMS, emails et appels avec vos propres modèles
+
+🧹 Nettoie vos fichiers CSV (20 000+ lignes) avant insertion
+
+🧠 Agit comme un directeur marketing IA qui priorise vos leads
+
+CTA principal :
+
+[Voir la démo interactive]
+
+CTA secondaire (texte plus discret) :
+
+[Parler à un humain] — Bookez une démo avec Malala
+
+Texte de réassurance sous les CTA :
+
+Aucun engagement. Démo guidée avec un vrai humain + aperçu de votre cas réel.
+
+2️⃣ Structure UX du Hero
+
+Layout classique mais premium :
+
+Colonne gauche (texte)
+
+Badge “Nouveau · Self-Healing CRM™”
+
+H1
+
+Sous-titre
+
+Liste de 3–4 bullets
+
+Zone CTA (2 boutons)
+
+Petite ligne de réassurance
+
+Colonne droite (visuel)
+
+Grand visuel de MAX (version héroïque, debout / bras ouverts)
+
+Option : une petite “carte” flottante style :
+
+“✅ 184 erreurs CRM réparées cette semaine”
+ou
+“+32 % de leads traités automatiquement”
+
+Fond : bg-max-bg (ou ton bleu très clair) avec un léger dégradé.
+
+3️⃣ Exemple de composant React + Tailwind
+
+Fichier : src/components/hero/MaxHeroSection.tsx
+
+import maxHero from '@/assets/max/max-hero-happy.png'
+
+export default function MaxHeroSection() {
+  return (
+    <section className="bg-max-bg">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-10 px-6 py-16 md:flex-row md:py-20">
+        {/* Colonne gauche : texte */}
+        <div className="flex-1 space-y-6">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-1 text-xs font-medium text-max-blue shadow-sm">
+            <span className="h-2 w-2 rounded-full bg-max-electric" />
+            <span>Nouveau · Self-Healing CRM™</span>
+          </div>
+
+          <h1 className="text-3xl font-semibold leading-tight text-max-grayDark md:text-4xl lg:text-5xl">
+            M.A.X., le CRM qui se répare
+            <span className="block text-max-blue">et travaille tout seul.</span>
+          </h1>
+
+          <p className="max-w-xl text-sm text-max-gray md:text-base">
+            M.A.X. n’est pas un simple assistant. C’est un moteur IA relié à MaCréa CRM
+            qui corrige vos données, crée les bons champs, lance vos campagnes WhatsApp
+            et priorise vos leads pendant que vous faites autre chose.
+          </p>
+
+          <ul className="space-y-2 text-sm text-max-gray">
+            <li className="flex gap-2">
+              <span className="mt-1 h-2 w-2 rounded-full bg-max-electric" />
+              <span>Corrige et structure automatiquement votre base MaCréa CRM.</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="mt-1 h-2 w-2 rounded-full bg-max-electric" />
+              <span>Automatise WhatsApp, SMS, emails et appels avec vos modèles.</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="mt-1 h-2 w-2 rounded-full bg-max-electric" />
+              <span>Nettoie vos fichiers CSV (20 000+ lignes) avant insertion.</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="mt-1 h-2 w-2 rounded-full bg-max-electric" />
+              <span>Agit comme un directeur marketing IA qui priorise vos leads.</span>
+            </li>
+          </ul>
+
+          <div className="flex flex-wrap items-center gap-4 pt-2">
+            <button className="rounded-full bg-max-blue px-6 py-2 text-sm font-medium text-white shadow-md hover:bg-max-electric">
+              Voir la démo interactive
+            </button>
+            <button className="text-sm font-medium text-max-blue underline-offset-2 hover:underline">
+              Parler à un humain
+            </button>
+          </div>
+
+          <p className="text-xs text-max-grayLight">
+            Aucun engagement. Démo guidée + aperçu de votre cas réel.
+          </p>
+        </div>
+
+        {/* Colonne droite : visuel MAX */}
+        <div className="relative flex-1">
+          <div className="relative mx-auto flex max-w-sm justify-center">
+            <img
+              src={maxHero}
+              alt="Mascotte M.A.X."
+              className="drop-shadow-xl"
+            />
+          </div>
+
+          {/* Petite carte flottante */}
+          <div className="absolute bottom-6 right-4 rounded-2xl bg-white/90 px-4 py-3 text-xs shadow-lg backdrop-blur">
+            <p className="font-semibold text-max-grayDark">Self-Healing activé</p>
+            <p className="text-[11px] text-max-gray">
+              184 champs corrigés · 3 workflows réparés cette semaine.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+
+Tu peux demander à Copilot :
+
+“Adapte ce composant MaxHeroSection au style global du projet, en réutilisant les couleurs max.* définies dans tailwind.config et en gardant la structure texte + visuel mascotte.”
+✅ Instruction claire à donner à Copilot :
+
+Copilot, attention : les images de documentation (MAX en plusieurs poses) sont dans :
+
+docs/readme-assets/
+
+Ces fichiers ne doivent jamais être importés dans le code du site.
+Elles servent uniquement au README.
+
+Pour le site (landing page + démo), tu dois utiliser des images placées dans :
+
+src/assets/max/
+
+Donc, pour le code React :
+
+tu importes depuis src/assets/max/
+
+tu ignores les images du dossier docs/
+
+Si une image n’existe pas encore dans src/assets/max/, crée seulement l’import et le dossier, et j’ajouterai les fichiers plus tard.
+
+🗂️ En résumé simple
+Usage	Emplacement	Copilot doit l’utiliser ?
+Images pour README	docs/readme-assets/	❌ NON
+Images pour UI du site	src/assets/max/	✅ OUI
+📌 Exemple d'import correct pour la landing
+import maxHero from '@/assets/max/max-hero-happy.png'
+
+
+Pas :
+
+import maxHero from '../../../docs/readme-assets/max-hero-happy.png' // ❌ interdit

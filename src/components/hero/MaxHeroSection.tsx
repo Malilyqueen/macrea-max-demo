@@ -1,0 +1,84 @@
+import { MaxHeroGuide } from '@/assets/max'
+
+export default function MaxHeroSection() {
+  return (
+    <section className="bg-[#F6FAFF] relative overflow-hidden">
+      {/* Neural background effect */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-radial from-[rgba(0,145,255,0.04)] via-transparent to-transparent" style={{ backgroundPosition: '20% 30%', backgroundSize: '80% 80%' }}></div>
+        <div className="absolute inset-0 bg-gradient-radial from-[rgba(0,207,255,0.03)] via-transparent to-transparent" style={{ backgroundPosition: '80% 70%', backgroundSize: '80% 80%' }}></div>
+      </div>
+
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-10 px-6 py-16 md:flex-row md:py-20 relative z-10">
+        {/* Colonne gauche : texte */}
+        <div className="flex-1 space-y-6">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-1.5 text-xs font-medium text-[#0091ff] shadow-sm border border-[rgba(0,145,255,0.2)]">
+            <span className="h-2 w-2 rounded-full bg-[#00E4FF] animate-pulse" />
+            <span>Nouveau · Self-Healing CRM™</span>
+          </div>
+
+          <h1 className="text-3xl font-bold leading-tight text-[#1e293b] md:text-4xl lg:text-5xl">
+            <span className="bg-gradient-to-r from-[#0091ff] to-[#00cfff] bg-clip-text text-transparent">M.A.X.</span>, votre expert marketing IA
+            <span className="block text-[#0091ff] italic">qui pilote votre CRM tout seul.</span>
+          </h1>
+
+          <p className="max-w-xl text-base text-[#64748b] leading-relaxed">
+            M.A.X. n'est pas un simple assistant. C'est un <span className="font-bold">copilot marketing IA</span> relié à <span className="font-bold">MaCréa CRM</span> qui pilote vos campagnes, priorise vos leads, lance vos automatisations WhatsApp
+            et <span className="font-bold">répare même votre base de données</span> pendant que vous faites autre chose.
+          </p>
+
+          <ul className="space-y-3 text-sm text-[#64748b]">
+            <li className="flex gap-3 items-start">
+              <span className="mt-1.5 h-2 w-2 rounded-full bg-[#00E4FF] flex-shrink-0" />
+              <span className="font-semibold italic">Corrige et structure automatiquement votre base MaCréa CRM.</span>
+            </li>
+            <li className="flex gap-3 items-start">
+              <span className="mt-1.5 h-2 w-2 rounded-full bg-[#00E4FF] flex-shrink-0" />
+              <span className="font-semibold italic">Automatise WhatsApp, SMS, emails et appels avec vos modèles.</span>
+            </li>
+            <li className="flex gap-3 items-start">
+              <span className="mt-1.5 h-2 w-2 rounded-full bg-[#00E4FF] flex-shrink-0" />
+              <span className="font-semibold italic">Nettoie vos fichiers CSV (20 000+ lignes) avant insertion.</span>
+            </li>
+            <li className="flex gap-3 items-start">
+              <span className="mt-1.5 h-2 w-2 rounded-full bg-[#00E4FF] flex-shrink-0" />
+              <span className="font-semibold italic">Agit comme un directeur marketing IA qui priorise vos leads.</span>
+            </li>
+          </ul>
+
+          <div className="flex flex-wrap items-center gap-4 pt-2">
+            <a href="/demoboard" className="rounded-lg bg-gradient-to-r from-[#0091ff] to-[#00cfff] px-6 py-3 text-sm font-semibold text-white shadow-md hover:shadow-[0_0_25px_rgba(0,207,255,0.5)] transition-all inline-block">
+              Voir la démo interactive
+            </a>
+            <a href="/tarifs" className="text-sm font-semibold text-[#0091ff] hover:text-[#00cfff] underline-offset-4 hover:underline transition-colors">
+              Rejoindre les Early Birds
+            </a>
+          </div>
+
+          <p className="text-xs text-[#64748b]">
+            Aucun engagement. Démo guidée + aperçu de votre cas réel.
+          </p>
+        </div>
+
+        {/* Colonne droite : visuel MAX */}
+        <div className="relative flex-1">
+          <div className="relative mx-auto flex max-w-sm justify-center">
+            <img
+              src={MaxHeroGuide}
+              alt="Mascotte M.A.X."
+              className="drop-shadow-2xl w-full h-auto animate-float"
+            />
+          </div>
+
+          {/* Petite carte flottante */}
+          <div className="absolute bottom-6 right-4 rounded-2xl bg-white/90 backdrop-blur-sm px-4 py-3 text-xs shadow-lg border border-[rgba(0,145,255,0.15)] animate-fade-in">
+            <p className="font-semibold text-[#1e293b]">Self-Healing activé</p>
+            <p className="text-[11px] text-[#64748b]">
+              184 champs corrigés · 3 workflows réparés cette semaine.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

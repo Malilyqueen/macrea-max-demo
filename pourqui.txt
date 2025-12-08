@@ -1,0 +1,115 @@
+
+🎯 Objectif :
+Dans la section "Pour qui ?" de la landing page de M.A.X., avec :
+- un storytelling court et puissant
+- des animations subtiles et premium
+- un style futuriste cohérent avec le reste de la page
+
+🧩 1. Crée un composant React :
+Nom du composant : SectionPourQui
+Fichier : src/sections/SectionPourQui.tsx (ou le dossier sections déjà utilisé dans le projet)
+
+Le composant doit :
+- être un composant fonctionnel React en TypeScript
+- être exporté par défaut
+- utiliser Tailwind pour la mise en page
+- utiliser Framer Motion pour les animations de reveal
+
+🧱 2. Structure HTML/JSX attendue :
+
+Section globale :
+- <section id="pour-qui"> avec un max-width centré, padding vertical généreux (py-20 ou py-24)
+- Fond léger type gradient ou overlay déjà utilisé dans la landing (ne crée pas un design complètement nouveau, reste dans l’existant)
+
+Contenu :
+1) Un petit surtitre :
+   "Pour qui est fait M.A.X. ?"
+2) Un titre principal fort :
+   "Si vous êtes ici, ce n’est pas un hasard."
+3) 3 à 4 blocs de texte courts, inspirés de ce contenu (tu peux le raccourcir mais ne change pas le sens) :
+
+   Bloc 1 :
+   - Titre : "Vous cherchez plus qu’un outil."
+   - Texte : "Vous ne voulez pas un tableau Excel maquillé. Vous voulez un copilote qui comprend vos objectifs, organise vos actions et travaille pour vous pendant que vous avancez."
+
+   Bloc 2 :
+   - Titre : "Vous êtes fatigué des CRM hors de prix."
+   - Texte : "Les CRM robustes commencent à 500 €/mois et restent froids et compliqués. M.A.X. est accessible, humain, connecté à un des CRM open-source les plus solides au monde."
+
+   Bloc 3 :
+   - Titre : "Vous n’avez pas le temps d’être partout."
+   - Texte : "M.A.X. gère les relances, messages, segmentation, rappels et suivi client pendant que vous travaillez, créez, vendez ou vivez."
+
+   Bloc 4 (optionnel mais recommandé) :
+   - Titre : "Peu importe votre domaine."
+   - Texte : "Entrepreneur, commerce, service, e-commerce, coaching, logistique, artisanat ou entreprise avec 200 ou 20 000 prospects… M.A.X. s’adapte, organise et exécute."
+
+4) Un texte de conclusion en bas de section :
+   Texte :
+   "M.A.X. n’est pas réservé à un secteur. Il est fait pour celles et ceux qui veulent un vrai partenaire pour réussir."
+   Ce texte doit être centré, légèrement plus grand et mis en valeur.
+
+🎨 3. Style Tailwind souhaité :
+
+- Section : 
+  - padding : "py-20 md:py-24"
+  - largeur : "max-w-4xl" ou "max-w-5xl mx-auto"
+  - texte : "text-slate-100" ou la couleur déjà utilisée
+- Titres :
+  - surtitre en uppercase, petite taille, tracking-wide, couleur accent
+  - titre principal : "text-3xl md:text-4xl font-semibold"
+- Blocs :
+  - affichés en grid (1 colonne en mobile, 2 colonnes en md+)
+  - chaque bloc = carte légère avec :
+    - fond transparent avec overlay : "bg-white/5" ou "bg-slate-900/40"
+    - bordure subtile : "border border-white/10"
+    - arrondi : "rounded-2xl"
+    - padding : "p-5 md:p-6"
+    - gap vertical entre blocs
+
+🧬 4. Animations à implémenter (Framer Motion) :
+
+1) Effet "reveal progressif" sur le titre et les blocs :
+   - Utilise motion.div / motion.h2 / motion.p
+   - Animation :
+     - initial : { opacity: 0, y: 20 }
+     - whileInView : { opacity: 1, y: 0 }
+     - transition : { duration: 0.5, ease: "easeOut" }
+     - viewport : { once: true, amount: 0.2 }
+
+2) Halo doux derrière le titre principal :
+   - Ajoute un <div> positionné en absolute derrière le titre avec Tailwind :
+     - className approximative : 
+       "pointer-events-none absolute -inset-x-10 -top-10 h-40 bg-cyan-500/20 blur-3xl"
+   - Ne pas exagérer, l’effet doit rester subtil.
+
+3) Léger glow au survol des cartes (blocs) :
+   - Au hover :
+     - translate-y : -2
+     - border plus lumineuse
+     - background un peu plus clair
+   - Exemple de classes :
+     "transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/60 hover:bg-white/10"
+
+4) Soulignage animé sur quelques mots clés :
+   - Pour les mots "copilote", "accessible", "s’adapte"
+   - Entourer les mots dans un <span> avec une classe :
+     "relative after:absolute after:left-0 after:bottom-0 after:h-[1px] after:w-full after:bg-cyan-400 after:scale-x-0 after:origin-left after:transition-transform after:duration-500 group-hover:after:scale-x-100"
+   - Les blocs peuvent avoir className "group" pour activer l’animation au hover.
+
+⚙️ 5. Intégration dans la landing :
+
+- Importer ce composant dans la page principale de la landing (par ex. src/pages/Home.tsx ou src/App.tsx selon l’architecture actuelle)
+- Ajouter <SectionPourQui /> après la section "MaCréa CRM + M.A.X." et avant la section "Tarifs"
+- Vérifier que l’id "pour-qui" est bien utilisé si le menu de navigation a un lien d’ancre vers cette section.
+
+🧪 6. Contraintes importantes :
+
+- Ne pas toucher aux autres sections existantes.
+- Ne pas changer la palette de couleurs globale, réutiliser les classes déjà utilisées dans le Hero / Demo si possible.
+- Le résultat doit rester léger, lisible, et performant.
+- Le ton du texte doit rester premium, sobre, pas marketing cheap.
+
+Génère maintenant le composant SectionPourQui complet (TypeScript + Tailwind + Framer Motion), puis montre-moi comment l’importer dans la page principale.
+```
+

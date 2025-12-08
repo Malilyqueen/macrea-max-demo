@@ -1,0 +1,222 @@
+Parfait, on garde donc **MAX qui flotte dans le hero** (trop bien 🧸✨).
+
+Maintenant on ajoute **une 2ᵉ section juste en dessous**, qui sert à :
+
+* expliquer **sa personnalité**
+* montrer **ce qu’il fait vraiment**
+* utiliser tes **4 poses** comme mini “storyboard” de MAX
+
+Je te propose :
+
+> **“Comment M.A.X. travaille pour vous”**
+> avec 4 cartes horizontales ou en grille.
+
+---
+
+## 1️⃣ Concept de la section (UX)
+
+Titre de section :
+
+> ### Comment M.A.X. travaille pour vous
+
+Sous-titre :
+
+> Un héros CRM qui ne se contente pas de parler.
+> Il accueille, analyse, propose… et exécute.
+
+Ensuite, 4 blocs, chacun avec **une image + un rôle + une fonctionnalité clé** :
+
+1. **MAX t’accueille** (image qui saute — `MaxHeroHello`)
+
+   > *“Je t’accueille et je comprends ton contexte.”*
+
+   * On parle de : onboarding simple, pas besoin d’être techno, il te pose les bonnes questions.
+
+2. **MAX analyse** (image qui réfléchit — `MaxHeroThinking`)
+
+   > *“Je scanne ta base CRM et je repère les problèmes.”*
+
+   * Self-healing, détection champs manquants, doublons, erreurs CSV.
+
+3. **MAX propose** (image bras ouverts — `MaxHeroSolution`)
+
+   > *“Je te propose la meilleure stratégie.”*
+
+   * tri des leads, priorisation, suggestions de campagnes, tags intelligents.
+
+4. **MAX exécute** (image qui pointe du doigt / idée — `MaxHeroIdea`)
+
+   > *“Je lance les actions pendant que tu fais autre chose.”*
+
+   * envoi WhatsApp, SMS, mails, déclenchement workflows n8n.
+
+Petit texte en bas :
+
+> **Résultat :** ton CRM reste propre, tes leads sont traités, et ta boîte tourne même quand tu n’es pas devant l’écran.
+
+---
+
+## 2️⃣ Contenu texte prêt à coller (pour chaque carte)
+
+### Carte 1 — Accueil
+
+**Titre :**
+
+> M.A.X. t’accueille
+
+**Texte :**
+
+> Il commence par comprendre ton activité, ton CRM et tes priorités.
+> Tu parles en langage humain, il traduit en actions techniques.
+
+---
+
+### Carte 2 — Analyse
+
+**Titre :**
+
+> M.A.X. analyse ta base
+
+**Texte :**
+
+> Il scanne ta base MaCréa CRM, détecte les champs manquants, les doublons, les erreurs d’import et les données incohérentes.
+> C’est ton contrôleur qualité IA.
+
+---
+
+### Carte 3 — Propose
+
+**Titre :**
+
+> M.A.X. propose la meilleure stratégie
+
+**Texte :**
+
+> Il priorise les leads, suggère les bons tags, propose les relances à faire et les campagnes à lancer.
+> Tu choisis le niveau d’autonomie : Auto, Assisté ou Conseil.
+
+---
+
+### Carte 4 — Exécute
+
+**Titre :**
+
+> M.A.X. exécute pour toi
+
+**Texte :**
+
+> Il déclenche les messages WhatsApp, SMS, emails et workflows n8n.
+> Tu gardes le contrôle, il gère l’exécution.
+
+---
+
+## 3️⃣ Composant React `MaxHowItWorksSection` (avec tes images)
+
+On suppose que tu as déjà le module d’assets :
+
+```ts
+// src/assets/max.ts
+export { default as MaxHeroHello } from '../../docs/readme-assets/max-hero-hello.png'
+export { default as MaxHeroThinking } from '../../docs/readme-assets/max-hero-thinking.png'
+export { default as MaxHeroSolution } from '../../docs/readme-assets/max-solution.png'
+export { default as MaxHeroIdea } from '../../docs/readme-assets/max-hero-happy.png'
+```
+
+### Composant :
+
+```tsx
+// src/components/hero/MaxHowItWorksSection.tsx
+import { MaxHeroHello, MaxHeroThinking, MaxHeroSolution, MaxHeroIdea } from '@/assets/max'
+
+const items = [
+  {
+    title: "M.A.X. t’accueille",
+    description:
+      "Il commence par comprendre ton activité, ton CRM et tes priorités. Tu parles en langage humain, il traduit en actions techniques.",
+    image: MaxHeroHello,
+  },
+  {
+    title: "M.A.X. analyse ta base",
+    description:
+      "Il scanne ta base MaCréa CRM, détecte les champs manquants, les doublons, les erreurs d’import et les données incohérentes.",
+    image: MaxHeroThinking,
+  },
+  {
+    title: "M.A.X. propose la meilleure stratégie",
+    description:
+      "Il priorise les leads, suggère les bons tags, propose les relances à faire et les campagnes à lancer. Tu choisis le mode : Auto, Assisté ou Conseil.",
+    image: MaxHeroSolution,
+  },
+  {
+    title: "M.A.X. exécute pour toi",
+    description:
+      "Il déclenche les messages WhatsApp, SMS, emails et workflows n8n. Tu gardes le contrôle, il gère l’exécution.",
+    image: MaxHeroIdea,
+  },
+]
+
+export default function MaxHowItWorksSection() {
+  return (
+    <section className="bg-white py-12 md:py-16">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mb-8 text-center md:mb-10">
+          <h2 className="text-2xl font-semibold text-max-grayDark md:text-3xl">
+            Comment M.A.X. travaille pour vous
+          </h2>
+          <p className="mt-2 text-sm text-max-gray md:text-base">
+            Un héros CRM qui ne se contente pas de parler : il accueille, analyse, propose… et exécute.
+          </p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {items.map((item) => (
+            <div
+              key={item.title}
+              className="group flex flex-col items-center rounded-2xl bg-max-bg/60 px-4 py-6 text-center shadow-sm transition-transform duration-200 hover:-translate-y-1 hover:shadow-md"
+            >
+              <div className="mb-3 h-24 w-24 overflow-hidden rounded-full bg-white/80 shadow-md">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="h-full w-full object-contain transition-transform duration-200 group-hover:scale-105"
+                />
+              </div>
+              <h3 className="text-sm font-semibold text-max-grayDark md:text-base">
+                {item.title}
+              </h3>
+              <p className="mt-2 text-xs text-max-gray md:text-sm">
+                {item.description}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-6 text-center text-xs text-max-grayLight md:text-sm">
+          Résultat : ton CRM reste propre, tes leads sont traités, et ton business tourne même quand tu n’es pas devant l’écran.
+        </p>
+      </div>
+    </section>
+  )
+}
+```
+
+Dans `HomePage.tsx`, tu mets simplement :
+
+```tsx
+import MaxHeroSection from '@/components/hero/MaxHeroSection'
+import MaxHowItWorksSection from '@/components/hero/MaxHowItWorksSection'
+
+export default function HomePage() {
+  return (
+    <>
+      <MaxHeroSection />
+      <MaxHowItWorksSection />
+      {/* sections suivantes... */}
+    </>
+  )
+}
+```
+
+---
+
+
