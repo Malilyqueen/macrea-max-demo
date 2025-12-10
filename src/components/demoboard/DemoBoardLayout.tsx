@@ -8,13 +8,30 @@ import DemoBoardCrm from './DemoBoardCrm'
 import DemoBoardAutomations from './DemoBoardAutomations'
 import DemoBoardReports from './DemoBoardReports'
 import DemoAutomationsFeed, { type AutomationAction } from './DemoAutomationsFeed'
+import { useMaxStateMachine } from '../../hooks/useMaxStateMachine'
 
 export default function DemoBoardLayout() {
   const [activeTab, setActiveTab] = useState('chat')
   const [automations, setAutomations] = useState<AutomationAction[]>([])
+  const maxStateMachine = useMaxStateMachine()
 
   const handleAutomationTriggered = (action: AutomationAction) => {
     setAutomations(prev => [action, ...prev]) // Nouveau en premier
+  }
+
+  const handleMaxStateChange = (message: string) => {
+    maxStateMachine.processMessage(message)
+    const config = maxStateMachine.getCurrentConfig()
+    
+    // Ajouter automatiquement au feed lors du changement d'état
+    if (config.feedMessage) {
+      handleAutomationTriggered({
+        id: `state-${Date.now()}`,
+        type: 'workflow',
+        message: config.feedMessage,
+        timestamp: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+      })
+    }
   }
 
   return (
@@ -303,7 +320,11 @@ export default function DemoBoardLayout() {
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
-                  <DemoBoardChat onAutomationTriggered={handleAutomationTriggered} />
+                  <DemoBoardChat 
+                    onAutomationTriggered={handleAutomationTriggered}
+                    onMessageSent={handleMaxStateChange}
+                    maxStateConfig={maxStateMachine.getCurrentConfig()}
+                  />
                 </div>
                 <div>
                   <DemoAutomationsFeed actions={automations} />

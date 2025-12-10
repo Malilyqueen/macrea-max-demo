@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { AutomationAction } from './DemoAutomationsFeed'
+import type { MaxStateConfig } from '../../hooks/useMaxStateMachine'
 
 type Message = {
   from: 'user' | 'max'
@@ -11,9 +12,15 @@ type Message = {
 
 type DemoBoardChatProps = {
   onAutomationTriggered?: (action: AutomationAction) => void
+  onMessageSent?: (message: string) => void
+  maxStateConfig?: MaxStateConfig
 }
 
-export default function DemoBoardChat({ onAutomationTriggered }: DemoBoardChatProps = {}) {
+export default function DemoBoardChat({ 
+  onAutomationTriggered, 
+  onMessageSent,
+  maxStateConfig 
+}: DemoBoardChatProps = {}) {
   const [messages, setMessages] = useState<Message[]>([])
   const [inputValue, setInputValue] = useState('')
   const [isThinking, setIsThinking] = useState(false)
@@ -81,29 +88,38 @@ export default function DemoBoardChat({ onAutomationTriggered }: DemoBoardChatPr
             setIsScanning(true)
             setTimeout(() => {
               setIsScanning(false)
-              setMessages(prev => [...prev, {
+              const newMessage = {
                 from: msg.from,
                 text: msg.text,
                 timestamp: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
-              }])
+              }
+              setMessages(prev => [...prev, newMessage])
+              // Détecter changement d'état
+              onMessageSent?.(msg.text)
             }, 1200)
           } else if (msg.thinking) {
             setIsThinking(true)
             setTimeout(() => {
               setIsThinking(false)
-              setMessages(prev => [...prev, {
+              const newMessage = {
                 from: msg.from,
                 text: msg.text,
                 timestamp: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
-              }])
+              }
+              setMessages(prev => [...prev, newMessage])
+              // Détecter changement d'état
+              onMessageSent?.(msg.text)
             }, 1000)
           } else {
             // Premier message de MAX sans thinking
-            setMessages(prev => [...prev, {
+            const newMessage = {
               from: msg.from,
               text: msg.text,
               timestamp: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
-            }])
+            }
+            setMessages(prev => [...prev, newMessage])
+            // Détecter changement d'état
+            onMessageSent?.(msg.text)
           }
         } else {
           // Message utilisateur
@@ -267,10 +283,36 @@ export default function DemoBoardChat({ onAutomationTriggered }: DemoBoardChatPr
 
   return (
     <div className="bg-white rounded-2xl border border-[rgba(0,145,255,0.15)] shadow-sm flex flex-col h-[600px]">
-      {/* Header */}
+      {/* Header with MAX state */}
       <div className="px-6 py-4 border-b border-[rgba(0,145,255,0.1)]">
-        <h3 className="text-lg font-bold text-[#1e293b]">Chat avec M.A.X.</h3>
-        <p className="text-xs text-[#64748b]">Votre assistant marketing IA</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-bold text-[#1e293b]">Chat avec M.A.X.</h3>
+            <p className="text-xs text-[#64748b]">Votre copilote marketing IA</p>
+          </div>
+          
+          {/* Mascotte avec état */}
+          {maxStateConfig && (
+            <div className="flex items-center gap-3">
+              <div className="text-right">
+                <p className="text-xs font-semibold text-[#0091ff]">{maxStateConfig.statusText}</p>
+              </div>
+              <motion.div
+                key={maxStateConfig.state}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 200 }}
+                className="w-12 h-12 rounded-full bg-gradient-to-br from-[#F6FAFF] to-white border-2 border-[#0091ff] shadow-md flex items-center justify-center overflow-hidden"
+              >
+                <img 
+                  src={maxStateConfig.image} 
+                  alt="M.A.X" 
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Messages */}

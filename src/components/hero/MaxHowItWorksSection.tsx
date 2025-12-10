@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import {
   MaxHeroHello,
   MaxHeroThinking,
-  MaxHeroSolution,
-  MaxHeroIdea,
+  MaxSolution,
+  MaxHeroHappy,
 } from '@/assets/max'
 
 const items = [
@@ -23,13 +23,13 @@ const items = [
     title: "3. Je propose la meilleure stratégie",
     description:
       "Je priorise tes leads, je suggère les bons tags, je recommande les relances et les campagnes à lancer. Tu choisis mon mode : Auto, Assisté ou Conseil.",
-    image: MaxHeroSolution,
+    image: MaxSolution,
   },
   {
     title: "4. J'exécute pour toi",
     description:
       "Je déclenche tes messages WhatsApp, SMS, emails et workflows. Tu gardes le contrôle. Je gère l'exécution.",
-    image: MaxHeroIdea,
+    image: MaxHeroHappy,
   },
 ]
 
