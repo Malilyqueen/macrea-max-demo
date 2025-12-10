@@ -14,25 +14,21 @@ export default function DemoBoardLayout() {
   const [activeTab, setActiveTab] = useState('chat')
   const [automations, setAutomations] = useState<AutomationAction[]>([])
   const maxStateMachine = useMaxStateMachine()
-  const [lastState, setLastState] = useState<string>('')
 
   const handleAutomationTriggered = (action: AutomationAction) => {
     setAutomations(prev => [action, ...prev]) // Nouveau en premier
   }
 
   const handleMaxStateChange = (message: string) => {
-    const previousState = maxStateMachine.currentState
-    maxStateMachine.processMessage(message)
-    const newState = maxStateMachine.currentState
+    const stateChanged = maxStateMachine.processMessage(message)
     
     // Ajouter au feed SEULEMENT si l'état a vraiment changé
-    if (previousState !== newState && newState !== lastState) {
-      setLastState(newState)
+    if (stateChanged) {
       const config = maxStateMachine.getCurrentConfig()
       
       if (config.feedMessage) {
         handleAutomationTriggered({
-          id: `state-${Date.now()}-${newState}`,
+          id: `state-${Date.now()}-${config.state}`,
           type: 'workflow',
           message: config.feedMessage,
           timestamp: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })

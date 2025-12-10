@@ -52,6 +52,7 @@ const STATE_TRIGGERS: Record<MaxState, string[]> = {
 export function useMaxStateMachine() {
   const [currentState, setCurrentState] = useState<MaxState>('ACCUEIL')
   const [stateHistory, setStateHistory] = useState<MaxState[]>(['ACCUEIL'])
+  const [hasStateChanged, setHasStateChanged] = useState(false)
 
   const detectStateFromMessage = (message: string): MaxState | null => {
     for (const [state, triggers] of Object.entries(STATE_TRIGGERS)) {
@@ -66,14 +67,23 @@ export function useMaxStateMachine() {
     if (newState !== currentState) {
       setCurrentState(newState)
       setStateHistory(prev => [...prev, newState])
+      setHasStateChanged(true)
+      return true
     }
+    return false
   }
 
-  const processMessage = (message: string) => {
+  const processMessage = (message: string): boolean => {
     const detectedState = detectStateFromMessage(message)
     if (detectedState) {
-      transitionTo(detectedState)
+      const changed = transitionTo(detectedState)
+      if (changed) {
+        // Reset flag after a small delay
+        setTimeout(() => setHasStateChanged(false), 100)
+      }
+      return changed
     }
+    return false
   }
 
   const getCurrentConfig = (): MaxStateConfig => {
@@ -83,6 +93,7 @@ export function useMaxStateMachine() {
   const reset = () => {
     setCurrentState('ACCUEIL')
     setStateHistory(['ACCUEIL'])
+    setHasStateChanged(false)
   }
 
   return {
@@ -92,6 +103,7 @@ export function useMaxStateMachine() {
     processMessage,
     getCurrentConfig,
     reset,
+    hasStateChanged,
     allStates: STATE_CONFIGS
   }
 }
