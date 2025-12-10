@@ -23,27 +23,32 @@ export default function MaxHeroSection() {
           </h1>
 
           <p className="max-w-xl text-base text-[#64748b] leading-relaxed">
-            <span className="font-bold">M.A.X ne sera pas un simple assistant. C'est votre copilote marketing IA</span>, connecté à MaCréa CRM : il pilote vos campagnes, priorise vos leads, lance vos automatisations WhatsApp et répare votre base de données pendant que vous faites autre chose.
+            <span className="font-bold text-[#1e293b]">NON ! Je ne suis pas un outil.</span><br />
+            <span className="font-bold text-[#0091ff]">Je suis M.A.X votre copilote marketing IA.</span><br />
+            Je pilote vos campagnes, j'organise votre CRM, je relance vos clients et je nettoie vos données… pendant que vous avancez.
           </p>
 
-          <ul className="space-y-3 text-sm text-[#64748b]">
-            <li className="flex gap-3 items-start">
-              <span className="mt-1.5 h-2 w-2 rounded-full bg-[#00E4FF] flex-shrink-0" />
-              <span className="font-semibold italic">Corrige et structure automatiquement votre base MaCréa CRM.</span>
-            </li>
-            <li className="flex gap-3 items-start">
-              <span className="mt-1.5 h-2 w-2 rounded-full bg-[#00E4FF] flex-shrink-0" />
-              <span className="font-semibold italic">Automatise WhatsApp, SMS, emails et appels avec vos modèles.</span>
-            </li>
-            <li className="flex gap-3 items-start">
-              <span className="mt-1.5 h-2 w-2 rounded-full bg-[#00E4FF] flex-shrink-0" />
-              <span className="font-semibold italic">Nettoie vos fichiers CSV (20 000+ lignes) avant insertion.</span>
-            </li>
-            <li className="flex gap-3 items-start">
-              <span className="mt-1.5 h-2 w-2 rounded-full bg-[#00E4FF] flex-shrink-0" />
-              <span className="font-semibold italic">Agit comme un directeur marketing IA qui priorise vos leads.</span>
-            </li>
-          </ul>
+          <div className="space-y-2">
+            <p className="text-sm font-semibold text-[#1e293b]">Ce que je sais faire :</p>
+            <ul className="space-y-3 text-sm text-[#64748b]">
+              <li className="flex gap-3 items-start">
+                <span className="mt-1.5 h-2 w-2 rounded-full bg-[#00E4FF] flex-shrink-0" />
+                <span className="font-semibold italic">Corriger et structurer automatiquement votre base MaCréa CRM.</span>
+              </li>
+              <li className="flex gap-3 items-start">
+                <span className="mt-1.5 h-2 w-2 rounded-full bg-[#00E4FF] flex-shrink-0" />
+                <span className="font-semibold italic">Automatiser WhatsApp, SMS, emails et appels avec vos modèles.</span>
+              </li>
+              <li className="flex gap-3 items-start">
+                <span className="mt-1.5 h-2 w-2 rounded-full bg-[#00E4FF] flex-shrink-0" />
+                <span className="font-semibold italic">Nettoyer vos fichiers CSV (20 000+ lignes) avant insertion.</span>
+              </li>
+              <li className="flex gap-3 items-start">
+                <span className="mt-1.5 h-2 w-2 rounded-full bg-[#00E4FF] flex-shrink-0" />
+                <span className="font-semibold italic">Agir comme un directeur marketing IA qui priorise vos leads.</span>
+              </li>
+            </ul>
+          </div>
 
           <div className="flex flex-wrap items-center gap-4 pt-2">
             <a href="/demoboard" className="rounded-lg bg-gradient-to-r from-[#0091ff] to-[#00cfff] px-6 py-3 text-sm font-semibold text-white shadow-md hover:shadow-[0_0_25px_rgba(0,207,255,0.5)] transition-all inline-block">
