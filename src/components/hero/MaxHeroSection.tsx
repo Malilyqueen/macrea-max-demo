@@ -75,10 +75,11 @@ export default function MaxHeroSection() {
           </div>
 
           {/* Petite carte flottante */}
-          <div className="absolute bottom-6 right-4 rounded-2xl bg-white/90 backdrop-blur-sm px-4 py-3 text-xs shadow-lg border border-[rgba(0,145,255,0.15)] animate-fade-in">
-            <p className="font-semibold text-[#1e293b]">Self-Healing activé</p>
-            <p className="text-[11px] text-[#64748b]">
-              184 champs corrigés · 3 workflows réparés cette semaine.
+          <div className="absolute bottom-6 right-4 rounded-2xl bg-white/90 backdrop-blur-sm px-4 py-3 text-xs shadow-lg border border-[rgba(0,145,255,0.15)] animate-fade-in max-w-[240px]">
+            <p className="font-semibold text-[#1e293b] mb-1">Bonjour Chef.</p>
+            <p className="text-[11px] text-[#64748b] leading-relaxed">
+              J'ai déjà nettoyé votre base et optimisé vos workflows.<br />
+              Quelle est la prochaine mission ?
             </p>
           </div>
         </div>
