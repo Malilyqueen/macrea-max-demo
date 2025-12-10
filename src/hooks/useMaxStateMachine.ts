@@ -20,7 +20,7 @@ const STATE_CONFIGS: Record<MaxState, MaxStateConfig> = {
     state: 'ACCUEIL',
     image: MaxHeroHello,
     statusText: 'Prêt à vous assister',
-    feedMessage: '👋 M.A.X. est connecté - Analyse de votre CRM en standby'
+    feedMessage: '👋 M.A.X. est connecté et opérationnel'
   },
   ANALYSE: {
     state: 'ANALYSE',
