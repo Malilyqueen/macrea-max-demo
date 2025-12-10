@@ -8,27 +8,27 @@ import {
 
 const items = [
   {
-    title: "M.A.X. t'accueille",
+    title: "1. Je t'accueille",
     description:
-      "Il commence par comprendre ton activité, ton CRM et tes priorités. Tu parles en langage humain, il traduit en actions techniques.",
+      "Je commence par comprendre ton activité, ton CRM et tes priorités. Tu parles en langage humain, je traduis en actions techniques.",
     image: MaxHeroHello,
   },
   {
-    title: "M.A.X. analyse ta base",
+    title: "2. J'analyse ta base",
     description:
-      "Il scanne ta base MaCréa CRM, détecte les champs manquants, les doublons, les erreurs d'import et les données incohérentes. C'est ton contrôleur qualité IA.",
+      "Je scanne ta base MaCréa CRM : je détecte les champs manquants, les doublons, les erreurs d'import et les données incohérentes. Je suis ton contrôleur qualité IA.",
     image: MaxHeroThinking,
   },
   {
-    title: "M.A.X. propose la meilleure stratégie",
+    title: "3. Je propose la meilleure stratégie",
     description:
-      "Il priorise les leads, suggère les bons tags, propose les relances à faire et les campagnes à lancer. Tu choisis le niveau d'autonomie : Auto, Assisté ou Conseil.",
+      "Je priorise tes leads, je suggère les bons tags, je recommande les relances et les campagnes à lancer. Tu choisis mon mode : Auto, Assisté ou Conseil.",
     image: MaxHeroSolution,
   },
   {
-    title: "M.A.X. exécute pour toi",
+    title: "4. J'exécute pour toi",
     description:
-      "Il déclenche les messages WhatsApp, SMS, emails et workflows n8n. Tu gardes le contrôle, il gère l'exécution.",
+      "Je déclenche tes messages WhatsApp, SMS, emails et workflows n8n. Tu gardes le contrôle. Je gère l'exécution.",
     image: MaxHeroIdea,
   },
 ]
@@ -50,10 +50,14 @@ export default function MaxHowItWorksSection() {
         {/* Titre & sous-titre */}
         <div className="mb-8 text-center md:mb-10 animate-fade-in-up">
           <h2 className="text-2xl font-bold text-[#1e293b] md:text-3xl">
-            Comment <span className="bg-gradient-to-r from-[#0091ff] to-[#00cfff] bg-clip-text text-transparent">M.A.X.</span> travaille pour vous
+            Je suis <span className="bg-gradient-to-r from-[#0091ff] to-[#00cfff] bg-clip-text text-transparent">M.A.X</span>, voici comment je travaille pour vous
           </h2>
-          <p className="mt-2 text-sm text-[#64748b] md:text-base">
-            Un copilot marketing qui ne se contente pas d'écrire : il accueille, analyse, propose… et exécute.
+          <p className="mt-3 text-sm text-[#64748b] md:text-base max-w-2xl mx-auto leading-relaxed">
+            Je suis un copilote marketing qui ne se contente pas d'écrire :<br />
+            <span className="font-semibold">j'accueille, j'analyse, je propose… et j'exécute.</span>
+          </p>
+          <p className="mt-2 text-xs font-medium text-[#0091ff] md:text-sm">
+            Petite démonstration :
           </p>
         </div>
 
