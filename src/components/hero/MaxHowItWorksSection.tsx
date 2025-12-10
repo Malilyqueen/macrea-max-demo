@@ -57,7 +57,7 @@ export default function MaxHowItWorksSection() {
             <span className="font-semibold">j'accueille, j'analyse, je propose… et j'exécute.</span>
           </p>
           <p className="mt-2 text-xs font-medium text-[#0091ff] md:text-sm">
-            Petite démonstration :
+            Petite démonstration (je me permets de te tutoyer) :
           </p>
         </div>
 
