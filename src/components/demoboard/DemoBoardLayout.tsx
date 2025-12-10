@@ -10,7 +10,7 @@ import DemoBoardReports from './DemoBoardReports'
 import DemoAutomationsFeed, { type AutomationAction } from './DemoAutomationsFeed'
 
 export default function DemoBoardLayout() {
-  const [activeTab, setActiveTab] = useState('dashboard')
+  const [activeTab, setActiveTab] = useState('chat')
   const [automations, setAutomations] = useState<AutomationAction[]>([])
 
   const handleAutomationTriggered = (action: AutomationAction) => {
