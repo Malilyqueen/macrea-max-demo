@@ -23,7 +23,7 @@ export default function MaxHeroSection() {
           </h1>
 
           <p className="max-w-xl text-base text-[#64748b] leading-relaxed">
-            M.A.X ne sera pas un simple assistant. C'est votre copilote marketing IA, connecté à MaCréa CRM : il pilote vos campagnes, priorise vos leads, lance vos automatisations WhatsApp et répare votre base de données pendant que vous faites autre chose.
+            <span className="font-bold">M.A.X ne sera pas un simple assistant. C'est votre copilote marketing IA</span>, connecté à MaCréa CRM : il pilote vos campagnes, priorise vos leads, lance vos automatisations WhatsApp et répare votre base de données pendant que vous faites autre chose.
           </p>
 
           <ul className="space-y-3 text-sm text-[#64748b]">
