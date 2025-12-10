@@ -20,25 +20,25 @@ const STATE_CONFIGS: Record<MaxState, MaxStateConfig> = {
     state: 'ACCUEIL',
     image: MaxHeroHello,
     statusText: 'Prêt à vous assister',
-    feedMessage: '👋 M.A.X. est en ligne et prêt à vous aider'
+    feedMessage: '👋 M.A.X. est connecté - Analyse de votre CRM en standby'
   },
   ANALYSE: {
     state: 'ANALYSE',
     image: MaxHeroThinking,
     statusText: 'Analyse de votre base CRM en cours...',
-    feedMessage: '🔍 Scan de la base MaCréa CRM'
+    feedMessage: '🔍 Scan complet de MaCréa CRM - Détection des anomalies'
   },
   PROPOSITION: {
     state: 'PROPOSITION',
     image: MaxSolution,
     statusText: 'Corrections identifiées',
-    feedMessage: '💡 Stratégie de correction proposée'
+    feedMessage: '💡 184 optimisations détectées - Stratégie prête'
   },
   EXECUTION: {
     state: 'EXECUTION',
     image: MaxHeroHappy,
     statusText: 'Self-Healing appliqué avec succès !',
-    feedMessage: '✅ Self-Healing exécuté - Base CRM optimisée'
+    feedMessage: '✅ Corrections appliquées - Votre CRM est maintenant optimisé'
   }
 }
 
