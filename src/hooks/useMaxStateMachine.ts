@@ -43,9 +43,9 @@ const STATE_CONFIGS: Record<MaxState, MaxStateConfig> = {
 }
 
 const STATE_TRIGGERS: Record<MaxState, string[]> = {
-  ACCUEIL: ['Bonjour ! Je suis M.A.X'],
-  ANALYSE: ['Je scanne votre base MaCréa CRM'],
-  PROPOSITION: ['Je peux appliquer les corrections maintenant'],
+  ACCUEIL: ['Je suis M.A.X'],
+  ANALYSE: ['Je scanne votre base'],
+  PROPOSITION: ['Je peux appliquer les corrections'],
   EXECUTION: ['Self-Healing appliqué']
 }
 
