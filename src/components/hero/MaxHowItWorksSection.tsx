@@ -28,7 +28,7 @@ const items = [
   {
     title: "4. J'exécute pour toi",
     description:
-      "Je déclenche tes messages WhatsApp, SMS, emails et workflows n8n. Tu gardes le contrôle. Je gère l'exécution.",
+      "Je déclenche tes messages WhatsApp, SMS, emails et workflows. Tu gardes le contrôle. Je gère l'exécution.",
     image: MaxHeroIdea,
   },
 ]
