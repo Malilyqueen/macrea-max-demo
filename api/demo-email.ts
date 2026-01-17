@@ -403,6 +403,12 @@ Pensé pour durer.`,
 
   } catch (error: any) {
     console.error('[DEMO EMAIL API ERROR]', error)
+    console.error('[ERROR DETAILS]', {
+      message: error.message,
+      stack: error.stack,
+      code: error.code,
+      response: error.response
+    })
 
     // Tentative d'enregistrer l'erreur dans Supabase
     try {
@@ -424,7 +430,8 @@ Pensé pour durer.`,
 
     return res.status(500).json({
       ok: false,
-      error: 'Erreur lors de l\'envoi. Nous allons corriger ça rapidement.'
+      error: error.message || 'Erreur lors de l\'envoi. Nous allons corriger ça rapidement.',
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
     })
   }
 }
