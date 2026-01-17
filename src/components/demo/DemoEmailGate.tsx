@@ -9,7 +9,6 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
   const [email, setEmail] = useState('')
   const [firstName, setFirstName] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [emailSent, setEmailSent] = useState<boolean | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -39,14 +38,11 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
       const data = await response.json()
 
       if (data.ok) {
-        setEmailSent(true)
         console.log('[SUCCESS] PDF envoyé à', email)
       } else {
-        setEmailSent(false)
         console.warn('[API ERROR]', data.error)
       }
     } catch (error) {
-      setEmailSent(false)
       console.error('[FETCH ERROR] Envoi email échoué:', error)
     } finally {
       setIsSubmitting(false)
