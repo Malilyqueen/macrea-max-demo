@@ -8,6 +8,7 @@ type DemoEmailGateProps = {
 export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
   const [email, setEmail] = useState('')
   const [firstName, setFirstName] = useState('')
+  const [industry, setIndustry] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,6 +33,7 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
         body: JSON.stringify({
           email: email.trim().toLowerCase(),
           firstName: firstName.trim() || undefined,
+          industry: industry.trim() || undefined,
         }),
       })
 
@@ -174,6 +176,21 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Votre prénom"
+                disabled={isSubmitting}
+                className="w-full px-5 py-4 rounded-xl border-2 border-gray-200 focus:border-[#3BA0FF] focus:outline-none text-lg transition-all disabled:bg-gray-50 disabled:cursor-not-allowed"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="industry" className="block text-sm font-semibold text-gray-900 mb-2">
+                Votre secteur d'activité <span className="text-gray-500 font-normal">(optionnel)</span>
+              </label>
+              <input
+                type="text"
+                id="industry"
+                value={industry}
+                onChange={(e) => setIndustry(e.target.value)}
+                placeholder="Ex: Immobilier, Formation, Conseil..."
                 disabled={isSubmitting}
                 className="w-full px-5 py-4 rounded-xl border-2 border-gray-200 focus:border-[#3BA0FF] focus:outline-none text-lg transition-all disabled:bg-gray-50 disabled:cursor-not-allowed"
               />
