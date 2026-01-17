@@ -187,96 +187,211 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     })
 
-    const displayName = leadData.first_name || 'vous'
+    // Préparation des variables dynamiques avec fallbacks
+    const firstName = leadData.first_name ? leadData.first_name : null
+    const greetingLine = firstName ? `Bonjour ${firstName},` : 'Bonjour,'
+    const industry = leadData.industry?.trim()
+    const industryLine = industry 
+      ? `Vous évoluez dans le secteur ${industry} — un environnement où la structure, le temps et la clarté sont déterminants.`
+      : `Vous explorez actuellement comment je peux transformer la gestion de votre entreprise.`
 
     const mailOptions = {
-      from: `"M.A.X. — MaCréa Studio" <${SMTP_USER}>`,
+      from: `"M.A.X." <${SMTP_USER}>`,
       to: leadData.email,
-      subject: '🚀 Votre démo M.A.X. + Guide MaCréa CRM',
+      subject: firstName ? `${firstName}, moi, c'est M.A.X.` : `Moi, c'est M.A.X.`,
       html: `
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; }
-    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .header { background: linear-gradient(135deg, #3BA0FF 0%, #00C8FF 100%); padding: 30px; text-align: center; border-radius: 12px 12px 0 0; }
-    .header h1 { color: white; margin: 0; font-size: 28px; }
-    .content { background: #f8f9fa; padding: 30px; border-radius: 0 0 12px 12px; }
-    .button { display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, #3BA0FF, #00C8FF); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; margin: 20px 0; }
-    .footer { text-align: center; padding: 20px; color: #666; font-size: 14px; }
-    .badge { background: #e3f2fd; padding: 12px; border-left: 4px solid #3BA0FF; margin: 15px 0; border-radius: 4px; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; 
+      line-height: 1.75; 
+      color: #1a1a1a; 
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    .container { 
+      max-width: 650px; 
+      margin: 40px auto; 
+      padding: 0 20px;
+    }
+    .content { 
+      background: #ffffff;
+      padding: 0;
+      font-size: 16px;
+      letter-spacing: 0.01em;
+    }
+    .content p { 
+      margin: 0 0 20px 0;
+      line-height: 1.75;
+    }
+    .content ul {
+      margin: 20px 0;
+      padding-left: 20px;
+      list-style: none;
+    }
+    .content ul li {
+      margin-bottom: 12px;
+      padding-left: 20px;
+      position: relative;
+    }
+    .content ul li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #3BA0FF;
+      font-weight: bold;
+    }
+    .signature {
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid #e5e5e5;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .signature-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+    .signature-text {
+      flex: 1;
+    }
+    .signature-name {
+      font-weight: 600;
+      font-size: 17px;
+      color: #1a1a1a;
+      margin: 0 0 4px 0;
+    }
+    .signature-title {
+      font-size: 14px;
+      color: #666;
+      margin: 0 0 2px 0;
+    }
+    .signature-tagline {
+      font-size: 13px;
+      color: #999;
+      margin: 12px 0 0 0;
+      font-style: italic;
+      line-height: 1.5;
+    }
+    .attachment-note {
+      background: #f8f9fa;
+      border-left: 3px solid #3BA0FF;
+      padding: 16px 20px;
+      margin: 25px 0;
+      font-size: 15px;
+    }
+    strong { font-weight: 600; }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <h1>🎉 Bienvenue dans la démo M.A.X. !</h1>
-    </div>
-    
     <div class="content">
-      <p>Bonjour${displayName !== 'vous' ? ' ' + displayName : ''} 👋</p>
+      <p>${greetingLine}</p>
       
-      <p>Merci d'avoir testé la <strong>démo interactive de M.A.X.</strong> (MaCréa Assistant eXpert).</p>
+      <p><strong>Moi, c'est M.A.X.</strong></p>
       
-      <div class="badge">
-        <strong>📎 Pièce jointe incluse :</strong><br>
-        Le guide complet <strong>"MaCréa CRM + M.A.X."</strong> avec captures d'écran, scénarios d'usage et exemples de corrections/automations.
+      <p>Vous explorez actuellement mes capacités.<br>
+      ${industryLine}</p>
+      
+      <p>Je peux vous aider à optimiser votre entreprise,<br>
+      non pas en ajoutant des outils ou de la complexité,<br>
+      mais en travaillant en arrière-plan, là où s'accumulent les erreurs, les frictions et la charge mentale.</p>
+      
+      <div class="attachment-note">
+        📎 Vous trouverez en pièce jointe un guide qui me concerne, ainsi que le CRM que je pilote.
       </div>
       
-      <h3>🔍 Ce que vous découvrirez dans le PDF :</h3>
+      <p>Vous y découvrirez notamment :</p>
+      
       <ul>
-        <li>Comment M.A.X. s'intègre dans MaCréa CRM</li>
-        <li>Les scénarios où M.A.X. intervient automatiquement</li>
-        <li>Des exemples concrets de corrections, enrichissements et automations</li>
-        <li>L'architecture Self-Healing CRM™ en action</li>
+        <li>comment je m'intègre au CRM sans perturber vos habitudes</li>
+        <li>comment certaines actions se corrigent, s'enchaînent ou s'optimisent automatiquement</li>
+        <li>le principe du Self-Healing CRM™ : un environnement capable de s'ajuster et de se maintenir sans intervention constante</li>
       </ul>
       
-      <p style="text-align: center;">
-        <a href="https://macrea-max-demo.vercel.app/demoboard" class="button">
-          🚀 Retourner à la démo
-        </a>
-      </p>
+      <p>Il n'est pas nécessaire d'être expert pour travailler avec moi.<br>
+      Je suis conçu pour :</p>
       
-      <p><strong>Questions ? Besoin d'une démo personnalisée ?</strong><br>
-      Répondez simplement à cet email, nous serons ravis d'échanger avec vous.</p>
+      <ul>
+        <li>vous faire gagner du temps</li>
+        <li>réduire vos coûts opérationnels</li>
+        <li>et alléger durablement la charge mentale liée à la gestion quotidienne</li>
+      </ul>
       
-      <p>À très bientôt,<br>
-      <strong>L'équipe MaCréa Studio</strong></p>
+      <p>La démo reste accessible pendant que vous l'explorez.</p>
+      
+      <p>Si vous souhaitez vérifier comment je fonctionnerais dans votre propre contexte,<br>
+      vous pouvez simplement répondre à cet email.</p>
+      
+      <div class="signature">
+        <img src="https://macrea-max-demo.vercel.app/docs/readme-assets/max-hero-guide.png" alt="M.A.X." class="signature-avatar" />
+        <div class="signature-text">
+          <div class="signature-name">M.A.X.</div>
+          <div class="signature-title">MaCréa Assistant eXpert</div>
+          <div class="signature-title">Copilote CRM autonome</div>
+          <div class="signature-tagline">
+            Conçu pour structurer.<br>
+            Pensé pour durer.
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <div class="footer">
-      <p>MaCréa Studio • studiomacrea.cloud<br>
-      Vous recevez cet email car vous avez demandé la démo M.A.X.</p>
+  </div>
+</body>
+</html>
+      `,
     </div>
   </div>
 </body>
 </html>
       `,
       text: `
-Bonjour${displayName !== 'vous' ? ' ' + displayName : ''} 👋
+${greetingLine}
 
-Merci d'avoir testé la démo interactive de M.A.X. (MaCréa Assistant eXpert).
+Moi, c'est M.A.X.
 
-📎 Pièce jointe incluse : Le guide complet "MaCréa CRM + M.A.X." avec captures d'écran, scénarios d'usage et exemples de corrections/automations.
+Vous explorez actuellement mes capacités.
+${industryLine}
 
-Ce que vous découvrirez dans le PDF :
-- Comment M.A.X. s'intègre dans MaCréa CRM
-- Les scénarios où M.A.X. intervient automatiquement
-- Des exemples concrets de corrections, enrichissements et automations
-- L'architecture Self-Healing CRM™ en action
+Je peux vous aider à optimiser votre entreprise,
+non pas en ajoutant des outils ou de la complexité,
+mais en travaillant en arrière-plan, là où s'accumulent les erreurs, les frictions et la charge mentale.
 
-Retourner à la démo : https://macrea-max-demo.vercel.app/demoboard
+📎 Vous trouverez en pièce jointe un guide qui me concerne, ainsi que le CRM que je pilote.
 
-Questions ? Besoin d'une démo personnalisée ?
-Répondez simplement à cet email, nous serons ravis d'échanger avec vous.
+Vous y découvrirez notamment :
 
-À très bientôt,
-L'équipe MaCréa Studio
+• comment je m'intègre au CRM sans perturber vos habitudes
+• comment certaines actions se corrigent, s'enchaînent ou s'optimisent automatiquement
+• le principe du Self-Healing CRM™ : un environnement capable de s'ajuster et de se maintenir sans intervention constante
 
-MaCréa Studio • studiomacrea.cloud
-Vous recevez cet email car vous avez demandé la démo M.A.X.
+Il n'est pas nécessaire d'être expert pour travailler avec moi.
+Je suis conçu pour :
+
+• vous faire gagner du temps
+• réduire vos coûts opérationnels
+• et alléger durablement la charge mentale liée à la gestion quotidienne
+
+La démo reste accessible pendant que vous l'explorez.
+
+Si vous souhaitez vérifier comment je fonctionnerais dans votre propre contexte,
+vous pouvez simplement répondre à cet email.
+
+—
+
+M.A.X.
+MaCréa Assistant eXpert
+Copilote CRM autonome
+
+Conçu pour structurer.
+Pensé pour durer.
       `,
       attachments: [
         {
