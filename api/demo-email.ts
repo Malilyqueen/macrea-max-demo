@@ -187,7 +187,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     })
 
-    const firstName = leadData.first_name || 'vous'
+    const displayName = leadData.first_name || 'vous'
 
     const mailOptions = {
       from: `"M.A.X. — MaCréa Studio" <${SMTP_USER}>`,
@@ -216,7 +216,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     </div>
     
     <div class="content">
-      <p>Bonjour${firstName !== 'vous' ? ' ' + firstName : ''} 👋</p>
+      <p>Bonjour${displayName !== 'vous' ? ' ' + displayName : ''} 👋</p>
       
       <p>Merci d'avoir testé la <strong>démo interactive de M.A.X.</strong> (MaCréa Assistant eXpert).</p>
       
@@ -255,7 +255,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 </html>
       `,
       text: `
-Bonjour${firstName !== 'vous' ? ' ' + firstName : ''} 👋
+Bonjour${displayName !== 'vous' ? ' ' + displayName : ''} 👋
 
 Merci d'avoir testé la démo interactive de M.A.X. (MaCréa Assistant eXpert).
 
