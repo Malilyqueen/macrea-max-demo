@@ -22,7 +22,7 @@ const SMTP_PORT = parseInt(process.env.SMTP_PORT || '465', 10)
 const SMTP_USER = process.env.SMTP_USER || 'max@studiomacrea.cloud'
 const SMTP_PASS = process.env.SMTP_PASS!
 
-const PDF_URL = 'https://v6vkemne4uy1mygr.public.blob.vercel-storage.com/MACREACRM%2BMAX-DOCmpresse.pdf'
+const PDF_URL = 'https://v6vkemne4uy1mygr.public.blob.vercel-storage.com/MACREACRM-MAX-PRESENTATION.pdf'
 
 // ==========================
 // Validation email simple
