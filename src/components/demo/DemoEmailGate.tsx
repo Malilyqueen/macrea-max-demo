@@ -7,6 +7,7 @@ type DemoEmailGateProps = {
 
 export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
   const [email, setEmail] = useState('')
+  const [firstName, setFirstName] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [emailSent, setEmailSent] = useState<boolean | null>(null)
 
@@ -31,6 +32,7 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
         },
         body: JSON.stringify({
           email: email.trim().toLowerCase(),
+          firstName: firstName.trim() || undefined,
         }),
       })
 
@@ -165,7 +167,22 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
           </div>
 
           {/* Formulaire */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="firstName" className="block text-sm font-semibold text-gray-900 mb-2">
+                Votre prénom <span className="text-gray-500 font-normal">(optionnel)</span>
+              </label>
+              <input
+                type="text"
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Votre prénom"
+                disabled={isSubmitting}
+                className="w-full px-5 py-4 rounded-xl border-2 border-gray-200 focus:border-[#3BA0FF] focus:outline-none text-lg transition-all disabled:bg-gray-50 disabled:cursor-not-allowed"
+              />
+            </div>
+
             <div>
               <label htmlFor="email" className="block text-sm font-semibold text-gray-900 mb-2">
                 Votre adresse e-mail
