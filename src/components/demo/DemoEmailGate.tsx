@@ -239,13 +239,22 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
           </form>
 
           {/* Réassurance */}
-          <div className="mt-6 text-center">
+          <div className="mt-6 text-center space-y-3">
             <p className="text-sm font-semibold text-gray-700 mb-2 flex items-center justify-center gap-2">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
               Aucun spam. Vos données ne seront jamais partagées.
             </p>
+            <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+              <p className="text-sm text-amber-800 font-medium flex items-center justify-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                Vérifiez votre boîte de réception (et les spams/promotions)
+              </p>
+            </div>
             <p className="text-sm text-gray-600">
               Vous recevrez uniquement :
             </p>
