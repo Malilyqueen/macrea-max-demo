@@ -56,7 +56,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { email, firstName, company, industry, honeypot } = req.body
+    const { email, firstName: inputFirstName, company, industry, honeypot } = req.body
 
     // Anti-spam honeypot (si champ caché rempli = bot)
     if (honeypot) {
@@ -86,7 +86,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const leadData = {
       email: email.toLowerCase().trim(),
-      first_name: firstName?.trim() || null,
+      first_name: inputFirstName?.trim() || null,
       company: company?.trim() || null,
       industry: industry?.trim() || null,
       source: 'landing-demo',
@@ -96,9 +96,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       created_at: new Date().toISOString(),
     }
 
-    const { data: existingLead, error: selectError } = await supabase
+    const { data: existingLead } = await supabase
       .from('demo_leads')
-      .select('id, email, pdf_sent, last_sent_at')
+      .select('id, email, pdf_sent, last_sent_at, first_name, company, industry')
       .eq('email', leadData.email)
       .single()
 
