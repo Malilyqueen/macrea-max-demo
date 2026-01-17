@@ -1,5 +1,5 @@
 {
-  "name": "macrea-max-landing",
+  "name": "macrea-max-demo",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.90.1",
+    "@types/nodemailer": "^7.0.5",
+    "@vercel/node": "^5.5.23",
     "framer-motion": "^12.23.25",
+    "nodemailer": "^7.0.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.0"

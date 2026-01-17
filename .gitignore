@@ -3,3 +3,9 @@ dist
 .vite
 *.log
 .DS_Store
+
+# Environment variables (NE JAMAIS COMMIT)
+.env
+.env.local
+.env.production
+.env.*.local

@@ -1,0 +1,1393 @@
+# 📋 Audit Complet du Demoboard M.A.X.
+
+**Date**: 2024  
+**Objectif**: Évaluer la faisabilité de l'implémentation du demoboard en production et identifier les besoins backend/frontend
+
+---
+
+## 📖 Légende du code couleur
+
+| Symbole | Signification | Usage |
+|---------|---------------|-------|
+| 🟢 | **Faible complexité** | Implémentation simple, peu de dépendances |
+| 🟡 | **Moyenne complexité** | Intégrations multiples, logique métier |
+| 🔴 | **Haute complexité** | LLM, real-time, architecture critique |
+| ✅ | **Fonctionnel / À implémenter** | Feature complète ou requirement production |
+| ⚠️ | **Attention / Limitation** | Point de vigilance technique |
+| 💡 | **Concept clé** | Explication design/architecture |
+| 🔌 | **Intégration backend** | API, WebSocket, Database |
+| 💰 | **Coûts** | Budget développement ou infrastructure |
+| 🚀 | **Risques** | Mitigations et solutions |
+| 📈 | **Roadmap** | Planning d'implémentation |
+
+---
+
+## 🎨 Charte graphique M.A.X.
+
+### Palette de couleurs principale
+
+```css
+/* Bleu M.A.X. (Couleur signature) */
+--max-primary: #0091ff;
+--max-secondary: #00cfff;
+
+/* Dégradé principal M.A.X. */
+--gradient-max: linear-gradient(to right, #0091ff, #00cfff);
+--gradient-max-br: linear-gradient(to bottom right, #0091ff, #00cfff);
+
+/* Nuances de bleu */
+--max-blue-50: #F6FAFF;   /* Backgrounds clairs */
+--max-blue-100: #F0F6FF;  /* Sidebar, cards */
+--max-blue-200: rgba(0, 145, 255, 0.1);   /* Borders subtiles */
+--max-blue-300: rgba(0, 145, 255, 0.15);  /* Borders normales */
+
+/* Couleurs neutres */
+--gray-900: #1e293b;  /* Titres */
+--gray-700: #334155;  /* Texte principal */
+--gray-500: #64748b;  /* Texte secondaire */
+--gray-100: #f1f5f9;  /* Backgrounds */
+
+/* Couleurs de statut */
+--success: #10b981;   /* Vert validations */
+--warning: #f59e0b;   /* Orange attention */
+--error: #ef4444;     /* Rouge erreurs */
+--info: #3b82f6;      /* Bleu info */
+```
+
+### Composants UI
+
+#### 1. **Boutons principaux**
+```css
+/* Bouton Call-to-Action (CTA) */
+.btn-max-primary {
+  background: linear-gradient(to right, #0091ff, #00cfff);
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0, 145, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-max-primary:hover {
+  box-shadow: 0 15px 40px rgba(0, 207, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Bouton secondaire */
+.btn-max-secondary {
+  background: white;
+  color: #0091ff;
+  border: 2px solid rgba(0, 145, 255, 0.2);
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+}
+
+.btn-max-secondary:hover {
+  background: #F6FAFF;
+  border-color: #0091ff;
+}
+```
+
+#### 2. **Cards & Containers**
+```css
+/* Card standard */
+.card-max {
+  background: white;
+  border: 1px solid rgba(0, 145, 255, 0.15);
+  border-radius: 1rem; /* 16px */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.card-max:hover {
+  box-shadow: 0 10px 30px rgba(0, 145, 255, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Card KPI avec gradient */
+.card-kpi {
+  background: white;
+  border: 1px solid rgba(0, 145, 255, 0.1);
+  border-radius: 1.5rem; /* 24px */
+  padding: 1.5rem;
+}
+
+.card-kpi-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(to bottom right, #0091ff, #00cfff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0, 145, 255, 0.3);
+}
+```
+
+#### 3. **Badges de statut**
+```css
+/* Badge actif (Vert) */
+.badge-active {
+  background: #dcfce7; /* green-100 */
+  color: #166534;      /* green-700 */
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Badge qualifié (Cyan) */
+.badge-qualified {
+  background: #cffafe; /* cyan-100 */
+  color: #0e7490;      /* cyan-700 */
+}
+
+/* Badge nouveau (Bleu) */
+.badge-new {
+  background: #dbeafe; /* blue-100 */
+  color: #1e40af;      /* blue-700 */
+}
+
+/* Badge proposition (Jaune) */
+.badge-proposal {
+  background: #fef3c7; /* yellow-100 */
+  color: #92400e;      /* yellow-700 */
+}
+
+/* Badge négociation (Orange) */
+.badge-negotiation {
+  background: #ffedd5; /* orange-100 */
+  color: #9a3412;      /* orange-700 */
+}
+
+/* Badge perdu (Rouge) */
+.badge-lost {
+  background: #fee2e2; /* red-100 */
+  color: #991b1b;      /* red-700 */
+}
+```
+
+#### 4. **Gradients spéciaux**
+```css
+/* Gradient mascotte M.A.X. */
+.max-avatar {
+  background: linear-gradient(135deg, #0091ff 0%, #00cfff 100%);
+  border-radius: 50%;
+  box-shadow: 0 8px 24px rgba(0, 145, 255, 0.4);
+}
+
+/* Gradient texte M.A.X. */
+.text-gradient-max {
+  background: linear-gradient(to right, #0091ff, #00cfff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Gradient sidebar */
+.sidebar-gradient {
+  background: linear-gradient(180deg, #F0F6FF 0%, #F6FAFF 100%);
+}
+
+/* Gradient hover glow */
+.glow-on-hover:hover {
+  box-shadow: 0 0 20px rgba(0, 145, 255, 0.5),
+              0 0 40px rgba(0, 207, 255, 0.3);
+}
+```
+
+#### 5. **Inputs & Forms**
+```css
+/* Input standard */
+.input-max {
+  background: #F6FAFF;
+  border: 1px solid rgba(0, 145, 255, 0.15);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  color: #1e293b;
+  transition: all 0.2s ease;
+}
+
+.input-max:focus {
+  outline: none;
+  border-color: #0091ff;
+  box-shadow: 0 0 0 3px rgba(0, 145, 255, 0.1);
+}
+
+/* Search bar */
+.search-bar {
+  background: #F6FAFF;
+  border: 1px solid rgba(0, 145, 255, 0.15);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem 0.5rem 2.5rem; /* Space for icon */
+}
+```
+
+#### 6. **Animations & Transitions**
+```css
+/* Pulse animation (Avatar M.A.X.) */
+@keyframes pulse-max {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-max {
+  animation: pulse-max 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Glow animation (Icons) */
+@keyframes glow-cycle {
+  0%, 100% {
+    box-shadow: 0 10px 30px rgba(0, 145, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 15px 40px rgba(0, 207, 255, 0.4);
+  }
+}
+
+.animate-glow {
+  animation: glow-cycle 2s ease-in-out infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease-out;
+}
+```
+
+### Typographie
+
+```css
+/* Titres */
+.heading-1 {
+  font-size: 3rem;      /* 48px */
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.2;
+}
+
+.heading-2 {
+  font-size: 2.25rem;   /* 36px */
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.3;
+}
+
+.heading-3 {
+  font-size: 1.875rem;  /* 30px */
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.4;
+}
+
+/* Body text */
+.text-body {
+  font-size: 1rem;      /* 16px */
+  color: #334155;
+  line-height: 1.6;
+}
+
+.text-small {
+  font-size: 0.875rem;  /* 14px */
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.text-tiny {
+  font-size: 0.75rem;   /* 12px */
+  color: #64748b;
+  line-height: 1.4;
+}
+```
+
+### Shadows & Depth
+
+```css
+/* Shadow levels */
+--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+--shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+--shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+--shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+/* M.A.X. specific shadows */
+--shadow-max: 0 10px 30px rgba(0, 145, 255, 0.2);
+--shadow-max-hover: 0 15px 40px rgba(0, 207, 255, 0.3);
+--shadow-max-active: 0 8px 20px rgba(0, 145, 255, 0.4);
+```
+
+### Border Radius
+
+```css
+--radius-sm: 0.375rem;   /* 6px - Small elements */
+--radius-md: 0.5rem;     /* 8px - Buttons, inputs */
+--radius-lg: 0.75rem;    /* 12px - Cards */
+--radius-xl: 1rem;       /* 16px - Large cards */
+--radius-2xl: 1.5rem;    /* 24px - Hero sections */
+--radius-full: 9999px;   /* Full round - Badges, avatars */
+```
+
+### Spacing System
+
+```css
+/* Tailwind spacing scale utilisé */
+--space-1: 0.25rem;   /* 4px */
+--space-2: 0.5rem;    /* 8px */
+--space-3: 0.75rem;   /* 12px */
+--space-4: 1rem;      /* 16px */
+--space-5: 1.25rem;   /* 20px */
+--space-6: 1.5rem;    /* 24px */
+--space-8: 2rem;      /* 32px */
+--space-10: 2.5rem;   /* 40px */
+--space-12: 3rem;     /* 48px */
+```
+
+### Exemples d'usage dans le code
+
+#### Tailwind Classes utilisées
+```jsx
+// Bouton CTA
+className="px-4 py-2 bg-gradient-to-r from-[#0091ff] to-[#00cfff] text-white text-sm font-semibold rounded-lg hover:opacity-90 transition-opacity"
+
+// Card avec hover
+className="bg-white rounded-2xl p-6 border border-[rgba(0,145,255,0.1)] shadow-sm hover:shadow-md transition-all duration-300"
+
+// Badge status
+className="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full"
+
+// Input
+className="w-full px-4 py-2 bg-[#F6FAFF] border border-[rgba(0,145,255,0.15)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0091ff]/20"
+
+// Texte gradient M.A.X.
+className="bg-gradient-to-r from-[#0091ff] to-[#00cfff] bg-clip-text text-transparent"
+
+// Avatar M.A.X. animé
+className="h-10 w-10 rounded-full bg-gradient-to-br from-[#0091ff] to-[#00cfff] flex items-center justify-center shadow-lg animate-pulse"
+```
+
+---
+
+## 🎯 Executive Summary
+
+Le demoboard actuel est un **prototype fonctionnel** avec une architecture solide et des composants bien structurés. **Verdict: Implémentation en production RÉALISABLE** avec les adaptations listées ci-dessous.
+
+### Indicateurs clés:
+- ✅ **9 composants** structurés et réutilisables
+- ✅ **Architecture modulaire** avec séparation des responsabilités
+- ⚠️ **100% de données mockées** → nécessite connexions backend
+- ✅ **State machine fonctionnelle** pour synchronisation UX
+- ✅ **Animations performantes** avec Framer Motion
+- ⚠️ **Props drilling** → scaling nécessitera Context/Redux
+
+### Verdict par complexité:
+```
+🟢 Composants simples:     5/11 (45%) - Stats, Header, Sidebar, Feed, Entry
+🟡 Composants moyens:      5/11 (45%) - Layout, CRM, Automations, Reports, StateMachine
+🔴 Composants complexes:   1/11 (10%) - Chat (LLM integration)
+```
+
+---
+
+## 📊 Vue d'ensemble de l'architecture
+
+### Structure hiérarchique
+```
+DemoBoardPage (Email Gate)
+  └── DemoBoardLayout (Orchestrator)
+        ├── DemoBoardHeader (Top bar)
+        ├── DemoBoardSidebar (Navigation)
+        └── Content Area (5 tabs)
+              ├── Dashboard Tab
+              │     ├── DemoBoardStats (KPI cards)
+              │     └── Quick Actions + Activity Timeline
+              ├── Chat Tab
+              │     ├── DemoBoardChat (Conversational interface)
+              │     └── DemoAutomationsFeed (Action stream)
+              ├── CRM Tab → DemoBoardCrm (Leads table)
+              ├── Automatisations Tab → DemoBoardAutomations (Workflow management)
+              └── Rapports Tab → DemoBoardReports (Analytics)
+
+useMaxStateMachine (Global state hook)
+  └── 4 états: ACCUEIL → ANALYSE → PROPOSITION → EXECUTION
+```
+
+---
+
+## 🔍 Analyse détaillée des composants
+
+### 1. **DemoBoardPage.tsx** (Entry Point)
+**Rôle**: Point d'entrée avec email gate  
+**Lignes**: ~15  
+**Complexité**: 🟢 Faible
+
+#### Fonctionnalités actuelles:
+- Email gate conditionnel (`isUnlocked` state)
+- Redirection vers `DemoBoardLayout` après unlock
+
+#### 🔌 Production nécessaire:
+- ✅ **Validation email backend**
+  - API: `POST /api/demo/validate-email`
+  - Payload: `{ email: string }`
+  - Response: `{ valid: boolean, token: string }`
+- ✅ **Stockage session** (localStorage ou cookie)
+- ✅ **Analytics tracking** (email soumis)
+
+#### 💰 Effort estimé: **0.5 jour**
+
+---
+
+### 2. **DemoBoardLayout.tsx** (Main Orchestrator)
+**Rôle**: Chef d'orchestre de tous les composants  
+**Lignes**: 343  
+**Complexité**: 🟡 Moyenne-Haute
+
+#### Fonctionnalités actuelles:
+- Gestion de 5 tabs (Dashboard, Chat, CRM, Automations, Reports)
+- State machine integration (`useMaxStateMachine`)
+- Automation feed management (array d'actions)
+- Props drilling vers enfants (onAutomationTriggered, onMessageSent)
+
+#### Données mockées:
+```typescript
+// Activity Timeline (5 events hardcodés)
+const activities = [
+  { icon, title: "Analyse CSV", description: "20 000 lignes", time: "Il y a 2h" },
+  { icon, title: "Self-Healing", description: "47 champs", time: "Il y a 1h" },
+  { icon, title: "Intégration", description: "247 leads", time: "Il y a 45min" },
+  { icon, title: "Campagne WhatsApp", description: "132 messages", time: "Il y a 30min" },
+  { icon, title: "Activation", description: "Workflow relance", time: "Il y a 15min" }
+]
+```
+
+#### 🔌 Production nécessaire:
+- ✅ **API Activity Feed**
+  - Endpoint: `GET /api/activity/recent?limit=5`
+  - Real-time: WebSocket ou Server-Sent Events (SSE)
+  - Response: `{ activities: Activity[], lastUpdate: timestamp }`
+
+- ✅ **State Management Upgrade**
+  - Remplacer props drilling par **React Context** ou **Zustand**
+  - Store global: `{ maxState, activeTab, automations, activities }`
+
+- ✅ **Persistence**
+  - Sauvegarder `activeTab` dans localStorage
+  - Restaurer état après refresh
+
+#### 💰 Effort estimé: **2 jours**
+
+---
+
+### 3. **DemoBoardChat.tsx** (Conversational Interface)
+**Rôle**: Interface de conversation avec M.A.X.  
+**Lignes**: 483  
+**Complexité**: 🔴 Haute
+
+#### 💡 Concept du Chat M.A.X.
+
+Le chat est le **cœur de l'expérience utilisateur** du demoboard. C'est l'interface conversationnelle qui permet aux utilisateurs de dialoguer avec M.A.X. comme avec un collègue expert.
+
+**Philosophie design:**
+- **Conversationnel, pas transactionnel**: L'utilisateur parle naturellement ("Peux-tu analyser ma base CRM ?") au lieu de cliquer sur des boutons
+- **Proactif et intelligent**: M.A.X. propose des actions, détecte les problèmes, suggère des optimisations
+- **Transparent sur ses actions**: Chaque étape est expliquée avec pédagogie (scanning indicators, thinking states)
+- **Synchronisé avec l'UI**: Le chat orchestre toute l'interface (mascotte, feed, state machine)
+
+**Flow utilisateur type:**
+1. **Accueil** → M.A.X. se présente et propose son aide
+2. **Demande** → L'utilisateur exprime un besoin en langage naturel
+3. **Analyse** → M.A.X. scanne les données (animation scanning visible)
+4. **Proposition** → M.A.X. présente les résultats + plan d'action
+5. **Validation** → L'utilisateur approuve ("Oui, vas-y !")
+6. **Exécution** → M.A.X. applique les changements (feed d'actions visible)
+7. **Confirmation** → M.A.X. résume ce qui a été fait
+
+**Pourquoi ce chat est critique:**
+- ✅ **Différenciation produit**: Copilot IA vs. dashboard statique
+- ✅ **Réduction de la friction**: Pas besoin d'apprendre l'interface
+- ✅ **Découvrabilité des fonctionnalités**: M.A.X. suggère ce qu'il peut faire
+- ✅ **Trust & transparence**: L'utilisateur voit M.A.X. "penser" et "travailler"
+
+#### Fonctionnalités actuelles:
+- Auto-conversation (5 messages pré-écrits avec delays)
+- Détection de triggers pour state machine
+- Génération d'automatisations basées sur keywords
+- Animations: thinking indicator, scanning indicator
+- Mascot display avec `maxStateConfig` (image + status)
+
+#### Données mockées:
+```typescript
+// Messages pré-écrits
+const initialConversation = [
+  { from: 'max', text: 'Bonjour ! Je suis M.A.X...', delay: 0 },
+  { from: 'user', text: 'MAX, peux-tu analyser...', delay: 2500 },
+  { from: 'max', text: 'Je scanne votre base...', delay: 3000, scanning: true },
+  { from: 'user', text: 'Oui, vas-y !', delay: 3500 },
+  { from: 'max', text: 'Self-Healing appliqué...', delay: 2500, thinking: true }
+]
+
+// Réponses hardcodées
+const getMaxResponse = (userMessage: string) => {
+  if (lowerMsg.includes('email')) return '📧 Email programmé...'
+  // 20+ if/else pour différents keywords
+}
+```
+
+#### Architecture technique du chat
+
+**Stack actuel (démo):**
+```
+User Input → Keyword Detection → Hardcoded Responses → UI Update
+```
+
+**Stack production nécessaire:**
+```
+User Input → Backend API → LLM (GPT-4/Claude) → Streaming Response → UI Update
+                                    ↓
+                              Function Calling
+                                    ↓
+                    Trigger Automations (Email, SMS, Workflows)
+                                    ↓
+                              Update State Machine
+                                    ↓
+                        Feed Actions + Mascot Animation
+```
+
+**Composants techniques:**
+1. **Frontend Chat Component**
+   - Message list avec scroll auto
+   - Input field avec suggestions
+   - Typing indicators (thinking, scanning)
+   - Mascot header (avatar + status text synchronisé avec state)
+   - Real-time message streaming display
+
+2. **State Machine Integration**
+   - Détecte les triggers dans les messages M.A.X.
+   - Change l'état: ACCUEIL → ANALYSE → PROPOSITION → EXECUTION
+   - Met à jour l'avatar, le status text, et envoie feedMessage au feed
+
+3. **Action Orchestration**
+   - Détecte keywords dans message user: "email", "SMS", "whatsapp", "workflow"
+   - Génère AutomationAction correspondante
+   - Envoie au feed via callback `onAutomationTriggered()`
+   - M.A.X. confirme l'action dans sa réponse
+
+4. **Animation System**
+   - **Thinking indicator**: 3 dots animés quand M.A.X. réfléchit
+   - **Scanning indicator**: Barre de progression + texte "Je scanne..."
+   - **Message fade-in**: Chaque message apparaît avec animation
+   - **Scroll smooth**: Auto-scroll vers dernier message
+
+#### 🔌 Production nécessaire:
+
+- 🔴 **LLM Integration** (OpenAI GPT-4 ou Claude) - **PRIORITÉ CRITIQUE**
+  - API: `POST /api/chat/message`
+  - Payload: `{ message: string, conversationId: string, context: CRMContext }`
+  - Streaming response (SSE): `{ delta: string, done: boolean }`
+  - **Prompting strategy:**
+    ```
+    System: "Tu es M.A.X., le copilot marketing IA de MaCréa. Tu es 
+    proactif, pédagogue, et tu parles en première personne. 
+    Tu analyses le CRM, proposes des optimisations, et exécutes 
+    des automatisations. Contexte actuel: {contexte_crm}"
+    
+    User: "Peux-tu analyser ma base CRM ?"
+    
+    Assistant: "Je scanne votre base MaCréa CRM..." 
+    [function_call: analyze_crm()]
+    ```
+
+- ✅ **Conversation Persistence**
+  - Backend: PostgreSQL table `conversations` + `messages`
+  - Schema:
+    ```sql
+    conversations (id, user_id, created_at, last_message_at)
+    messages (id, conversation_id, from, text, timestamp, metadata)
+    ```
+  - Load conversation history au mount du composant
+  - Scroll to last unread message
+
+- ✅ **Context Injection**
+  - Envoyer contexte CRM au LLM: nombre de leads, dernières actions, stats
+  - Exemple de contexte:
+    ```json
+    {
+      "leads_count": 247,
+      "leads_new": 52,
+      "leads_qualified": 89,
+      "last_actions": [
+        "CSV import (20k lines, 184 errors fixed)",
+        "WhatsApp campaign (132 sent)"
+      ],
+      "workflows_active": 12,
+      "current_time": "2024-01-15 14:30"
+    }
+    ```
+  - Prompt engineering pour que M.A.X. parle comme un copilot
+  - M.A.X. utilise ce contexte pour réponses personnalisées
+
+- ✅ **Action Detection (Function Calling)**
+  - LLM function calling pour déclencher automatisations
+  - Functions disponibles:
+    ```typescript
+    functions: [
+      {
+        name: "send_email",
+        description: "Envoie un email personnalisé à un lead",
+        parameters: { to: "email", template: "string", leadId: "number" }
+      },
+      {
+        name: "analyze_crm",
+        description: "Scanne la base CRM et détecte les anomalies",
+        parameters: {}
+      },
+      {
+        name: "apply_self_healing",
+        description: "Corrige automatiquement les erreurs CRM détectées",
+        parameters: { fixes: "array" }
+      },
+      {
+        name: "send_whatsapp_campaign",
+        description: "Lance une campagne WhatsApp sur un segment",
+        parameters: { segment: "string", template: "string" }
+      }
+    ]
+    ```
+  - Parser réponse LLM: `{ intent: 'send_email', params: { to: '...', template: '...' } }`
+  - Exécuter action + afficher dans feed + confirmer à l'utilisateur
+
+- ✅ **Streaming Response (UX critique)**
+  - Server-Sent Events (SSE) pour streaming
+  - Afficher réponse M.A.X. mot par mot (comme ChatGPT)
+  - Typing indicator pendant que M.A.X. écrit
+  - Permet annulation mid-stream si besoin
+
+- ✅ **Message Suggestions (Quick Replies)**
+  - Après chaque réponse M.A.X., proposer 3 suggestions:
+    - "Envoyer un email aux leads inactifs"
+    - "Analyser les performances WhatsApp"
+    - "Créer un workflow de relance"
+  - Click sur suggestion = envoi automatique du message
+
+- ✅ **Voice Input (optionnel, futur)**
+  - Web Speech API pour dictée vocale
+  - Bouton micro à côté de l'input
+  - Transcription → envoi au chat
+
+#### 💰 Effort estimé: **5 jours** (⚠️ le plus complexe)
+
+---
+
+### 4. **DemoAutomationsFeed.tsx** (Action Stream)
+**Rôle**: Flux temps réel des actions M.A.X.  
+**Lignes**: ~180  
+**Complexité**: 🟢 Faible-Moyenne
+
+#### Fonctionnalités actuelles:
+- Display actions array (props)
+- Animations: enter/exit, stagger
+- Empty state: "En attente d'actions..."
+- Stats footer: count + "M.A.X. en action" indicator
+
+#### Données mockées:
+```typescript
+// Actions passées depuis DemoBoardLayout
+actions: AutomationAction[] = [
+  { id, type: 'email'|'sms'|'whatsapp'|'call'|'workflow', message, timestamp }
+]
+```
+
+#### 🔌 Production nécessaire:
+- ✅ **Real-time Feed**
+  - WebSocket: `ws://api/feed/live`
+  - Events: `{ event: 'automation', data: AutomationAction }`
+
+- ✅ **Feed History API**
+  - Endpoint: `GET /api/feed/history?limit=50`
+  - Pagination pour charger plus d'actions
+
+- ✅ **Feed Filters** (optionnel)
+  - Filtrer par type: email, SMS, WhatsApp, call, workflow
+  - Date range picker
+
+#### 💰 Effort estimé: **1 jour**
+
+---
+
+### 5. **DemoBoardStats.tsx** (KPI Cards)
+**Rôle**: Dashboard de métriques clés  
+**Lignes**: ~130  
+**Complexité**: 🟢 Faible
+
+#### Fonctionnalités actuelles:
+- 4 KPI cards avec animations (hover, scale)
+- Animated counter (compte de 0 à target)
+- Icons avec gradient + glow effect
+
+#### Données mockées:
+```typescript
+const stats = [
+  { label: 'Leads importés', value: '247', change: '+18%' },
+  { label: 'Champs corrigés', value: '1 842', change: 'Self-Healing activé' },
+  { label: 'WhatsApp envoyés', value: '532', change: 'Ce mois' },
+  { label: 'Workflows actifs', value: '12', change: 'Automatisations en cours' }
+]
+```
+
+#### 🔌 Production nécessaire:
+- ✅ **Stats API**
+  - Endpoint: `GET /api/stats/overview?period=30d`
+  - Response:
+    ```json
+    {
+      "leads_imported": { value: 247, change: 18, period: "month" },
+      "fields_corrected": { value: 1842, source: "self_healing" },
+      "whatsapp_sent": { value: 532, period: "month" },
+      "workflows_active": { value: 12 }
+    }
+    ```
+
+- ✅ **Real-time Updates** (optionnel)
+  - WebSocket pour mettre à jour les stats toutes les 30s
+  - Animated counter joue l'animation lors de la mise à jour
+
+#### 💰 Effort estimé: **0.5 jour**
+
+---
+
+### 6. **DemoBoardCrm.tsx** (Leads Table)
+**Rôle**: Gestion des leads CRM  
+**Lignes**: 360  
+**Complexité**: 🟡 Moyenne
+
+#### Fonctionnalités actuelles:
+- Table de 10 leads avec filtres
+- Search bar (nom, company, email)
+- Status badges (new, contacted, qualified, proposal, etc.)
+- Actions: Voir profil, Contacter, Automatiser
+- Modal de détails (selectedLead state)
+
+#### Données mockées:
+```typescript
+const FAKE_LEADS: Lead[] = [
+  {
+    id: 1,
+    name: 'Sophie Martin',
+    company: 'TechCorp Solutions',
+    email: 'sophie.martin@techcorp.fr',
+    phone: '+33 6 12 34 56 78',
+    status: 'qualified',
+    score: 92,
+    source: 'Site web',
+    value: '15 000 €',
+    lastContact: 'Hier, 14:32'
+  },
+  // ... 9 autres leads
+]
+```
+
+#### 🔌 Production nécessaire:
+- ✅ **Leads API**
+  - Endpoint: `GET /api/crm/leads?page=1&limit=50&search=&status=`
+  - Response: `{ leads: Lead[], total: number, page: number }`
+
+- ✅ **Lead Details API**
+  - Endpoint: `GET /api/crm/leads/:id`
+  - Response: `{ lead: Lead, history: Activity[], notes: Note[] }`
+
+- ✅ **Lead Actions**
+  - `PUT /api/crm/leads/:id` - Update status, score, etc.
+  - `POST /api/crm/leads/:id/contact` - Trigger contact action (email, call)
+  - `POST /api/crm/leads/:id/automate` - Setup automation for this lead
+
+- ✅ **Real-time Sync**
+  - Si lead mis à jour par autre utilisateur, refresh automatique
+  - WebSocket: `{ event: 'lead_updated', leadId: number }`
+
+- ✅ **Pagination + Virtualization** (optionnel)
+  - Si base CRM > 1000 leads, utiliser `react-virtual` pour performance
+
+#### 💰 Effort estimé: **3 jours**
+
+---
+
+### 7. **DemoBoardAutomations.tsx** (Workflow Management)
+**Rôle**: Gestion des automatisations marketing  
+**Lignes**: 316  
+**Complexité**: 🟡 Moyenne
+
+#### Fonctionnalités actuelles:
+- Liste de 8 automation templates
+- Filters: all, active, inactive
+- Stats cards: actives, exécutions, taux de réussite
+- Status badges + execution counts
+
+#### Données mockées:
+```typescript
+const automationTemplates: AutomationTemplate[] = [
+  {
+    id: '1',
+    name: 'Relance panier abandonné',
+    description: 'Email automatique 24h après abandon',
+    type: 'email',
+    status: 'active',
+    executions: 247
+  },
+  // ... 7 autres templates
+]
+```
+
+#### 🔌 Production nécessaire:
+- ✅ **Automations API**
+  - `GET /api/automations?status=all` - Liste des workflows
+  - `POST /api/automations` - Créer nouvelle automatisation
+  - `PUT /api/automations/:id` - Modifier (activer/désactiver)
+  - `DELETE /api/automations/:id` - Supprimer workflow
+
+- ✅ **Workflow Engine Integration**
+  - Connexion à **n8n** ou **Zapier** ou moteur custom
+  - Endpoints:
+    - `POST /api/automations/:id/execute` - Déclencher manuellement
+    - `GET /api/automations/:id/logs` - Historique exécutions
+
+- ✅ **Template Library** (optionnel)
+  - Templates pré-configurés (email, SMS, WhatsApp)
+  - Duplicate template pour créer nouveau workflow
+
+#### 💰 Effort estimé: **4 jours**
+
+---
+
+### 8. **DemoBoardReports.tsx** (Analytics)
+**Rôle**: Reporting et métriques de performance  
+**Lignes**: 463  
+**Complexité**: 🟡 Moyenne-Haute
+
+#### Fonctionnalités actuelles:
+- Period selector (7d, 30d, 90d)
+- 4 metric cards (taux ouverture, CTR, taux réponse, conversion)
+- Channel stats table (Email, WhatsApp, SMS, Appels)
+- Stats: sent, opened, clicked, responded, converted
+
+#### Données mockées:
+```typescript
+const metrics: MetricCard[] = [
+  { title: 'Taux d\'ouverture', value: '68.4%', change: '+12.3%', isPositive: true },
+  // ... 3 autres
+]
+
+const campaignStats: CampaignStat[] = [
+  { channel: 'Email', sent: 2450, opened: 1680, clicked: 605, ... },
+  // ... 3 autres canaux
+]
+```
+
+#### 🔌 Production nécessaire:
+- ✅ **Analytics API**
+  - Endpoint: `GET /api/analytics/overview?period=30d`
+  - Response:
+    ```json
+    {
+      "metrics": {
+        "open_rate": { value: 68.4, change: 12.3, trend: "up" },
+        "ctr": { value: 24.7, change: 8.5, trend: "up" },
+        "response_rate": { value: 15.2, change: 3.1, trend: "up" },
+        "conversion_rate": { value: 9.8, change: -1.2, trend: "down" }
+      },
+      "channels": [
+        { name: "email", sent: 2450, opened: 1680, ... }
+      ]
+    }
+    ```
+
+- ✅ **Charts Integration** (manquant actuellement)
+  - Librairie: **Recharts** ou **Chart.js** ou **Victory**
+  - Graphiques:
+    - Line chart: Performance over time
+    - Bar chart: Channel comparison
+    - Funnel chart: Conversion funnel
+
+- ✅ **Export Reports** (optionnel)
+  - Bouton "Exporter PDF" ou "Exporter CSV"
+  - API: `POST /api/analytics/export?format=pdf&period=30d`
+
+#### 💰 Effort estimé: **3 jours**
+
+---
+
+### 9. **DemoBoardHeader.tsx** (Top Bar)
+**Rôle**: Header avec infos M.A.X. et actions  
+**Lignes**: ~55  
+**Complexité**: 🟢 Faible
+
+#### Fonctionnalités actuelles:
+- Avatar M.A.X. animé (pulse)
+- Token counter: "14 200 / 20 000 tokens"
+- Mode selector: Assisté, Auto, Conseil
+- Button "Ask M.A.X."
+- Connection badge: "✓ Connecté CRM"
+
+#### 🔌 Production nécessaire:
+- ✅ **Token API**
+  - Endpoint: `GET /api/user/tokens`
+  - Response: `{ used: 14200, limit: 20000, resetDate: timestamp }`
+  - Mise à jour en temps réel à chaque message envoyé
+
+- ✅ **Mode Selector**
+  - Backend config: `PUT /api/user/settings/mode`
+  - Payload: `{ mode: 'assisted' | 'auto' | 'advice' }`
+  - Impact sur comportement LLM (prompts différents)
+
+- ✅ **CRM Connection Status**
+  - Backend ping: `GET /api/integrations/status`
+  - Response: `{ crm: 'connected', email: 'connected', ... }`
+
+#### 💰 Effort estimé: **1 jour**
+
+---
+
+### 10. **DemoBoardSidebar.tsx** (Navigation)
+**Rôle**: Sidebar avec navigation tabs  
+**Lignes**: ~90  
+**Complexité**: 🟢 Faible
+
+#### Fonctionnalités actuelles:
+- 6 menu items: Dashboard, Chat, CRM, Automatisations, Rapports, Paramètres
+- Active tab highlighting
+- User section (avatar + email)
+
+#### 🔌 Production nécessaire:
+- ✅ **User Profile**
+  - Endpoint: `GET /api/user/profile`
+  - Response: `{ name: string, email: string, avatar: string }`
+
+- ✅ **Paramètres Tab** (actuellement non implémenté)
+  - Nouveau composant: `DemoBoardSettings.tsx`
+  - Features:
+    - API keys configuration (OpenAI, n8n)
+    - Notifications preferences
+    - CRM integrations
+    - Billing
+
+#### 💰 Effort estimé: **0.5 jour + 2 jours pour Settings**
+
+---
+
+### 11. **useMaxStateMachine.ts** (State Hook)
+**Rôle**: Gestion de la state machine M.A.X.  
+**Lignes**: 110  
+**Complexité**: 🟡 Moyenne
+
+#### Fonctionnalités actuelles:
+- 4 états: ACCUEIL, ANALYSE, PROPOSITION, EXECUTION
+- State configs: image, statusText, feedMessage
+- Trigger detection: "Je suis M.A.X", "Je scanne votre base", etc.
+- State transitions avec validation
+- State history
+
+#### 🔌 Production nécessaire:
+- ✅ **State Persistence**
+  - Sauvegarder state actuel en backend
+  - API: `PUT /api/user/state`
+  - Payload: `{ state: MaxState, timestamp: number }`
+
+- ✅ **Dynamic Triggers** (optionnel)
+  - Au lieu de triggers hardcodés, utiliser LLM pour détecter intent
+  - LLM function: `detectIntent(message) => MaxState | null`
+
+- ⚠️ **Limitation actuelle**: Triggers trop simples
+  - "Je scanne votre base" → ANALYSE
+  - Si LLM reformule ("J'analyse ta base"), trigger ne marche pas
+  - **Solution**: Intent classification par LLM
+
+#### 💰 Effort estimé: **1 jour**
+
+---
+
+## 🔌 Résumé des intégrations backend nécessaires
+
+### API Endpoints requis
+
+#### Authentication & User
+- `POST /api/demo/validate-email` - Email gate validation
+- `GET /api/user/profile` - User info
+- `GET /api/user/tokens` - Token usage
+- `PUT /api/user/settings/mode` - Mode selection
+- `PUT /api/user/state` - State persistence
+
+#### Chat & LLM
+- `POST /api/chat/message` - Send message (streaming)
+- `GET /api/chat/history/:conversationId` - Load conversation
+- `POST /api/chat/action` - Trigger automation from chat
+
+#### CRM
+- `GET /api/crm/leads` - List leads (pagination)
+- `GET /api/crm/leads/:id` - Lead details
+- `PUT /api/crm/leads/:id` - Update lead
+- `POST /api/crm/leads/:id/contact` - Contact lead
+- `POST /api/crm/leads/:id/automate` - Setup automation
+
+#### Stats & Analytics
+- `GET /api/stats/overview` - Dashboard KPIs
+- `GET /api/analytics/overview` - Reports data
+- `POST /api/analytics/export` - Export reports
+
+#### Automations
+- `GET /api/automations` - List workflows
+- `POST /api/automations` - Create workflow
+- `PUT /api/automations/:id` - Update workflow
+- `DELETE /api/automations/:id` - Delete workflow
+- `POST /api/automations/:id/execute` - Trigger manually
+- `GET /api/automations/:id/logs` - Execution history
+
+#### Activity Feed
+- `GET /api/activity/recent` - Recent activities
+- `GET /api/feed/history` - Full feed history
+- WebSocket: `ws://api/feed/live` - Real-time feed
+
+#### Integrations
+- `GET /api/integrations/status` - Connection status (CRM, email, etc.)
+
+### Bases de données
+
+#### Tables principales
+```sql
+-- Users
+users (id, email, name, avatar, created_at, settings)
+
+-- Conversations
+conversations (id, user_id, created_at, last_message_at)
+messages (id, conversation_id, from, text, timestamp, metadata)
+
+-- CRM
+leads (id, user_id, name, company, email, phone, status, score, source, value, last_contact, created_at)
+lead_notes (id, lead_id, user_id, text, created_at)
+lead_activities (id, lead_id, type, description, timestamp)
+
+-- Automations
+automations (id, user_id, name, description, type, status, config, created_at)
+automation_executions (id, automation_id, status, started_at, completed_at, logs)
+
+-- Analytics
+campaign_stats (id, user_id, channel, sent, opened, clicked, responded, converted, date)
+
+-- Activity Feed
+activities (id, user_id, type, message, timestamp, metadata)
+```
+
+---
+
+## ⚡ État de la gestion du state
+
+### Approche actuelle: **Props Drilling**
+```typescript
+// DemoBoardLayout
+const [automations, setAutomations] = useState<AutomationAction[]>([])
+const maxStateMachine = useMaxStateMachine()
+
+// Props passées à DemoBoardChat
+<DemoBoardChat 
+  onAutomationTriggered={handleAutomationTriggered}
+  onMessageSent={handleMaxStateChange}
+  maxStateConfig={maxStateMachine.getCurrentConfig()}
+/>
+```
+
+### Limitations:
+- ❌ Props passées sur 3-4 niveaux
+- ❌ Duplication de state logic
+- ❌ Difficile à scale avec nouveaux composants
+- ❌ Re-renders inutiles
+
+### Solution recommandée: **React Context + Zustand**
+
+#### Option 1: React Context (Simple, léger)
+```typescript
+// contexts/MaxContext.tsx
+const MaxContext = createContext({
+  maxState: useMaxStateMachine(),
+  automations: [],
+  activities: [],
+  addAutomation: (action) => {},
+  addActivity: (activity) => {}
+})
+
+// Usage dans composants
+const { maxState, addAutomation } = useContext(MaxContext)
+```
+
+#### Option 2: Zustand (Plus performant, scalable)
+```typescript
+// stores/useMaxStore.ts
+const useMaxStore = create((set) => ({
+  maxState: 'ACCUEIL',
+  automations: [],
+  activities: [],
+  addAutomation: (action) => set((state) => ({
+    automations: [...state.automations, action]
+  })),
+  transitionState: (newState) => set({ maxState: newState })
+}))
+
+// Usage
+const addAutomation = useMaxStore(state => state.addAutomation)
+```
+
+**Recommandation**: **Zustand** pour production (meilleure performance, devtools, middleware pour persistence)
+
+#### 💰 Effort estimé: **1.5 jours** (migration vers Zustand)
+
+---
+
+## 🎨 Performances & Optimisations
+
+### Animations (Framer Motion)
+
+#### ✅ Points forts:
+- Animations fluides et professionnelles
+- Transitions d'état bien implémentées
+- Stagger effects sur listes
+
+#### ⚠️ Points d'attention:
+- **Trop d'animations simultanées** peut ralentir sur devices low-end
+- AnimatePresence sur feed avec 50+ items = lag potentiel
+
+#### Optimisations recommandées:
+```typescript
+// Limiter nombre d'items animés
+<AnimatePresence mode="popLayout">
+  {actions.slice(0, 20).map(...)} // Max 20 items visibles
+</AnimatePresence>
+
+// Lazy motion pour composants lourds
+import { LazyMotion, domAnimation, m } from 'framer-motion'
+
+<LazyMotion features={domAnimation}>
+  <m.div animate={...} />
+</LazyMotion>
+```
+
+### Virtualisation (grandes listes)
+
+#### Où l'implémenter:
+- **DemoBoardCrm**: Si CRM > 100 leads
+- **DemoAutomationsFeed**: Si feed > 50 actions
+- **DemoBoardAutomations**: Si workflows > 30
+
+#### Librairie: `@tanstack/react-virtual`
+```typescript
+import { useVirtualizer } from '@tanstack/react-virtual'
+
+const virtualizer = useVirtualizer({
+  count: leads.length,
+  getScrollElement: () => parentRef.current,
+  estimateSize: () => 72 // hauteur row
+})
+```
+
+#### 💰 Effort estimé: **1 jour**
+
+---
+
+## 🔒 Sécurité & Bonnes pratiques
+
+### À implémenter en production:
+
+#### 1. **Authentication**
+- JWT tokens pour API calls
+- Refresh token mechanism
+- Protected routes (HOC ou middleware)
+
+#### 2. **Rate Limiting**
+- Limiter calls API (ex: 100 req/min)
+- Throttle sur chat messages (max 10/min)
+
+#### 3. **Input Sanitization**
+- Sanitize user input avant envoi au LLM
+- Prevent prompt injection attacks
+
+#### 4. **Error Handling**
+- Toast notifications pour erreurs API
+- Retry logic avec exponential backoff
+- Fallback UI (Suspense boundaries)
+
+#### 5. **Environment Variables**
+```env
+VITE_API_URL=https://api.macrea.com
+VITE_OPENAI_KEY=sk-...
+VITE_WS_URL=wss://api.macrea.com
+```
+
+---
+
+## 📈 Roadmap d'implémentation
+
+### Phase 1: Foundation (1 semaine)
+1. ✅ Setup backend API (Express + PostgreSQL)
+2. ✅ Implement authentication (JWT)
+3. ✅ Setup database schema
+4. ✅ Create base API endpoints (user, CRM, stats)
+5. ✅ Migrate state management to Zustand
+
+### Phase 2: Core Features (2 semaines)
+1. ✅ LLM Integration (OpenAI/Claude)
+2. ✅ Chat conversation persistence
+3. ✅ CRM CRUD operations
+4. ✅ Real-time feed (WebSocket)
+5. ✅ State machine backend sync
+
+### Phase 3: Automations (1.5 semaines)
+1. ✅ Workflow engine integration (n8n)
+2. ✅ Automation templates library
+3. ✅ Execution logs & monitoring
+4. ✅ Email/SMS/WhatsApp providers integration
+
+### Phase 4: Analytics & Reporting (1 semaine)
+1. ✅ Analytics data collection
+2. ✅ Charts implementation (Recharts)
+3. ✅ Export functionality (PDF/CSV)
+4. ✅ Real-time stats updates
+
+### Phase 5: Polish & Optimization (1 semaine)
+1. ✅ Virtualization for large lists
+2. ✅ Performance audits (Lighthouse)
+3. ✅ Error boundaries & fallbacks
+4. ✅ E2E testing (Playwright)
+5. ✅ Security audit
+
+**TOTAL: 6.5 semaines** (1 dev full-time)
+
+---
+
+## 💰 Estimation des coûts techniques
+
+### Développement
+- Frontend refactor: **25 jours** × 500€/jour = **12 500€**
+- Backend development: **20 jours** × 500€/jour = **10 000€**
+- DevOps (CI/CD, hosting): **5 jours** × 500€/jour = **2 500€**
+
+### Infrastructure mensuelle
+- Vercel Pro: **20€/mois**
+- PostgreSQL (Supabase): **25€/mois**
+- OpenAI API (GPT-4): **~200€/mois** (dépend usage)
+- n8n Cloud: **20€/mois**
+- WhatsApp Business API: **~50€/mois**
+- WebSocket server (Render): **15€/mois**
+
+**TOTAL INITIAL: 25 000€**  
+**RÉCURRENT: ~330€/mois**
+
+---
+
+## 🚀 Risques & Mitigations
+
+### Risque 1: LLM Response Time
+**Impact**: Chat lent (> 3s), mauvaise UX  
+**Mitigation**:
+- Streaming responses (SSE)
+- Loading indicators ("M.A.X. réfléchit...")
+- Cache réponses fréquentes
+- Fallback sur modèle plus rapide (GPT-3.5) si GPT-4 trop lent
+
+### Risque 2: WebSocket Scaling
+**Impact**: Feed temps réel ne marche pas pour > 100 utilisateurs simultanés  
+**Mitigation**:
+- Utiliser **Redis Pub/Sub** pour broadcast
+- Load balancer avec sticky sessions
+- Fallback sur polling si WebSocket fail
+
+### Risque 3: State Machine Triggers
+**Impact**: LLM reformule, triggers ne matchent plus  
+**Mitigation**:
+- Remplacer regex par LLM intent detection
+- Function calling pour identifier state transitions
+- Logging pour debug triggers manqués
+
+### Risque 4: Animation Performance
+**Impact**: Lag sur mobile/low-end devices  
+**Mitigation**:
+- `prefers-reduced-motion` CSS media query
+- Désactiver animations complexes sur mobile
+- LazyMotion pour bundle size
+
+---
+
+## ✅ Checklist de Production-Readiness
+
+### Frontend
+- [ ] Migrate state management to Zustand
+- [ ] Implement error boundaries
+- [ ] Add loading skeletons
+- [ ] Responsive design (mobile/tablet)
+- [ ] Accessibility audit (WCAG AA)
+- [ ] Performance optimization (Lighthouse > 90)
+- [ ] E2E tests (Playwright)
+
+### Backend
+- [ ] All API endpoints implemented
+- [ ] Authentication & authorization
+- [ ] Rate limiting
+- [ ] Database migrations
+- [ ] WebSocket server setup
+- [ ] LLM integration with streaming
+- [ ] Workflow engine connection (n8n)
+- [ ] Error logging (Sentry)
+
+### DevOps
+- [ ] CI/CD pipeline (GitHub Actions)
+- [ ] Staging environment
+- [ ] Database backups
+- [ ] Monitoring (Datadog/New Relic)
+- [ ] SSL certificates
+- [ ] CDN configuration
+
+### Legal & Compliance
+- [ ] RGPD compliance (données utilisateurs)
+- [ ] CGV/CGU
+- [ ] Privacy policy
+- [ ] Cookie consent banner
+
+---
+
+## 📝 Conclusion
+
+Le demoboard actuel est un **excellent prototype** avec une architecture solide. L'implémentation en production est **tout à fait réalisable** moyennant:
+
+### Forces 💪
+- ✅ Architecture modulaire et scalable
+- ✅ State machine bien pensée
+- ✅ Animations professionnelles
+- ✅ Code TypeScript typé
+- ✅ Composants réutilisables
+
+### Défis 🎯
+- ⚠️ 100% de données mockées (gros chantier backend)
+- ⚠️ Props drilling (migration state management nécessaire)
+- ⚠️ LLM integration complexe (streaming, function calling)
+- ⚠️ Real-time features (WebSocket, SSE)
+
+### Priorités TOP 3
+1. **Backend API + Database** (fondation)
+2. **LLM Integration** (valeur ajoutée M.A.X.)
+3. **State Management Refactor** (scalabilité)
+
+**Verdict final**: 🟢 **GO pour production** avec 6.5 semaines de dev + 25K€ budget initial.
+
+---
+
+**Contact**: Pour questions ou clarifications, contactez l'équipe technique.

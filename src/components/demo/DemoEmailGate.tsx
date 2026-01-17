@@ -5,15 +5,10 @@ type DemoEmailGateProps = {
   onUnlock: () => void
 }
 
-// TODO: brancher plus tard sur n8n / API d'envoi d'email
-const sendDemoPdf = (email: string) => {
-  console.log('TODO: envoyer le PDF demo à', email)
-  // Future: appel API vers n8n ou service d'emailing
-}
-
 export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
   const [email, setEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [emailSent, setEmailSent] = useState<boolean | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -24,14 +19,36 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
 
     setIsSubmitting(true)
 
-    // Simulation d'envoi (600ms)
-    await new Promise(resolve => setTimeout(resolve, 600))
-
-    // Enregistrer l'email et envoyer le PDF (TODO: API)
-    sendDemoPdf(email)
-
-    // Débloquer la démo
+    // Débloquer la démo IMMÉDIATEMENT (UX non bloquante)
     onUnlock()
+
+    // Envoi email + enregistrement lead en background (async, non bloquant)
+    try {
+      const response = await fetch('/api/demo-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.ok) {
+        setEmailSent(true)
+        console.log('[SUCCESS] PDF envoyé à', email)
+      } else {
+        setEmailSent(false)
+        console.warn('[API ERROR]', data.error)
+      }
+    } catch (error) {
+      setEmailSent(false)
+      console.error('[FETCH ERROR] Envoi email échoué:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
