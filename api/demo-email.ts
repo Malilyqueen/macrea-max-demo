@@ -9,8 +9,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import nodemailer from 'nodemailer'
 import { createClient } from '@supabase/supabase-js'
-import path from 'path'
-import fs from 'fs'
 
 // ==========================
 // Configuration
@@ -24,7 +22,7 @@ const SMTP_PORT = parseInt(process.env.SMTP_PORT || '465', 10)
 const SMTP_USER = process.env.SMTP_USER || 'max@studiomacrea.cloud'
 const SMTP_PASS = process.env.SMTP_PASS!
 
-const PDF_PATH = path.join(process.cwd(), 'public', 'pdf', 'macrea-crm-max-guide.pdf')
+const PDF_URL = 'https://v6vkemne4uy1mygr.public.blob.vercel-storage.com/MACREACRM%2BMAX-DOCmpresse.pdf'
 
 // ==========================
 // Validation email simple
@@ -155,26 +153,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // ==========================
-    // 3. Vérifier que le PDF existe
-    // ==========================
-
-    if (!fs.existsSync(PDF_PATH)) {
-      console.error('[PDF NOT FOUND]', PDF_PATH)
-      
-      // Update status error dans Supabase
-      await supabase
-        .from('demo_leads')
-        .update({
-          status: 'error',
-          error_message: 'PDF file not found on server'
-        })
-        .eq('id', leadId)
-
-      return res.status(500).json({ ok: false, error: 'PDF introuvable sur le serveur' })
-    }
-
-    // ==========================
-    // 4. Envoi email via Nodemailer SMTP OVH
+    // 3. Envoi email via Nodemailer SMTP OVH
     // ==========================
 
     const transporter = nodemailer.createTransport({
@@ -395,8 +374,8 @@ Pensé pour durer.
       `,
       attachments: [
         {
-          filename: 'macrea-crm-max-guide.pdf',
-          path: PDF_PATH
+          filename: 'MaCrea-CRM-MAX-Guide.pdf',
+          href: PDF_URL
         }
       ]
     }
