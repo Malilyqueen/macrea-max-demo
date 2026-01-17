@@ -54,7 +54,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { email, firstName: inputFirstName, company, industry, honeypot } = req.body
+    const { email, firstName: inputFirstName, company, industry: inputIndustry, honeypot } = req.body
 
     // Anti-spam honeypot (si champ caché rempli = bot)
     if (honeypot) {
@@ -86,9 +86,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       email: email.toLowerCase().trim(),
       first_name: inputFirstName?.trim() || null,
       company: company?.trim() || null,
-      industry: industry?.trim() || null,
+      industry: inputIndustry?.trim() || null,
       source: 'landing-demo',
-      status: 'pending',
+      status: 'pending' as const,
       pdf_sent: false,
       error_message: null,
       created_at: new Date().toISOString(),
@@ -167,19 +167,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     })
 
     // Préparation des variables dynamiques avec fallbacks
-    const firstName = leadData.first_name ? leadData.first_name : null
-    const greetingLine = firstName ? `Bonjour ${firstName},` : 'Bonjour,'
-    const industry = leadData.industry?.trim()
-    const industryLine = industry 
-      ? `Vous évoluez dans le secteur ${industry} — un environnement où la structure, le temps et la clarté sont déterminants.`
+    const userFirstName = leadData.first_name
+    const greetingLine = userFirstName ? `Bonjour ${userFirstName},` : 'Bonjour,'
+    const userIndustry = leadData.industry
+    const industryLine = userIndustry 
+      ? `Vous évoluez dans le secteur ${userIndustry} — un environnement où la structure, le temps et la clarté sont déterminants.`
       : `Vous explorez actuellement comment je peux transformer la gestion de votre entreprise.`
 
     const mailOptions = {
       from: `"M.A.X." <${SMTP_USER}>`,
       to: leadData.email,
-      subject: firstName ? `${firstName}, moi, c'est M.A.X.` : `Moi, c'est M.A.X.`,
-      html: `
-<!DOCTYPE html>
+      subject: userFirstName ? `${userFirstName}, moi, c'est M.A.X.` : `Moi, c'est M.A.X.`,
+      html: `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -324,15 +323,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     </div>
   </div>
 </body>
-</html>
-      `,
-    </div>
-  </div>
-</body>
-</html>
-      `,
-      text: `
-${greetingLine}
+</html>`,
+      text: `${greetingLine}
 
 Moi, c'est M.A.X.
 
@@ -370,8 +362,7 @@ MaCréa Assistant eXpert
 Copilote CRM autonome
 
 Conçu pour structurer.
-Pensé pour durer.
-      `,
+Pensé pour durer.`,
       attachments: [
         {
           filename: 'MaCrea-CRM-MAX-Guide.pdf',
@@ -383,7 +374,7 @@ Pensé pour durer.
     await transporter.sendMail(mailOptions)
 
     // ==========================
-    // 5. Update Supabase: status=sent
+    // 4. Update Supabase: status=sent
     // ==========================
 
     const { error: updateStatusError } = await supabase
