@@ -17,10 +17,13 @@ import { createClient } from '@supabase/supabase-js'
 const SUPABASE_URL = process.env.SUPABASE_URL!
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
-const SMTP_HOST = process.env.SMTP_HOST || 'ssl0.ovh.net'
-const SMTP_PORT = parseInt(process.env.SMTP_PORT || '465', 10)
-const SMTP_USER = process.env.SMTP_USER || 'max@studiomacrea.cloud'
-const SMTP_PASS = process.env.SMTP_PASS!
+// MAILJET API (remplace SMTP OVH)
+const MAILJET_API_KEY = process.env.MAILJET_API_KEY || ''
+const MAILJET_SECRET_KEY = process.env.MAILJET_SECRET_KEY || ''
+const MAILJET_SENDER_EMAIL = 'max@studiomacrea.cloud'
+
+// Flag temporaire : désactiver envoi tant que sender Mailjet n'est pas validé
+const EMAIL_SENDING_ENABLED = false // Passer à true une fois sender Active
 
 const PDF_URL = 'https://v6vkemne4uy1mygr.public.blob.vercel-storage.com/MACREACRM-MAX-PRESENTATION.pdf'
 
@@ -153,23 +156,72 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // ==========================
-    // 3. Envoi email via Nodemailer SMTP OVH
+    // 3. Envoi email via Mailjet API
     // ==========================
 
-    const transporter = nodemailer.createTransport({
-      host: SMTP_HOST,
-      port: SMTP_PORT,
-      secure: true, // SSL sur port 465
-      auth: {
-        user: SMTP_USER,
-        pass: SMTP_PASS
+    if (!EMAIL_SENDING_ENABLED) {
+      // Mode attente validation sender Mailjet
+      console.log('[EMAIL DISABLED] Sender Mailjet en attente de validation:', leadData.email)
+      
+      await supabase
+        .from('demo_leads')
+        .update({
+          status: 'pending',
+          error_message: 'Email en attente - Validation Mailjet sender en cours'
+        })
+        .eq('id', leadId)
+
+      return res.status(200).json({
+        ok: true,
+        message: 'Enregistrement réussi. Envoi email en attente de validation Mailjet.',
+        emailPending: true
+      })
+    }
+
+    // TODO: Une fois sender Mailjet validé, décommenter et configurer
+    /*
+    const mailjetRequest = await fetch('https://api.mailjet.com/v3.1/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + Buffer.from(`${MAILJET_API_KEY}:${MAILJET_SECRET_KEY}`).toString('base64')
       },
-      tls: {
-        rejectUnauthorized: false // Pour contourner les problèmes de certificat OVH
-      }
+      body: JSON.stringify({
+        Messages: [
+          {
+            From: {
+              Email: MAILJET_SENDER_EMAIL,
+              Name: "M.A.X."
+            },
+            To: [
+              {
+                Email: leadData.email,
+                Name: userFirstName || ''
+              }
+            ],
+            Subject: userFirstName ? `${userFirstName}, moi, c'est M.A.X.` : `Moi, c'est M.A.X.`,
+            HTMLPart: htmlContent,
+            TextPart: textContent,
+            Attachments: [
+              {
+                ContentType: "application/pdf",
+                Filename: "MaCrea-CRM-MAX-Guide.pdf",
+                Base64Content: "" // TODO: Convertir PDF en base64 ou utiliser URL
+              }
+            ]
+          }
+        ]
+      })
     })
 
-    // Préparation des variables dynamiques avec fallbacks
+    const mailjetResponse = await mailjetRequest.json()
+    
+    if (!mailjetRequest.ok) {
+      throw new Error(`Mailjet error: ${JSON.stringify(mailjetResponse)}`)
+    }
+    */
+
+    // Variables template (conservées pour future utilisation Mailjet)
     const userFirstName = leadData.first_name
     const greetingLine = userFirstName ? `Bonjour ${userFirstName},` : 'Bonjour,'
     const userIndustry = leadData.industry
@@ -177,6 +229,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ? `Vous évoluez dans le secteur ${userIndustry} — un environnement où la structure, le temps et la clarté sont déterminants.`
       : `Vous explorez actuellement comment je peux transformer la gestion de votre entreprise.`
 
+    // ANCIEN CODE SMTP OVH (désactivé)
+    /*
     const mailOptions = {
       from: `"M.A.X." <${SMTP_USER}>`,
       to: leadData.email,
@@ -375,11 +429,13 @@ Pensé pour durer.`,
     }
 
     await transporter.sendMail(mailOptions)
+    */
 
     // ==========================
-    // 4. Update Supabase: status=sent
+    // 4. Update Supabase: status=sent (désactivé tant que Mailjet pas actif)
     // ==========================
 
+    /* Une fois Mailjet actif, décommenter :
     const { error: updateStatusError } = await supabase
       .from('demo_leads')
       .update({
@@ -400,6 +456,7 @@ Pensé pour durer.`,
       ok: true,
       message: 'Email envoyé avec succès'
     })
+    */
 
   } catch (error: any) {
     console.error('[DEMO EMAIL API ERROR]', error)
