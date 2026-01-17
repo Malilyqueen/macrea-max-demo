@@ -159,216 +159,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const transporter = nodemailer.createTransport({
       host: SMTP_HOST,
       port: SMTP_PORT,
-      secure: true, // SSL
+      secure: true, // SSL sur port 465
       auth: {
         user: SMTP_USER,
         pass: SMTP_PASS
+      },
+      tls: {
+        rejectUnauthorized: false // Pour contourner les problèmes de certificat OVH
       }
     })
 
-    // Préparation des variables dynamiques avec fallbacks
-    const userFirstName = leadData.first_name
-    const greetingLine = userFirstName ? `Bonjour ${userFirstName},` : 'Bonjour,'
-    const userIndustry = leadData.industry
-    const industryLine = userIndustry 
-      ? `Vous évoluez dans le secteur ${userIndustry} — un environnement où la structure, le temps et la clarté sont déterminants.`
-      : `Vous explorez actuellement comment je peux transformer la gestion de votre entreprise.`
-
+    // TEST SIMPLE : Email texte uniquement (pas de HTML, pas de PDF)
     const mailOptions = {
       from: `"M.A.X." <${SMTP_USER}>`,
       to: leadData.email,
-      subject: userFirstName ? `${userFirstName}, moi, c'est M.A.X.` : `Moi, c'est M.A.X.`,
-      html: `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <style>
-    body { 
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; 
-      line-height: 1.75; 
-      color: #1a1a1a; 
-      background: #ffffff;
-      margin: 0;
-      padding: 0;
-    }
-    .container { 
-      max-width: 650px; 
-      margin: 40px auto; 
-      padding: 0 20px;
-    }
-    .content { 
-      background: #ffffff;
-      padding: 0;
-      font-size: 16px;
-      letter-spacing: 0.01em;
-    }
-    .content p { 
-      margin: 0 0 20px 0;
-      line-height: 1.75;
-    }
-    .content ul {
-      margin: 20px 0;
-      padding-left: 20px;
-      list-style: none;
-    }
-    .content ul li {
-      margin-bottom: 12px;
-      padding-left: 20px;
-      position: relative;
-    }
-    .content ul li:before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: #3BA0FF;
-      font-weight: bold;
-    }
-    .signature {
-      margin-top: 40px;
-      padding-top: 30px;
-      border-top: 1px solid #e5e5e5;
-      display: flex;
-      align-items: flex-start;
-      gap: 20px;
-    }
-    .signature-avatar {
-      width: 64px;
-      height: 64px;
-      border-radius: 12px;
-      flex-shrink: 0;
-    }
-    .signature-text {
-      flex: 1;
-    }
-    .signature-name {
-      font-weight: 600;
-      font-size: 17px;
-      color: #1a1a1a;
-      margin: 0 0 4px 0;
-    }
-    .signature-title {
-      font-size: 14px;
-      color: #666;
-      margin: 0 0 2px 0;
-    }
-    .signature-tagline {
-      font-size: 13px;
-      color: #999;
-      margin: 12px 0 0 0;
-      font-style: italic;
-      line-height: 1.5;
-    }
-    .attachment-note {
-      background: #f8f9fa;
-      border-left: 3px solid #3BA0FF;
-      padding: 16px 20px;
-      margin: 25px 0;
-      font-size: 15px;
-    }
-    strong { font-weight: 600; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="content">
-      <p>${greetingLine}</p>
-      
-      <p><strong>Moi, c'est M.A.X.</strong></p>
-      
-      <p>Vous explorez actuellement mes capacités.<br>
-      ${industryLine}</p>
-      
-      <p>Je peux vous aider à optimiser votre entreprise,<br>
-      non pas en ajoutant des outils ou de la complexité,<br>
-      mais en travaillant en arrière-plan, là où s'accumulent les erreurs, les frictions et la charge mentale.</p>
-      
-      <div class="attachment-note">
-        📎 Vous trouverez en pièce jointe un guide qui me concerne, ainsi que le CRM que je pilote.
-      </div>
-      
-      <p>Vous y découvrirez notamment :</p>
-      
-      <ul>
-        <li>comment je m'intègre au CRM sans perturber vos habitudes</li>
-        <li>comment certaines actions se corrigent, s'enchaînent ou s'optimisent automatiquement</li>
-        <li>le principe du Self-Healing CRM™ : un environnement capable de s'ajuster et de se maintenir sans intervention constante</li>
-      </ul>
-      
-      <p>Il n'est pas nécessaire d'être expert pour travailler avec moi.<br>
-      Je suis conçu pour :</p>
-      
-      <ul>
-        <li>vous faire gagner du temps</li>
-        <li>réduire vos coûts opérationnels</li>
-        <li>et alléger durablement la charge mentale liée à la gestion quotidienne</li>
-      </ul>
-      
-      <p>La démo reste accessible pendant que vous l'explorez.</p>
-      
-      <p>Si vous souhaitez vérifier comment je fonctionnerais dans votre propre contexte,<br>
-      vous pouvez simplement répondre à cet email.</p>
-      
-      <div class="signature">
-        <img src="https://macrea-max-demo.vercel.app/docs/readme-assets/max-hero-guide.png" alt="M.A.X." class="signature-avatar" />
-        <div class="signature-text">
-          <div class="signature-name">M.A.X.</div>
-          <div class="signature-title">MaCréa Assistant eXpert</div>
-          <div class="signature-title">Copilote CRM autonome</div>
-          <div class="signature-tagline">
-            Conçu pour structurer.<br>
-            Pensé pour durer.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-</html>`,
-      text: `${greetingLine}
-
-Moi, c'est M.A.X.
-
-Vous explorez actuellement mes capacités.
-${industryLine}
-
-Je peux vous aider à optimiser votre entreprise,
-non pas en ajoutant des outils ou de la complexité,
-mais en travaillant en arrière-plan, là où s'accumulent les erreurs, les frictions et la charge mentale.
-
-📎 Vous trouverez en pièce jointe un guide qui me concerne, ainsi que le CRM que je pilote.
-
-Vous y découvrirez notamment :
-
-• comment je m'intègre au CRM sans perturber vos habitudes
-• comment certaines actions se corrigent, s'enchaînent ou s'optimisent automatiquement
-• le principe du Self-Healing CRM™ : un environnement capable de s'ajuster et de se maintenir sans intervention constante
-
-Il n'est pas nécessaire d'être expert pour travailler avec moi.
-Je suis conçu pour :
-
-• vous faire gagner du temps
-• réduire vos coûts opérationnels
-• et alléger durablement la charge mentale liée à la gestion quotidienne
-
-La démo reste accessible pendant que vous l'explorez.
-
-Si vous souhaitez vérifier comment je fonctionnerais dans votre propre contexte,
-vous pouvez simplement répondre à cet email.
-
-—
-
-M.A.X.
-MaCréa Assistant eXpert
-Copilote CRM autonome
-
-Conçu pour structurer.
-Pensé pour durer.`,
-      attachments: [
-        {
-          filename: 'MaCrea-CRM-MAX-Guide.pdf',
-          href: PDF_URL
-        }
-      ]
+      subject: `Test SMTP - Validation envoi`,
+      text: `Bonjour,\n\nCeci est un email de test pour valider la configuration SMTP OVH.\n\nSi vous recevez ce message, l'authentification SMTP fonctionne correctement.\n\nÀ bientôt,\nM.A.X.`
     }
 
     await transporter.sendMail(mailOptions)
