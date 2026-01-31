@@ -13,6 +13,7 @@ import { useMaxStateMachine } from '../../hooks/useMaxStateMachine'
 
 export default function DemoBoardLayout() {
   const [activeTab, setActiveTab] = useState('chat')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [automations, setAutomations] = useState<AutomationAction[]>([])
   const maxStateMachine = useMaxStateMachine()
 
@@ -40,19 +41,39 @@ export default function DemoBoardLayout() {
 
   return (
     <div className="flex min-h-screen bg-[#F6FAFF]">
-      <DemoBoardSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      
-      <div className="flex-1 flex flex-col">
+      {/* Sidebar mobile overlay */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div className={`
+        fixed inset-y-0 left-0 z-50 w-64 bg-[#F0F6FF] border-r border-[rgba(0,145,255,0.15)] transform transition-transform duration-300 ease-in-out
+        md:relative md:translate-x-0 md:z-auto
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+      `}>
+        <DemoBoardSidebar 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab}
+          onClose={() => setSidebarOpen(false)}
+        />
+      </div>
+
+      {/* Main content */}
+      <div className="flex-1 flex flex-col min-w-0">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <DemoBoardHeader />
+          <DemoBoardHeader onMenuClick={() => setSidebarOpen(true)} />
         </motion.div>
         
         {/* Main content area */}
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-4 md:p-8">
           {activeTab === 'dashboard' && (
             <>
               {/* Welcome banner */}

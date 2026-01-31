@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
 
-export default function SidebarDemo() {
+interface SidebarDemoProps {
+  onClose?: () => void;
+}
+
+export default function SidebarDemo({ onClose }: SidebarDemoProps) {
   // const location = useLocation();
   
   const menuItems = [
@@ -13,9 +17,23 @@ export default function SidebarDemo() {
   ];
 
   return (
-    <aside className="w-64 bg-gray-900 text-white min-h-screen p-4">
+    <div className="min-h-screen p-4 flex flex-col">
+      {/* Close button mobile */}
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="md:hidden self-end mb-4 p-2 rounded-lg hover:bg-gray-800 text-white"
+          aria-label="Fermer le menu"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      )}
+
       <div className="mb-8">
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center" onClick={onClose}>
           <img src="/docs/readme-assets/max-logo.png" alt="M.A.X." className="h-14" />
         </Link>
       </div>
@@ -26,12 +44,13 @@ export default function SidebarDemo() {
             key={item.name}
             to={item.path}
             className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors"
+            onClick={onClose}
           >
             <span>{item.icon}</span>
             <span>{item.name}</span>
           </Link>
         ))}
       </nav>
-    </aside>
+    </div>
   );
 }

@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 type DemoBoardSidebarProps = {
   activeTab: string
   setActiveTab: (tab: string) => void
+  onClose?: () => void
 }
 
-export default function DemoBoardSidebar({ activeTab, setActiveTab }: DemoBoardSidebarProps) {
+export default function DemoBoardSidebar({ activeTab, setActiveTab, onClose }: DemoBoardSidebarProps) {
   
   const menuItems = [
     { 
@@ -41,10 +42,24 @@ export default function DemoBoardSidebar({ activeTab, setActiveTab }: DemoBoardS
   ]
 
   return (
-    <aside className="w-64 bg-[#F0F6FF] border-r border-[rgba(0,145,255,0.15)] min-h-screen p-6 flex flex-col">
+    <div className="min-h-screen p-6 flex flex-col">
+      {/* Close button mobile */}
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="md:hidden self-end mb-4 p-2 rounded-lg hover:bg-white/50 text-[#64748b]"
+          aria-label="Fermer le menu"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      )}
+
       {/* Logo */}
       <div className="mb-8">
-        <Link to="/" className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3" onClick={onClose}>
           <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#0091ff] to-[#00cfff] flex items-center justify-center shadow-lg">
             <div className="h-4 w-4 rounded-full bg-white" />
           </div>
@@ -59,7 +74,10 @@ export default function DemoBoardSidebar({ activeTab, setActiveTab }: DemoBoardS
         {menuItems.map((item) => (
           <button
             key={item.name}
-            onClick={() => setActiveTab(item.id)}
+            onClick={() => {
+              setActiveTab(item.id)
+              onClose?.()
+            }}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium text-sm ${
               activeTab === item.id
                 ? 'bg-gradient-to-r from-[#0091ff] to-[#00cfff] text-white shadow-lg'
@@ -82,6 +100,6 @@ export default function DemoBoardSidebar({ activeTab, setActiveTab }: DemoBoardS
           </div>
         </div>
       </div>
-    </aside>
+    </div>
   )
 }

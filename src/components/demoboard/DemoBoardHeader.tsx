@@ -1,8 +1,27 @@
-export default function DemoBoardHeader() {
+interface DemoBoardHeaderProps {
+  onMenuClick?: () => void;
+}
+
+export default function DemoBoardHeader({ onMenuClick }: DemoBoardHeaderProps) {
   return (
-    <header className="bg-white border-b border-[rgba(0,145,255,0.15)] px-8 py-4 flex items-center justify-between">
+    <header className="bg-white border-b border-[rgba(0,145,255,0.15)] px-4 md:px-8 py-4 flex items-center justify-between">
+      {/* Mobile menu button */}
+      {onMenuClick && (
+        <button
+          onClick={onMenuClick}
+          className="md:hidden p-2 rounded-lg hover:bg-gray-100 mr-2"
+          aria-label="Ouvrir le menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      )}
+
       {/* Left: Avatar MAX + Token counter */}
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-4 md:gap-6">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#0091ff] to-[#00cfff] flex items-center justify-center shadow-lg animate-pulse">
             <div className="h-4 w-4 rounded-full bg-white" />
@@ -14,7 +33,7 @@ export default function DemoBoardHeader() {
         </div>
 
         {/* Token bar */}
-        <div className="flex items-center gap-2 px-4 py-2 bg-[#F6FAFF] border border-[rgba(0,145,255,0.2)] rounded-full">
+        <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-[#F6FAFF] border border-[rgba(0,145,255,0.2)] rounded-full">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#0091ff]">
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 6v6l4 2"/>
@@ -26,9 +45,9 @@ export default function DemoBoardHeader() {
       </div>
 
       {/* Right: Mode selector + CTA */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 md:gap-4">
         {/* Mode selector */}
-        <div className="flex gap-2 bg-[#F6FAFF] p-1 rounded-lg border border-[rgba(0,145,255,0.1)]">
+        <div className="hidden sm:flex gap-2 bg-[#F6FAFF] p-1 rounded-lg border border-[rgba(0,145,255,0.1)]">
           <button className="px-4 py-1.5 text-xs font-semibold rounded-md bg-white text-[#0091ff] shadow-sm">
             Assisté
           </button>
@@ -41,7 +60,7 @@ export default function DemoBoardHeader() {
         </div>
 
         {/* Ask MAX button */}
-        <button className="px-5 py-2 bg-gradient-to-r from-[#0091ff] to-[#00cfff] text-white text-sm font-semibold rounded-lg shadow-lg hover:shadow-xl hover:shadow-[#0091ff]/30 transition-all duration-300">
+        <button className="hidden sm:block px-5 py-2 bg-gradient-to-r from-[#0091ff] to-[#00cfff] text-white text-sm font-semibold rounded-lg shadow-lg hover:shadow-xl hover:shadow-[#0091ff]/30 transition-all duration-300">
           Ask M.A.X.
         </button>
 
