@@ -5,7 +5,7 @@ export default function FinalCtaSection() {
   const navigate = useNavigate()
 
   const handleEarlyBirds = () => {
-    navigate('/tarifs')
+    navigate('/early-birds?src=home')
   }
 
   return (

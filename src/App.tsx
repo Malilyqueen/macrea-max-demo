@@ -6,6 +6,7 @@ import PricingPage from './routes/PricingPage';
 import ContactPage from './routes/ContactPage';
 import DemoPage from './routes/DemoPage';
 import DemoBoardPage from './pages/DemoBoardPage';
+import EarlyBirdsPage from './routes/EarlyBirdsPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/demo" element={<DemoPage />} />
         <Route path="/demoboard" element={<DemoBoardPage />} />
+        <Route path="/early-birds" element={<EarlyBirdsPage />} />
       </Routes>
     </Router>
   );

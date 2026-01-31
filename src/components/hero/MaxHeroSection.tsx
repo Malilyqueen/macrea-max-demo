@@ -54,7 +54,7 @@ export default function MaxHeroSection() {
             <a href="/demoboard" className="rounded-lg bg-gradient-to-r from-[#0091ff] to-[#00cfff] px-6 py-3 text-sm font-semibold text-white shadow-md hover:shadow-[0_0_25px_rgba(0,207,255,0.5)] transition-all inline-block">
               Voir la démo interactive
             </a>
-            <a href="/tarifs" className="text-sm font-semibold text-[#0091ff] hover:text-[#00cfff] underline-offset-4 hover:underline transition-colors">
+            <a href="/early-birds?src=home" className="text-sm font-semibold text-[#0091ff] hover:text-[#00cfff] underline-offset-4 hover:underline transition-colors">
               Rejoindre les Early Birds
             </a>
           </div>
