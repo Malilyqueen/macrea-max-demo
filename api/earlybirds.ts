@@ -354,6 +354,190 @@ Copilote CRM autonome`
 
       console.log('[SUCCESS] Confirmation email sent to:', leadData.email)
 
+      // ==========================
+      // 4. Notification interne (admin)
+      // ==========================
+      
+      try {
+        // Récupérer le nombre total d'inscrits
+        const { count: totalLeads } = await supabase
+          .from('earlybirds_leads')
+          .select('*', { count: 'exact', head: true })
+
+        const isNewLead = !existingLead
+        const timestamp = new Date().toLocaleString('fr-FR', { 
+          timeZone: 'Europe/Paris',
+          dateStyle: 'full',
+          timeStyle: 'short'
+        })
+
+        const internalHtmlContent = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; 
+      line-height: 1.6; 
+      color: #1a1a1a; 
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    .container { 
+      max-width: 600px; 
+      margin: 20px auto; 
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .header {
+      background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .content { 
+      padding: 30px;
+    }
+    .info-row {
+      display: flex;
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .info-label {
+      font-weight: 600;
+      width: 140px;
+      color: #666;
+    }
+    .info-value {
+      flex: 1;
+      color: #1a1a1a;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .badge-new {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .badge-resend {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .stats-box {
+      background: #f0f9ff;
+      border: 2px solid #22d3ee;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .stats-number {
+      font-size: 36px;
+      font-weight: bold;
+      color: #0369a1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2 style="margin: 0;">🚀 Nouvelle inscription Early Birds</h2>
+    </div>
+    <div class="content">
+      <p style="margin-bottom: 20px;">
+        ${isNewLead ? '<span class="badge badge-new">✨ NOUVEAU LEAD</span>' : '<span class="badge badge-resend">🔄 RÉINSCRIPTION</span>'}
+      </p>
+      
+      <div class="info-row">
+        <div class="info-label">Email</div>
+        <div class="info-value"><strong>${leadData.email}</strong></div>
+      </div>
+      
+      <div class="info-row">
+        <div class="info-label">Prénom</div>
+        <div class="info-value">${leadData.first_name || '<em>Non renseigné</em>'}</div>
+      </div>
+      
+      <div class="info-row">
+        <div class="info-label">Entreprise</div>
+        <div class="info-value">${leadData.company || '<em>Non renseignée</em>'}</div>
+      </div>
+      
+      <div class="info-row">
+        <div class="info-label">Source</div>
+        <div class="info-value">${leadData.source}</div>
+      </div>
+      
+      <div class="info-row">
+        <div class="info-label">Offre</div>
+        <div class="info-value">${leadData.offer === 'starter' ? 'MAX Starter (-30% x 3 mois)' : leadData.offer}</div>
+      </div>
+      
+      <div class="info-row" style="border-bottom: none;">
+        <div class="info-label">Date</div>
+        <div class="info-value">${timestamp}</div>
+      </div>
+      
+      <div class="stats-box">
+        <div style="font-size: 14px; color: #0369a1; margin-bottom: 8px;">Total inscrits Early Birds</div>
+        <div class="stats-number">${totalLeads || 0}</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`
+
+        const internalTextContent = `🚀 Nouvelle inscription Early Birds ${isNewLead ? '(NOUVEAU LEAD)' : '(RÉINSCRIPTION)'}
+
+Email: ${leadData.email}
+Prénom: ${leadData.first_name || 'Non renseigné'}
+Entreprise: ${leadData.company || 'Non renseignée'}
+Source: ${leadData.source}
+Offre: ${leadData.offer === 'starter' ? 'MAX Starter (-30% x 3 mois)' : leadData.offer}
+Date: ${timestamp}
+
+📊 Total inscrits: ${totalLeads || 0}`
+
+        await fetch('https://api.mailjet.com/v3.1/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + Buffer.from(`${MAILJET_API_KEY}:${MAILJET_SECRET_KEY}`).toString('base64')
+          },
+          body: JSON.stringify({
+            Messages: [
+              {
+                From: {
+                  Email: MAILJET_SENDER_EMAIL,
+                  Name: "M.A.X. - Notifications"
+                },
+                To: [
+                  {
+                    Email: "malalaramaha@malalacrea.fr",
+                    Name: "Malala"
+                  }
+                ],
+                Subject: `🚀 ${isNewLead ? 'Nouveau' : 'Réinscription'} Early Bird: ${leadData.email}`,
+                HTMLPart: internalHtmlContent,
+                TextPart: internalTextContent
+              }
+            ]
+          })
+        })
+
+        console.log('[INTERNAL NOTIFICATION] Sent to malalaramaha@malalacrea.fr')
+      } catch (notifError: any) {
+        // Ne pas bloquer si la notification échoue
+        console.error('[INTERNAL NOTIFICATION ERROR]', notifError.message)
+      }
+
       return res.status(200).json({
         ok: true,
         message: 'Inscription réussie',
