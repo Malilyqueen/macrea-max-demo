@@ -249,10 +249,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           Vous bénéficiez de :
         </p>
         <p style="margin: 0; font-size: 16px; color: #0369a1;">
-          ✅ ${offerDetails}<br>
-          ✅ Accès prioritaire dès le lancement<br>
-          ✅ Support dédié pendant l'onboarding<br>
-          ✅ Aucun engagement, aucune carte bancaire
+          🔵 ${offerDetails}<br>
+          🔵 Accès prioritaire dès le lancement<br>
+          🔵 Support dédié pendant l'onboarding<br>
+          🔵 Aucun engagement, aucune carte bancaire
         </p>
       </div>
       
@@ -260,7 +260,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       
       <div style="text-align: center;">
         <a href="${BASE_URL}/tarifs" class="cta-button" style="color: white;">
-          📋 Voir les offres MAX
+          � Voir les offres MAX
         </a>
       </div>
       
@@ -287,10 +287,10 @@ Bienvenue dans le programme Early Birds M.A.X. ! 🚀
 Votre inscription a été confirmée avec succès.
 
 Vous bénéficiez de :
-✅ ${offerDetails.replace(/<[^>]*>/g, '')}
-✅ Accès prioritaire dès le lancement
-✅ Support dédié pendant l'onboarding
-✅ Aucun engagement, aucune carte bancaire
+🔵 ${offerDetails.replace(/<[^>]*>/g, '')}
+🔵 Accès prioritaire dès le lancement
+🔵 Support dédié pendant l'onboarding
+🔵 Aucun engagement, aucune carte bancaire
 
 Vous recevrez un email de notre équipe dès que le programme sera officiellement lancé.
 
