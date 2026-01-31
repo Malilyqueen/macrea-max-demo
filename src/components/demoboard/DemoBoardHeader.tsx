@@ -45,6 +45,15 @@ export default function DemoBoardHeader() {
           Ask M.A.X.
         </button>
 
+        {/* Early Birds CTA */}
+        <a 
+          href="/early-birds?src=demoboard"
+          className="px-5 py-2 bg-gradient-to-r from-cyan-500 to-sky-500 text-white text-sm font-semibold rounded-lg shadow-lg hover:shadow-xl hover:shadow-cyan-500/30 transition-all duration-300 flex items-center gap-2 animate-pulse"
+        >
+          <span>🚀</span>
+          <span>Early Birds</span>
+        </a>
+
         {/* Connection badge */}
         <div className="px-3 py-1.5 bg-green-50 border border-green-200 rounded-md">
           <span className="text-xs font-semibold text-green-700">✓ Connecté CRM</span>
