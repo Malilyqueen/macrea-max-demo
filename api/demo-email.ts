@@ -303,21 +303,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         <a href="${PDF_URL}" class="pdf-link" style="color: white;">📄 Télécharger le guide MaCréa CRM + M.A.X.</a>
       </div>
       
-      <!-- CTA Early Birds -->
-      <div style="text-align: center; margin: 35px 0 30px 0; padding: 25px 20px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; border: 1px solid #bae6fd;">
-        <p style="font-size: 16px; color: #0c4a6e; margin: 0 0 16px 0; font-weight: 600; line-height: 1.5;">
-          Vous souhaitez être parmi les premiers à utiliser M.A.X. ?<br>
-          <span style="font-size: 14px; color: #0369a1; font-weight: 400;">Rejoignez le programme Early Birds</span>
-        </p>
-        <a href="${BASE_URL}/early-birds?src=demo" 
-           style="display: inline-block; background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%); color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(34, 211, 238, 0.3); margin-bottom: 12px;">
-          🚀 S'inscrire aux Early Birds
-        </a>
-        <p style="font-size: 13px; color: #0369a1; margin: 12px 0 0 0; font-style: italic;">
-          Accès prioritaire + conditions fondatrices
-        </p>
-      </div>
-      
       <p>Vous y découvrirez notamment :</p>
       
       <ul>
@@ -339,6 +324,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       
       <p>Si vous souhaitez vérifier comment je fonctionnerais dans votre propre contexte,<br>
       vous pouvez simplement répondre à cet email.</p>
+      
+      <!-- CTA Early Birds -->
+      <div style="text-align: center; margin: 35px 0 30px 0; padding: 25px 20px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; border: 1px solid #bae6fd;">
+        <p style="font-size: 16px; color: #0c4a6e; margin: 0 0 16px 0; font-weight: 600; line-height: 1.5;">
+          Vous souhaitez être parmi les premiers à utiliser M.A.X. ?<br>
+          <span style="font-size: 14px; color: #0369a1; font-weight: 400;">Rejoignez le programme Early Birds</span>
+        </p>
+        <a href="${BASE_URL}/early-birds?src=demo" 
+           style="display: inline-block; background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%); color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(34, 211, 238, 0.3); margin-bottom: 12px;">
+          🚀 S'inscrire aux Early Birds
+        </a>
+        <p style="font-size: 13px; color: #0369a1; margin: 12px 0 0 0; font-style: italic;">
+          Accès prioritaire + conditions fondatrices
+        </p>
+      </div>
       
       <div class="signature">
         <img src="https://macrea-max-demo.vercel.app/docs/readme-assets/max-hero-guide.png" alt="M.A.X." class="signature-avatar" />
