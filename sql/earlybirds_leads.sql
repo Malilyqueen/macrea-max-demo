@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS public.earlybirds_leads (
     source VARCHAR(50) DEFAULT 'direct' NOT NULL,
     offer VARCHAR(50) DEFAULT 'starter' NOT NULL,
     status VARCHAR(20) DEFAULT 'pending' NOT NULL CHECK (status IN ('pending', 'confirmed', 'error')),
+    email_sent BOOLEAN DEFAULT FALSE NOT NULL,
+    last_sent_at TIMESTAMPTZ,
     error_message TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
@@ -60,6 +62,8 @@ CREATE TRIGGER trigger_earlybirds_leads_updated_at
 COMMENT ON TABLE public.earlybirds_leads IS 'Inscriptions au programme Early Birds MAX';
 COMMENT ON COLUMN public.earlybirds_leads.email IS 'Adresse email du lead (unique)';
 COMMENT ON COLUMN public.earlybirds_leads.status IS 'Statut inscription: pending, confirmed, error';
+COMMENT ON COLUMN public.earlybirds_leads.email_sent IS 'Email de confirmation envoyé avec succès';
+COMMENT ON COLUMN public.earlybirds_leads.last_sent_at IS 'Date du dernier envoi email (cooldown 10min)';
 COMMENT ON COLUMN public.earlybirds_leads.source IS 'Source de collecte: demo, tarifs, direct';
 COMMENT ON COLUMN public.earlybirds_leads.offer IS 'Offre visée: starter, promax';
 COMMENT ON COLUMN public.earlybirds_leads.error_message IS 'Message erreur si échec inscription';

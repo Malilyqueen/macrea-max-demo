@@ -52,6 +52,11 @@ export default function EarlyBirdsPage() {
         setEmail('')
         setFirstName('')
         setCompany('')
+        
+        // Afficher message différent si cooldown (email déjà envoyé récemment)
+        if (data.emailSkipped) {
+          setErrorMessage('Vous êtes déjà inscrit. Un email vous a été envoyé récemment.')
+        }
       } else {
         setStatus('error')
         setErrorMessage(data.error || 'Une erreur est survenue')
@@ -140,7 +145,8 @@ export default function EarlyBirdsPage() {
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 mb-3">Inscription confirmée !</h3>
                 <p className="text-slate-700 mb-6">
-                  Vous recevrez un email de confirmation dès que le programme Early Birds sera lancé.
+                  ✅ Un email de confirmation vient de vous être envoyé.<br />
+                  Vérifiez votre boîte de réception (et vos spams si besoin).
                 </p>
                 <button
                   onClick={() => {
