@@ -1,5 +1,6 @@
 import SidebarDemo from '../layout/SidebarDemo';
 import MaxDemoChat from './MaxDemoChat';
+import FloatingEarlyBirdsCTA from './FloatingEarlyBirdsCTA';
 
 export default function MaxDemoLayout() {
   return (
@@ -24,6 +25,9 @@ export default function MaxDemoLayout() {
           <MaxDemoChat />
         </main>
       </div>
+      
+      {/* Floating Early Birds CTA */}
+      <FloatingEarlyBirdsCTA />
     </div>
   );
 }

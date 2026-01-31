@@ -8,6 +8,7 @@ import DemoBoardCrm from './DemoBoardCrm'
 import DemoBoardAutomations from './DemoBoardAutomations'
 import DemoBoardReports from './DemoBoardReports'
 import DemoAutomationsFeed, { type AutomationAction } from './DemoAutomationsFeed'
+import FloatingEarlyBirdsCTA from '../demo/FloatingEarlyBirdsCTA'
 import { useMaxStateMachine } from '../../hooks/useMaxStateMachine'
 
 export default function DemoBoardLayout() {
@@ -337,6 +338,9 @@ export default function DemoBoardLayout() {
           )}
         </main>
       </div>
+      
+      {/* Floating Early Birds CTA */}
+      <FloatingEarlyBirdsCTA />
     </div>
   )
 }
