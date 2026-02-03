@@ -1,1 +1,2 @@
 cd D:\Macrea\macrea-max-landing ; npm run dev
+cron key:aa684b1c47d32222ea6fcfd63405aad6

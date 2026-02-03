@@ -5,7 +5,7 @@ import ForWhoPage from './routes/ForWhoPage';
 import PricingPage from './routes/PricingPage';
 import ContactPage from './routes/ContactPage';
 import DemoPage from './routes/DemoPage';
-import DemoBoardPage from './pages/DemoBoardPage';
+import DemoBoardPage from './pages/_DemoBoardPage';
 import EarlyBirdsPage from './routes/EarlyBirdsPage';
 
 function App() {

@@ -22,6 +22,9 @@ export default function Header() {
             <Link to="/tarifs" className="text-[#64748b] hover:text-[#0091ff] hover:shadow-[0_0_15px_rgba(0,207,255,0.1)] transition-all">
               Tarifs
             </Link>
+            <a href="http://localhost:4321/blog" className="text-[#64748b] hover:text-[#0091ff] hover:shadow-[0_0_15px_rgba(0,207,255,0.1)] transition-all" target="_blank" rel="noopener noreferrer">
+              Blog
+            </a>
           </div>
 
           <Link 

@@ -5,13 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npx vite build",
-    "preview": "vite preview"
+    "build": "vite build",
+    "preview": "vite preview",
+    "blog:dev": "astro dev",
+    "blog:build": "astro build"
   },
   "dependencies": {
+    "@astrojs/markdown-remark": "^6.3.10",
+    "@astrojs/react": "^4.4.2",
     "@supabase/supabase-js": "^2.90.1",
     "@types/nodemailer": "^7.0.5",
     "@vercel/node": "^5.5.23",
+    "astro": "^5.17.1",
     "framer-motion": "^12.23.25",
     "nodemailer": "^7.0.12",
     "react": "^18.2.0",

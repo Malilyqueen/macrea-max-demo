@@ -1,0 +1,298 @@
+---
+const { frontmatter } = Astro.props;
+---
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{frontmatter.title} | MAX</title>
+    <meta name="description" content={frontmatter.description} />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <article class="blog-container">
+      <header class="post-header">
+        <span class="category">{frontmatter.category}</span>
+        <h1>{frontmatter.title}</h1>
+        <div class="meta">
+          Par <strong>{frontmatter.author}</strong> • {frontmatter.publishedAt} • {frontmatter.readingTime} de lecture
+        </div>
+      </header>
+
+      <main class="content">
+        <slot />
+        
+        <!-- CTA vers démo MAX -->
+        <div class="demo-cta">
+          <h3>Prêt à voir M.A.X. en action ?</h3>
+          <p>Découvrez comment M.A.X. applique ces stratégies dans une démo interactive complète.</p>
+          <a href="http://localhost:5182/demo" class="demo-button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            Découvrir la démo interactive
+          </a>
+        </div>
+      </main>
+    </article>
+
+    <!-- Floating Early Birds CTA -->
+    <a 
+      href="http://localhost:5182/early-birds?src=blog"
+      class="floating-cta"
+      aria-label="Inscription Early Birds - Accès prioritaire avec -30% pendant 3 mois"
+    >
+      <div class="floating-shadow"></div>
+      <div class="floating-button">
+        <div class="floating-content">
+          <svg class="floating-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+          <div class="floating-text">
+            <span class="floating-title">Early Birds</span>
+            <span class="floating-subtitle">-30% • 3 mois</span>
+          </div>
+          <svg class="floating-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </div>
+    </a>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --primary: #2563eb;
+    --text: #1f2937;
+    --bg: #ffffff;
+    --light-bg: #f9fafb;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+
+  .blog-container {
+    max-width: 720px;
+    margin: 4rem auto;
+    padding: 0 1.5rem;
+  }
+
+  .tldr-box {
+    background-color: var(--light-bg);
+    border-left: 4px solid var(--primary);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+  }
+
+  .content h2 {
+    font-size: 1.8rem;
+    margin-top: 2.5rem;
+    color: #111827;
+  }
+
+  .content p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+  }
+
+  .content blockquote {
+    border-left: 3px solid #e5e7eb;
+    margin: 2rem 0;
+    padding-left: 1.5rem;
+    color: #4b5563;
+  }
+
+  .post-header h1 {
+    font-size: 2.5rem;
+    line-height: 1.2;
+    margin: 1rem 0;
+  }
+
+  .category {
+    color: var(--primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+  }
+
+  .meta {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 3rem;
+  }
+
+  /* Demo CTA Section */
+  .demo-cta {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 2px solid #0091ff;
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 3rem 0;
+    text-align: center;
+  }
+
+  .demo-cta h3 {
+    font-size: 1.5rem;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .demo-cta p {
+    color: #4b5563;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+  }
+
+  .demo-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(to right, #0091ff, #00cfff);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 145, 255, 0.3);
+  }
+
+  .demo-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 145, 255, 0.4);
+  }
+
+  .demo-button svg {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  /* Floating Early Birds Button */
+  .floating-cta {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 50;
+    text-decoration: none;
+    animation: fadeInUp 0.5s ease-out 1s both;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .floating-cta:hover .floating-button {
+    transform: scale(1.05);
+  }
+
+  .floating-cta:active .floating-button {
+    transform: scale(0.95);
+  }
+
+  .floating-shadow {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, #22d3ee, #3b82f6);
+    border-radius: 9999px;
+    filter: blur(16px);
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+
+  .floating-cta:hover .floating-shadow {
+    opacity: 0.7;
+  }
+
+  .floating-button {
+    position: relative;
+    background: linear-gradient(to right, #22d3ee, #3b82f6);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 9999px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    transition: transform 0.2s;
+  }
+
+  .floating-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .floating-icon {
+    animation: rotateIcon 2s ease-in-out infinite;
+    animation-delay: 3s;
+  }
+
+  @keyframes rotateIcon {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(10deg); }
+    50% { transform: rotate(-10deg); }
+    75% { transform: rotate(0deg); }
+  }
+
+  .floating-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .floating-title {
+    font-weight: 700;
+    font-size: 0.875rem;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .floating-subtitle {
+    font-size: 0.75rem;
+    font-weight: 500;
+    opacity: 0.9;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .floating-arrow {
+    animation: bounceArrow 1s ease-in-out infinite;
+  }
+
+  @keyframes bounceArrow {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(4px); }
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .floating-cta {
+      bottom: 1rem;
+      right: 1rem;
+    }
+    
+    .floating-button {
+      padding: 0.75rem 1rem;
+    }
+    
+    .floating-text {
+      display: none;
+    }
+  }
+</style>
