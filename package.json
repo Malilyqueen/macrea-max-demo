@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run build:main && npm run build:blog && npm run merge:dist",
+    "build:main": "vite build",
+    "build:blog": "astro build --outDir dist-blog",
+    "merge:dist": "node scripts/merge-builds.js",
     "preview": "vite preview",
     "blog:dev": "astro dev",
     "blog:build": "astro build"
