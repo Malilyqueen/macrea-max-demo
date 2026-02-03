@@ -6,7 +6,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
 const distDir = path.join(rootDir, 'dist');
 const blogDistDir = path.join(rootDir, 'dist-blog');
-const blogTargetDir = path.join(distDir, 'blog');
 
 console.log('🔀 Merging Astro blog into main dist...');
 
@@ -42,13 +41,15 @@ if (!fs.existsSync(blogDistDir)) {
   process.exit(1);
 }
 
-// Copier le blog dans dist/blog
-copyRecursiveSync(blogDistDir, blogTargetDir);
+// Copier tout le contenu de dist-blog dans dist (écrase si existe)
+copyRecursiveSync(blogDistDir, distDir);
 
 // Nettoyer dist-blog
 fs.rmSync(blogDistDir, { recursive: true, force: true });
 
-console.log('✅ Blog merged into dist/blog successfully!');
+console.log('✅ Blog merged into dist successfully!');
 console.log('📦 Final structure:');
 console.log('   dist/              (React app)');
-console.log('   dist/blog/         (Astro blog)');
+console.log('   dist/blog/         (Astro blog pages)');
+console.log('   dist/_astro/       (Astro assets)');
+
