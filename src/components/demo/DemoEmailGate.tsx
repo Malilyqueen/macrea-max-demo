@@ -10,6 +10,7 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
   const [firstName, setFirstName] = useState('')
   const [industry, setIndustry] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [navOpen, setNavOpen] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -52,7 +53,58 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F6FAFF] to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#F6FAFF] to-white flex items-center justify-center pt-16 p-4">
+      {/* Mobile header for navigation (visible before demo unlock) */}
+      <div className="md:hidden fixed top-0 left-0 right-0 z-[120] bg-white/95 backdrop-blur-sm border-b border-[#eef6ff]">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <a href="/" className="flex items-center">
+            <img src="/docs/readme-assets/max-logo.png" alt="M.A.X." className="h-10" />
+          </a>
+          <div className="flex items-center gap-2">
+            <a href="/demoboard" className="text-sm text-[#64748b] hover:text-[#0091ff]">Démo</a>
+            <button
+              onClick={() => setNavOpen(true)}
+              aria-label="Ouvrir le menu"
+              className="p-2 rounded-lg"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <line x1="3" y1="18" x2="21" y2="18"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile nav overlay */}
+      {navOpen && (
+        <div className="md:hidden fixed inset-0 z-[130] bg-white/98 p-6 overflow-auto">
+          <div className="flex items-center justify-between mb-6">
+            <a href="/" onClick={() => setNavOpen(false)} className="flex items-center">
+              <img src="/docs/readme-assets/max-logo.png" alt="M.A.X." className="h-12" />
+            </a>
+            <button onClick={() => setNavOpen(false)} aria-label="Fermer le menu" className="p-2 rounded-lg bg-gray-100">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+
+          <nav className="space-y-4">
+            <a href="/" onClick={() => setNavOpen(false)} className="block text-lg font-semibold text-[#1e293b]">Accueil</a>
+            <a href="/fonctionnalites" onClick={() => setNavOpen(false)} className="block text-lg text-[#64748b] hover:text-[#0091ff]">Fonctionnalités</a>
+            <a href="/pour-qui" onClick={() => setNavOpen(false)} className="block text-lg text-[#64748b] hover:text-[#0091ff]">Pour qui ?</a>
+            <a href="/tarifs" onClick={() => setNavOpen(false)} className="block text-lg text-[#64748b] hover:text-[#0091ff]">Tarifs</a>
+            <a href="/blog" onClick={() => setNavOpen(false)} className="block text-lg text-[#64748b] hover:text-[#0091ff]">Blog</a>
+
+            <div className="mt-6">
+              <a href="/demoboard" onClick={() => setNavOpen(false)} className="inline-block px-6 py-3 bg-gradient-to-r from-[#0091ff] to-[#00cfff] text-white rounded-lg font-semibold">Voir la démo</a>
+            </div>
+          </nav>
+        </div>
+      )}
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
