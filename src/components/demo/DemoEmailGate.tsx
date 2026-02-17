@@ -55,7 +55,7 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F6FAFF] to-white flex items-center justify-center pt-16 p-4">
       {/* Mobile header for navigation (visible before demo unlock) */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-[120] bg-white/95 backdrop-blur-sm border-b border-[#eef6ff]">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-[9999] bg-white/95 backdrop-blur-sm border-b border-[#eef6ff]">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <a href="/" className="flex items-center">
             <img src="/docs/readme-assets/max-logo.png" alt="M.A.X." className="h-10" />
@@ -79,7 +79,7 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
 
       {/* Mobile nav overlay */}
       {navOpen && (
-        <div className="md:hidden fixed inset-0 z-[130] bg-white/98 p-6 overflow-auto">
+        <div className="md:hidden fixed inset-0 z-[9999] bg-white/98 p-6 overflow-auto">
           <div className="flex items-center justify-between mb-6">
             <a href="/" onClick={() => setNavOpen(false)} className="flex items-center">
               <img src="/docs/readme-assets/max-logo.png" alt="M.A.X." className="h-12" />

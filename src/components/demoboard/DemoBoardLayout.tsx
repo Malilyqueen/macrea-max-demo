@@ -44,7 +44,7 @@ export default function DemoBoardLayout() {
       {/* Mobile hamburger (root) — outside motion/stacking contexts */}
       <button
         onClick={() => setSidebarOpen(true)}
-        className="md:hidden fixed top-4 left-4 z-[200] p-2 rounded-lg bg-white/90 border border-[#0091ff] shadow-lg"
+        className="md:hidden fixed top-4 left-4 z-[10002] p-2 rounded-lg bg-white/90 border border-[#0091ff] shadow-lg"
         aria-label="Ouvrir le menu"
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0091ff" strokeWidth="2">
@@ -56,14 +56,14 @@ export default function DemoBoardLayout() {
       {/* Sidebar mobile overlay */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-[99] md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-[9999] md:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-[100] w-64 bg-[#F0F6FF] border-r border-[rgba(0,145,255,0.15)] transform transition-transform duration-300 ease-in-out
+        fixed inset-y-0 left-0 z-[10000] w-64 bg-[#F0F6FF] border-r border-[rgba(0,145,255,0.15)] transform transition-transform duration-300 ease-in-out
         md:relative md:translate-x-0 md:z-auto
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>

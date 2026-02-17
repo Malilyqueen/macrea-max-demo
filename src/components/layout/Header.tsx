@@ -56,7 +56,7 @@ export default function Header() {
 
       {/* Mobile menu overlay */}
       {mobileOpen && (
-        <div className="md:hidden fixed inset-0 z-[120] bg-white/95 backdrop-blur-sm p-6 overflow-auto">
+        <div className="md:hidden fixed inset-0 z-[9999] bg-white/95 backdrop-blur-sm p-6 overflow-auto">
           <div className="flex items-center justify-between mb-6">
             <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center">
               <img src="/docs/readme-assets/max-logo.png" alt="M.A.X." className="h-12" />
