@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const location = useLocation()
+  const hideMobileHamburger = location.pathname.startsWith('/demoboard')
 
   return (
     <header className="bg-[rgba(255,255,255,0.9)] backdrop-blur-[20px] shadow-sm border-b border-[rgba(0,145,255,0.15)]">
@@ -32,18 +34,21 @@ export default function Header() {
 
           <div className="flex items-center gap-2">
             {/* Mobile hamburger button */}
+            {!hideMobileHamburger && (
             <button
               onClick={() => { console.log('hamburger: main header clicked'); setMobileOpen(true) }}
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100 mr-2 border-2 border-red-400 ring-2 ring-red-300 animate-pulse"
+              className="md:hidden p-2 rounded-lg hover:bg-gray-100 mr-2 relative"
               aria-label="Ouvrir le menu"
-              title="DEBUG: header hamburger"
+              title="Ouvrir le menu"
             >
+              <span className="absolute -top-2 -right-6 bg-green-600 text-white text-[10px] px-1 py-0.5 rounded z-[200000]">HEADER</span>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="3" y1="12" x2="21" y2="12"/>
                 <line x1="3" y1="6" x2="21" y2="6"/>
                 <line x1="3" y1="18" x2="21" y2="18"/>
               </svg>
             </button>
+            )}
 
             <Link 
               to="/demoboard" 
@@ -56,8 +61,8 @@ export default function Header() {
       </nav>
 
       {/* Mobile menu overlay */}
-      {mobileOpen && (
-        <div className="md:hidden fixed inset-0 z-[9999] bg-white/95 backdrop-blur-sm p-6 overflow-auto h-screen" style={{ WebkitOverflowScrolling: 'touch' }}>
+      {mobileOpen && !hideMobileHamburger && (
+        <div className="md:hidden fixed inset-0 z-[100002] bg-white/95 backdrop-blur-sm p-6 overflow-auto h-screen" style={{ WebkitOverflowScrolling: 'touch' }}>
           <div className="flex items-center justify-between mb-6">
             <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center">
               <img src="/docs/readme-assets/max-logo.png" alt="M.A.X." className="h-12" />
@@ -84,18 +89,7 @@ export default function Header() {
         </div>
       )}
       {/* Floating quick-menu button (mobile) — visible even if header is covered */}
-      <button
-        onClick={() => setMobileOpen(true)}
-        className="md:hidden fixed bottom-6 right-4 z-[100000] bg-[#0091ff] text-white p-3 rounded-full shadow-2xl flex items-center justify-center"
-        aria-label="Ouvrir le menu mobile"
-        title="Menu"
-      >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white">
-          <line x1="3" y1="12" x2="21" y2="12"/>
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      </button>
+      {/* Floating quick-menu removed to avoid duplicate hamburger controls on pages */}
     </header>
   );
 }

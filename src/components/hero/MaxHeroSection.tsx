@@ -74,8 +74,9 @@ export default function MaxHeroSection() {
             />
           </div>
 
-          {/* Petite carte flottante */}
-          <div className="absolute bottom-6 right-4 rounded-2xl bg-white/90 backdrop-blur-sm px-4 py-3 text-xs shadow-lg border border-[rgba(0,145,255,0.15)] animate-fade-in max-w-[240px]">
+          {/* Petite carte flottante - hidden on mobile to avoid overlapping mobile controls */}
+          <div className="hidden md:block absolute bottom-6 right-4 rounded-2xl bg-white/90 backdrop-blur-sm px-4 py-3 text-xs shadow-lg border border-[rgba(0,145,255,0.15)] animate-fade-in max-w-[240px] relative">
+            <span className="absolute -top-2 -left-3 bg-yellow-600 text-white text-[10px] px-1 py-0.5 rounded z-50">HERO</span>
             <p className="font-semibold text-[#1e293b] mb-1">Bonjour Chef.</p>
             <p className="text-[11px] text-[#64748b] leading-relaxed">
               J'ai déjà nettoyé votre base et optimisé vos workflows.<br />

@@ -17,6 +17,7 @@ export default function FloatingEarlyBirdsCTA() {
       
       {/* Main button */}
       <div className="relative bg-gradient-to-r from-[#22d3ee] to-[#3b82f6] text-white px-6 py-4 rounded-full shadow-2xl border border-white/20 backdrop-blur-sm">
+        <span className="absolute -top-2 -left-3 bg-blue-700 text-white text-[10px] px-1 py-0.5 rounded z-50">EARLY</span>
         <div className="flex items-center gap-3">
           {/* Icon */}
           <motion.div
