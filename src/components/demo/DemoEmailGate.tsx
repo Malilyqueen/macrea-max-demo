@@ -63,9 +63,10 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
           <div className="flex items-center gap-2">
             <a href="/demoboard" className="text-sm text-[#64748b] hover:text-[#0091ff]">Démo</a>
             <button
-              onClick={() => setNavOpen(true)}
+              onClick={() => { console.log('hamburger: demo gate header clicked'); setNavOpen(true) }}
               aria-label="Ouvrir le menu"
-              className="p-2 rounded-lg"
+              className="p-2 rounded-lg border-2 border-red-400 ring-2 ring-red-300 animate-pulse"
+              title="DEBUG: gate hamburger"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="3" y1="12" x2="21" y2="12"/>

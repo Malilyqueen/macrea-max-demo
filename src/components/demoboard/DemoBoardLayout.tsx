@@ -43,9 +43,10 @@ export default function DemoBoardLayout() {
     <div className="flex min-h-screen bg-[#F6FAFF]">
       {/* Mobile hamburger (root) — outside motion/stacking contexts */}
       <button
-        onClick={() => setSidebarOpen(true)}
-        className="md:hidden fixed top-4 left-4 z-[10002] p-2 rounded-lg bg-white/90 border border-[#0091ff] shadow-lg"
+        onClick={() => { console.log('hamburger: demo sidebar clicked'); setSidebarOpen(true) }}
+        className="md:hidden fixed top-4 left-4 z-[10002] p-2 rounded-lg bg-white/90 border-2 border-red-400 ring-2 ring-red-300 animate-pulse shadow-lg"
         aria-label="Ouvrir le menu"
+        title="DEBUG: demo hamburger"
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0091ff" strokeWidth="2">
           <line x1="3" y1="12" x2="21" y2="12"/>
