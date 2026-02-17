@@ -44,14 +44,14 @@ export default function DemoBoardLayout() {
       {/* Sidebar mobile overlay */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-[99] md:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-[#F0F6FF] border-r border-[rgba(0,145,255,0.15)] transform transition-transform duration-300 ease-in-out
+        fixed inset-y-0 left-0 z-[100] w-64 bg-[#F0F6FF] border-r border-[rgba(0,145,255,0.15)] transform transition-transform duration-300 ease-in-out
         md:relative md:translate-x-0 md:z-auto
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>

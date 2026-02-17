@@ -9,10 +9,11 @@ export default function DemoBoardHeader({ onMenuClick }: DemoBoardHeaderProps) {
       {onMenuClick && (
         <button
           onClick={onMenuClick}
-          className="md:hidden p-2 rounded-lg hover:bg-gray-100 mr-2"
+          className="md:hidden p-2 rounded-lg hover:bg-gray-100 mr-2 fixed top-4 left-4 z-50 bg-white/90 border border-[#0091ff] shadow-lg"
           aria-label="Ouvrir le menu"
+          style={{ boxShadow: '0 2px 12px 0 rgba(0,145,255,0.15)' }}
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0091ff" strokeWidth="2">
             <line x1="3" y1="12" x2="21" y2="12"/>
             <line x1="3" y1="6" x2="21" y2="6"/>
             <line x1="3" y1="18" x2="21" y2="18"/>

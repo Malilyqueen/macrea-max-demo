@@ -1,3 +1,5 @@
+import EarlyBirdCountdown from './EarlyBirdCountdown'
+
 export default function SectionTarifsEtEarlyBird() {
   return (
     <section id="tarifs" className="py-20 md:py-32 px-4 bg-gradient-to-b from-slate-100 via-white to-slate-50">
@@ -14,6 +16,9 @@ export default function SectionTarifsEtEarlyBird() {
             Deux offres. Deux niveaux d'autonomie. Un seul objectif : vous libérer de l'opérationnel.
           </p>
         </div>
+
+        {/* Early Bird Countdown */}
+        <EarlyBirdCountdown />
 
         {/* Plans grid - 2 colonnes */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
@@ -62,7 +67,22 @@ export default function SectionTarifsEtEarlyBird() {
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" strokeWidth="2.5" className="flex-shrink-0 mt-0.5">
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
-                  <span>Intégrations <strong>Email, SMS et WhatsApp</strong> illimitées</span>
+                  <span><strong>Email & WhatsApp</strong> : intégrations professionnelles</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-700">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" strokeWidth="2.5" className="flex-shrink-0 mt-0.5">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span><strong>SMS</strong> : 25 SMS inclus (international)</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-600 ml-8">
+                  <span className="text-sm italic">SMS supplémentaires facturés au tarif local selon le pays sélectionné</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-700">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" strokeWidth="2.5" className="flex-shrink-0 mt-0.5">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span><strong>WhatsApp</strong> : jusqu'à 30 000 échanges inclus</span>
                 </li>
               </ul>
             </div>
