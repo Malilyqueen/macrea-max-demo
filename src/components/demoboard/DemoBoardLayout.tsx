@@ -64,10 +64,10 @@ export default function DemoBoardLayout() {
 
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-[10000] w-64 bg-[#F0F6FF] border-r border-[rgba(0,145,255,0.15)] transform transition-transform duration-300 ease-in-out
+        fixed inset-y-0 left-0 z-[10000] w-64 bg-[#F0F6FF] border-r border-[rgba(0,145,255,0.15)] transform transition-transform duration-300 ease-in-out overflow-y-auto h-screen"
         md:relative md:translate-x-0 md:z-auto
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-      `}>
+      `} style={{ WebkitOverflowScrolling: 'touch' }}>
         <DemoBoardSidebar 
           activeTab={activeTab} 
           setActiveTab={setActiveTab}

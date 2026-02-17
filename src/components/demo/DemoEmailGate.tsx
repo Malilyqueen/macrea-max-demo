@@ -80,7 +80,7 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
 
       {/* Mobile nav overlay */}
       {navOpen && (
-        <div className="md:hidden fixed inset-0 z-[9999] bg-white/98 p-6 overflow-auto">
+        <div className="md:hidden fixed inset-0 z-[9999] bg-white/98 p-6 overflow-auto h-screen" style={{ WebkitOverflowScrolling: 'touch' }}>
           <div className="flex items-center justify-between mb-6">
             <a href="/" onClick={() => setNavOpen(false)} className="flex items-center">
               <img src="/docs/readme-assets/max-logo.png" alt="M.A.X." className="h-12" />

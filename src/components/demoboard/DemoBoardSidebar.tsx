@@ -9,6 +9,9 @@ type DemoBoardSidebarProps = {
 export default function DemoBoardSidebar({ activeTab, setActiveTab, onClose }: DemoBoardSidebarProps) {
   
   const menuItems = [
+
+  // Ensure sidebar content can scroll smoothly on mobile
+  // when the fixed sidebar is taller than the viewport.
     { 
       name: 'Dashboard',
       id: 'dashboard',
@@ -42,7 +45,7 @@ export default function DemoBoardSidebar({ activeTab, setActiveTab, onClose }: D
   ]
 
   return (
-    <div className="min-h-screen p-6 flex flex-col">
+    <div className="h-full p-6 flex flex-col overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
       {/* Close button mobile */}
       {onClose && (
         <button
