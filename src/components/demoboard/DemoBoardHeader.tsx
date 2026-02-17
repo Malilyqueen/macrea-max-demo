@@ -9,7 +9,7 @@ export default function DemoBoardHeader({ onMenuClick }: DemoBoardHeaderProps) {
       {onMenuClick && (
         <button
           onClick={onMenuClick}
-          className="md:hidden p-2 rounded-lg hover:bg-gray-100 mr-2 fixed top-4 left-4 z-50 bg-white/90 border border-[#0091ff] shadow-lg"
+          className="md:hidden p-2 rounded-lg hover:bg-gray-100 mr-2 fixed top-4 left-4 z-[110] bg-white/90 border border-[#0091ff] shadow-lg"
           aria-label="Ouvrir le menu"
           style={{ boxShadow: '0 2px 12px 0 rgba(0,145,255,0.15)' }}
         >
