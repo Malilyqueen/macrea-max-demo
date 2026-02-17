@@ -109,8 +109,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.log('[DUPLICATE] Email already registered:', leadData.email)
       
       const shouldSkipEmail = existingLead.email_sent && existingLead.last_sent_at
-      let skipReason = null
-      
+
       if (shouldSkipEmail) {
         const lastSent = new Date(existingLead.last_sent_at).getTime()
         const now = Date.now()
@@ -118,7 +117,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         
         if (minutesSinceLastSend < 10) {
           console.log('[COOLDOWN] Email already sent recently:', leadData.email)
-          skipReason = 'cooldown'
           
           // Update optionnel des infos si elles sont nouvelles
           if (inputFirstName || company) {
