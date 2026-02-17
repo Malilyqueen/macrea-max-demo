@@ -83,6 +83,19 @@ export default function Header() {
           </nav>
         </div>
       )}
+      {/* Floating quick-menu button (mobile) — visible even if header is covered */}
+      <button
+        onClick={() => setMobileOpen(true)}
+        className="md:hidden fixed bottom-6 right-4 z-[100000] bg-[#0091ff] text-white p-3 rounded-full shadow-2xl flex items-center justify-center"
+        aria-label="Ouvrir le menu mobile"
+        title="Menu"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white">
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
     </header>
   );
 }

@@ -44,11 +44,25 @@ export default function DemoBoardLayout() {
       {/* Mobile hamburger (root) — outside motion/stacking contexts */}
       <button
         onClick={() => { console.log('hamburger: demo sidebar clicked'); setSidebarOpen(true) }}
-        className="md:hidden fixed top-4 left-4 z-[10002] p-2 rounded-lg bg-white/90 border-2 border-red-400 ring-2 ring-red-300 animate-pulse shadow-lg"
+        className="md:hidden fixed top-4 left-4 z-[10002] p-2 rounded-lg bg-white/90 shadow-lg"
         aria-label="Ouvrir le menu"
-        title="DEBUG: demo hamburger"
+        title="Ouvrir le menu"
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0091ff" strokeWidth="2">
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+
+      {/* Floating quick-menu (mobile, bottom-right) as a fallback if top is covered */}
+      <button
+        onClick={() => setSidebarOpen(true)}
+        className="md:hidden fixed bottom-6 right-4 z-[100000] bg-[#0091ff] text-white p-3 rounded-full shadow-2xl flex items-center justify-center"
+        aria-label="Ouvrir le menu"
+        title="Menu"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white">
           <line x1="3" y1="12" x2="21" y2="12"/>
           <line x1="3" y1="6" x2="21" y2="6"/>
           <line x1="3" y1="18" x2="21" y2="18"/>

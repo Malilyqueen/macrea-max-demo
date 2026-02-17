@@ -56,6 +56,19 @@ export default function DemoEmailGate({ onUnlock }: DemoEmailGateProps) {
     <div className="min-h-screen bg-gradient-to-br from-[#F6FAFF] to-white flex items-center justify-center pt-16 p-4">
       {/* Mobile header for navigation (visible before demo unlock) */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-[9999] bg-white/95 backdrop-blur-sm border-b border-[#eef6ff]">
+        {/* Floating quick-menu (fallback) */}
+        <button
+          onClick={() => setNavOpen(true)}
+          className="md:hidden fixed bottom-6 right-4 z-[100000] bg-[#0091ff] text-white p-3 rounded-full shadow-2xl flex items-center justify-center"
+          aria-label="Ouvrir le menu"
+          title="Menu"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <a href="/" className="flex items-center">
             <img src="/docs/readme-assets/max-logo.png" alt="M.A.X." className="h-10" />
