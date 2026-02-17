@@ -41,6 +41,18 @@ export default function DemoBoardLayout() {
 
   return (
     <div className="flex min-h-screen bg-[#F6FAFF]">
+      {/* Mobile hamburger (root) — outside motion/stacking contexts */}
+      <button
+        onClick={() => setSidebarOpen(true)}
+        className="md:hidden fixed top-4 left-4 z-[200] p-2 rounded-lg bg-white/90 border border-[#0091ff] shadow-lg"
+        aria-label="Ouvrir le menu"
+      >
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0091ff" strokeWidth="2">
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
       {/* Sidebar mobile overlay */}
       {sidebarOpen && (
         <div 

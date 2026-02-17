@@ -5,21 +5,7 @@ interface DemoBoardHeaderProps {
 export default function DemoBoardHeader({ onMenuClick }: DemoBoardHeaderProps) {
   return (
     <header className="bg-white border-b border-[rgba(0,145,255,0.15)] px-4 md:px-8 py-4 flex items-center justify-between">
-      {/* Mobile menu button */}
-      {onMenuClick && (
-        <button
-          onClick={onMenuClick}
-          className="md:hidden p-2 rounded-lg hover:bg-gray-100 mr-2 fixed top-4 left-4 z-[110] bg-white/90 border border-[#0091ff] shadow-lg"
-          aria-label="Ouvrir le menu"
-          style={{ boxShadow: '0 2px 12px 0 rgba(0,145,255,0.15)' }}
-        >
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0091ff" strokeWidth="2">
-            <line x1="3" y1="12" x2="21" y2="12"/>
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <line x1="3" y1="18" x2="21" y2="18"/>
-          </svg>
-        </button>
-      )}
+      {/* Mobile menu button removed — using root-level hamburger in DemoBoardLayout to avoid stacking-context issues */}
 
       {/* Left: Avatar MAX + Token counter */}
       <div className="flex items-center gap-4 md:gap-6">
