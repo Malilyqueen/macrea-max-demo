@@ -7,7 +7,7 @@ export default function Header() {
   const hideMobileHamburger = location.pathname.startsWith('/demoboard')
 
   return (
-    <header className="bg-[rgba(255,255,255,0.9)] backdrop-blur-[20px] shadow-sm border-b border-[rgba(0,145,255,0.15)]">
+    <header className="relative z-[100005] bg-[rgba(255,255,255,0.9)] backdrop-blur-[20px] shadow-sm border-b border-[rgba(0,145,255,0.15)]">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center">
