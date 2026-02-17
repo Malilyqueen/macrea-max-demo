@@ -11,11 +11,26 @@ export default function Footer() {
           </div>
           
           <div>
-            <h4 className="font-semibold mb-4 text-[#00cfff]">Produit</h4>
+            <h4 className="font-semibold mb-4 text-[#00cfff]">Navigation</h4>
             <ul className="space-y-2 text-[#64748b]">
-              <li className="hover:text-[#00cfff] cursor-pointer transition-colors">Fonctionnalités</li>
-              <li className="hover:text-[#00cfff] cursor-pointer transition-colors">Tarifs</li>
-              <li className="hover:text-[#00cfff] cursor-pointer transition-colors">Démo</li>
+              <li>
+                <a href="/" className="hover:text-[#00cfff] transition-colors">Accueil</a>
+              </li>
+              <li>
+                <a href="/fonctionnalites" className="hover:text-[#00cfff] transition-colors">Fonctionnalités</a>
+              </li>
+              <li>
+                <a href="/pour-qui" className="hover:text-[#00cfff] transition-colors">Pour qui ?</a>
+              </li>
+              <li>
+                <a href="/tarifs" className="hover:text-[#00cfff] transition-colors">Tarifs</a>
+              </li>
+              <li>
+                <a href="/blog" className="hover:text-[#00cfff] transition-colors">Blog</a>
+              </li>
+              <li>
+                <a href="/demoboard" className="hover:text-[#00cfff] transition-colors">Démo</a>
+              </li>
             </ul>
           </div>
           
