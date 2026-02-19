@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import { useEffect } from 'react'
 import DemoBoardSidebar from './DemoBoardSidebar'
 import DemoBoardHeader from './DemoBoardHeader'
 import DemoBoardStats from './DemoBoardStats'
@@ -16,6 +17,23 @@ export default function DemoBoardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [automations, setAutomations] = useState<AutomationAction[]>([])
   const maxStateMachine = useMaxStateMachine()
+
+  // Add a body class while demo board is mounted to allow other components
+  // (like the Header) to detect and adjust UI (hide duplicate hamburgers)
+  useEffect(() => {
+    try {
+      document.body.classList.add('demoboard-open')
+    } catch (e) {
+      // noop on server
+    }
+    return () => {
+      try {
+        document.body.classList.remove('demoboard-open')
+      } catch (e) {
+        // noop
+      }
+    }
+  }, [])
 
   const handleAutomationTriggered = (action: AutomationAction) => {
     setAutomations(prev => [action, ...prev]) // Nouveau en premier

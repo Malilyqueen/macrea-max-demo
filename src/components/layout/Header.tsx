@@ -5,8 +5,10 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
   // Masquer le hamburger du Header sur toutes les routes liées au demo board
-  // (plus robuste que startsWith pour gérer query params ou variantes)
-  const hideMobileHamburger = /demoboard/i.test(location.pathname)
+  // (plus robuste que startsWith pour gérer query params ou variantes).
+  // On vérifie aussi la classe body `demoboard-open` posée par
+  // `DemoBoardLayout` pour être sûr dans tous les contextes.
+  const hideMobileHamburger = /demoboard/i.test(location.pathname) || (typeof document !== 'undefined' && document.body.classList.contains('demoboard-open'))
 
   return (
     <header className="relative z-[100005] bg-[rgba(255,255,255,0.9)] backdrop-blur-[20px] shadow-sm border-b border-[rgba(0,145,255,0.15)]">
