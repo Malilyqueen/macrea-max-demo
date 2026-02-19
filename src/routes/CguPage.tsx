@@ -1,5 +1,4 @@
 import React from 'react'
-import React from 'react'
 import LegalLayout from '../components/layout/LegalLayout'
 
 export default function CguPage() {
@@ -25,8 +24,5 @@ export default function CguPage() {
       <h2 id="anti-spam">Clause Anti-Spam</h2>
       <p>L’utilisateur s’engage à respecter la réglementation applicable en matière de prospection commerciale (RGPD, ePrivacy, lois anti-spam). Il garantit que les destinataires ont donné leur consentement lorsque requis, que les messages incluent une possibilité de désinscription et que les bases de données sont licites. En cas de signalement pour spam, MACREA se réserve le droit de suspendre immédiatement le compte sans préavis.</p>
     </LegalLayout>
-  )
-}
-    </div>
   )
 }
