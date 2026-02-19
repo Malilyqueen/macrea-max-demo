@@ -4,7 +4,9 @@ import { useState } from 'react';
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
-  const hideMobileHamburger = location.pathname.startsWith('/demoboard')
+  // Masquer le hamburger du Header sur toutes les routes liées au demo board
+  // (plus robuste que startsWith pour gérer query params ou variantes)
+  const hideMobileHamburger = /demoboard/i.test(location.pathname)
 
   return (
     <header className="relative z-[100005] bg-[rgba(255,255,255,0.9)] backdrop-blur-[20px] shadow-sm border-b border-[rgba(0,145,255,0.15)]">
