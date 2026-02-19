@@ -54,7 +54,7 @@ export default function ChatWidget() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [...messages.slice(-9), userMsg], page: window.location.pathname, lead_profile: leadProfile })
+        body: JSON.stringify({ messages: [...messages.slice(-9), userMsg], page: window.location.pathname, lead_profile: leadProfile, clientId: clientId })
       })
       const json = await res.json()
       let reply = json.reply || 'Désolé, pas de réponse.'

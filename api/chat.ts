@@ -213,7 +213,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const e = toError(err)
       console.error('[api/chat] error', { message: e.message, stack: e.stack })
       // fallback stub
-      return res.status(200).json({ reply: 'LLM non configuré ou erreur. Essayez plus tard.', lead_profile: lead_profile || {} })
+      const replyText = 'LLM non configuré ou erreur. Essayez plus tard.'
+      // Log unanswered question server-side (don't include sensitive data)
+      try {
+        const logBody = { question: messages && messages.length ? messages[messages.length-1].content : '', page, clientId: payload && payload.clientId ? payload.clientId : undefined, snippet: e.message }
+        await fetch('/api/log-unanswered', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(logBody) })
+      } catch (loge) {
+        // ignore logging errors
+      }
+      return res.status(200).json({ reply: replyText, lead_profile: lead_profile || {} })
     }
   } catch (err: any) {
     const e = toError(err)
