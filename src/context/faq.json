@@ -1,0 +1,82 @@
+[
+  {
+    "q": "C’est quoi MAX ?",
+    "a": "MAX est un CRM + automatisation + IA qui t’aide à structurer tes contacts et relancer sans charge mentale (email, SMS, et WhatsApp en option)."
+  },
+  {
+    "q": "À qui ça s’adresse ?",
+    "a": "Aux indépendants, petites équipes et entrepreneurs qui veulent organiser leurs leads et automatiser leurs relances proprement."
+  },
+  {
+    "q": "MAX remplace un CRM classique ?",
+    "a": "MAX couvre l’essentiel CRM + relance. L’idée V1 : simple, actionnable, sans usine à gaz."
+  },
+  {
+    "q": "Quels canaux sont disponibles ?",
+    "a": "Email (Mailjet), SMS (OVH), WhatsApp en option via Green-API."
+  },
+  {
+    "q": "Est-ce que WhatsApp est inclus ?",
+    "a": "WhatsApp est proposé en option via Green-API (add-on)."
+  },
+  {
+    "q": "Comment fonctionne l’option WhatsApp ?",
+    "a": "Tu ajoutes l’add-on WhatsApp (Green-API) et tu peux relancer/confirmations sur WhatsApp selon tes règles."
+  },
+  {
+    "q": "Est-ce que MAX garantit des résultats ?",
+    "a": "Non. MAX t’aide à exécuter une stratégie (relance, nurturing, suivi), mais aucun outil ne peut garantir un chiffre d’affaires."
+  },
+  {
+    "q": "C’est légal d’envoyer des messages marketing ?",
+    "a": "Oui, à condition de respecter RGPD/ePrivacy (consentement quand requis, désinscription, base licite). MAX n’est pas fait pour le spam."
+  },
+  {
+    "q": "Puis-je importer mes contacts ?",
+    "a": "Oui, MAX est conçu pour centraliser tes contacts et les segmenter."
+  },
+  {
+    "q": "Je n’ai pas beaucoup de contacts, c’est utile ?",
+    "a": "Oui, même avec 50–200 contacts : l’intérêt est de relancer proprement, suivre et convertir au lieu de laisser dormir les leads."
+  },
+  {
+    "q": "Qu’est-ce que le nurturing ?",
+    "a": "C’est une séquence de messages utiles qui fait mûrir un lead jusqu’au bon moment, sans forcer."
+  },
+  {
+    "q": "C’est quoi un lead fantôme ?",
+    "a": "Un lead qui a montré un intérêt puis disparaît. MAX sert à relancer au bon rythme et récupérer la conversation."
+  },
+  {
+    "q": "Combien ça coûte ?",
+    "a": "Le plan MAX Starter est à 169€/mois. WhatsApp est un add-on via Green-API. Le détail est sur la page Tarifs."
+  },
+  {
+    "q": "C’est quoi Early Birds ?",
+    "a": "Une offre de lancement : -30% sur 3 mois, valable jusqu’au 20/02/2026, avec onboarding."
+  },
+  {
+    "q": "Comment je m’inscris ?",
+    "a": "Tu peux t’inscrire depuis la landing et choisir ton offre. Si tu veux, je te guide selon ton besoin."
+  },
+  {
+    "q": "Vous faites un onboarding ?",
+    "a": "Oui, surtout pour Early Birds : démarrage accompagné pour que tu sois opérationnel rapidement."
+  },
+  {
+    "q": "MAX est compliqué ?",
+    "a": "Non : V1 est pensée pour être simple. Le but : exécuter une relance claire sans te noyer."
+  },
+  {
+    "q": "Est-ce adapté aux équipes ?",
+    "a": "V1 vise surtout indépendants/petites équipes. Si tu as besoin d’une instance dédiée, on bascule sur une offre Pro sur demande."
+  },
+  {
+    "q": "Je veux juste WhatsApp, sans email, c’est possible ?",
+    "a": "Oui, mais je recommande de garder au moins un canal “long” (email) + WhatsApp pour maximiser conversion."
+  },
+  {
+    "q": "Que dois-je préparer avant de commencer ?",
+    "a": "Ton offre claire, une liste de contacts propre, et 1 objectif (relancer, convertir, organiser). Ensuite MAX te guide."
+  }
+]

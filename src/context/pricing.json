@@ -1,0 +1,47 @@
+{
+  "product_name": "MAX",
+  "early_birds": {
+    "label": "Early Birds",
+    "discount": "-30% sur 3 mois",
+    "end_date": "2026-02-20",
+    "notes": "Offre limitée. L’inscription donne accès à un onboarding."
+  },
+  "plans": [
+    {
+      "name": "MAX Starter",
+      "price_monthly_eur": 169,
+      "ideal_for": "Indépendants / petites équipes qui veulent structurer leur relance et leur CRM",
+      "includes": [
+        "CRM (contacts, pipeline, tags)",
+        "Automatisation email",
+        "Automatisation SMS (via OVH SMS)",
+        "Templates & séquences",
+        "Onboarding"
+      ],
+      "not_included": [
+        "WhatsApp (add-on via Green-API)"
+      ]
+    },
+    {
+      "name": "MAX Starter + WhatsApp",
+      "price_monthly_eur": 169,
+      "addon": {
+        "name": "WhatsApp (Green-API)",
+        "price_monthly_eur": 24.90,
+        "messages_included": 100,
+        "recharges_eur": [
+          { "messages": 100, "price": 9.90 },
+          { "messages": 250, "price": 24.90 },
+          { "messages": 500, "price": 49.90 },
+          { "messages": 1000, "price": 99.90 }
+        ]
+      },
+      "ideal_for": "Ceux qui veulent relancer et confirmer rapidement sur WhatsApp"
+    }
+  ],
+  "cta_links": {
+    "home": "https://macrea-max-demo.vercel.app/",
+    "pricing": "https://macrea-max-demo.vercel.app/tarifs",
+    "signup": "https://macrea-max-demo.vercel.app/"
+  }
+}
