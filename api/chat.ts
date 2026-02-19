@@ -1,7 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import fs from 'fs'
 import path from 'path'
-import { sendToLLM } from '../src/services/llmClient'
+// require CommonJS module to avoid ESM/CJS interop issues at runtime
+const { sendToLLM } = require('../src/services/llmClient')
 
 // Simple in-memory rate limiter: map IP -> {count, windowStart}
 const RATE_LIMIT = 30 // requests
@@ -33,12 +34,13 @@ const summarizeJson = (jsonStr: string, maxLen = 2000) => {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  try {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
 
-  if (req.method === 'OPTIONS') return res.status(200).end()
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
+    if (req.method === 'OPTIONS') return res.status(200).end()
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
   // Rate limit by IP
   const ip = req.headers['x-real-ip'] as string || req.headers['x-forwarded-for'] as string || req.connection.remoteAddress || 'unknown'
@@ -117,9 +119,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.log('[api/chat] provider=%s status=success time_ms=%d', llmResponse.provider || 'none', duration)
 
     return res.status(200).json({ reply: replyText, lead_profile: llmResponse.lead_profile || lead_profile || {}, cta })
+    } catch (err: any) {
+      console.error('[api/chat] error', err && err.message)
+      // fallback stub
+      return res.status(200).json({ reply: 'LLM non configuré ou erreur. Essayez plus tard.', lead_profile: lead_profile || {} })
+    }
   } catch (err: any) {
-    console.error('[api/chat] error', err && err.message)
-    // fallback stub
-    return res.status(200).json({ reply: 'LLM non configuré ou erreur. Essayez plus tard.', lead_profile: lead_profile || {} })
+    console.error('[api/chat] UNHANDLED ERROR', err && (err.stack || err.message || err))
+    return res.status(500).json({ error: 'Internal server error', message: err && (err.message || String(err)) })
   }
 }
