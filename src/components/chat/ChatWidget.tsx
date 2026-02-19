@@ -79,9 +79,13 @@ export default function ChatWidget() {
                 </div>
                 {m.role === 'assistant' && m.cta && (
                   <div className="mt-2">
-                    <a href={m.cta.url} target="_blank" rel="noopener noreferrer" className="inline-block bg-sky-600 text-white px-3 py-1 rounded">
+                    <button
+                      onClick={() => window.open(m.cta!.url, '_blank', 'noopener')}
+                      className="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-3 py-2 rounded"
+                      aria-label={m.cta.label}
+                    >
                       {m.cta.label}
-                    </a>
+                    </button>
                   </div>
                 )}
               </div>
