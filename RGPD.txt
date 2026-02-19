@@ -1,0 +1,297 @@
+
+Mentions légales
+
+Éditeur du site et du logiciel MAX
+
+MACREA 
+Micro Entreprise
+Siège social : Rue Jean Pierre TImbaud 92400
+
+Email : contact@malalacrea.fr
+
+Directrice de la publication : Malala Ramaha
+
+Hébergement
+
+Le site et l’application MAX sont hébergés par :
+
+Scaleway SAS – 8 rue de la Ville l'Évêque, 75008 Paris
+
+Vercel Inc. – USA
+
+Supabase Inc. – USA
+
+Propriété intellectuelle
+
+L’ensemble des éléments présents sur le site et dans l’application MAX (textes, logos, design, structure, code, concept, fonctionnalités) est protégé par le droit de la propriété intellectuelle.
+
+Toute reproduction, modification ou exploitation sans autorisation écrite est interdite.
+
+
+Politique de confidentialité
+
+L'entreprise  attache une grande importance à la protection des données personnelles.
+
+La présente politique explique comment les données sont collectées et utilisées dans le cadre de l’utilisation du logiciel MAX.
+
+1. Données collectées
+
+Nous collectons les données suivantes :
+
+Nom et prénom
+
+Adresse email
+
+Nom d’entreprise
+
+Numéro de téléphone
+
+Données importées par les utilisateurs dans leur CRM
+
+Données de connexion et d’usage
+
+Données de facturation
+
+2. Finalités du traitement
+
+Les données sont utilisées pour :
+
+Créer et gérer les comptes utilisateurs
+
+Fournir les fonctionnalités CRM et IA
+
+Permettre l’envoi d’emails, SMS et messages WhatsApp
+
+Assurer le support client
+
+Gérer les abonnements et paiements
+
+Garantir la sécurité du système
+
+3. Base légale
+
+Les traitements reposent sur :
+
+L’exécution du contrat (abonnement MAX)
+
+L’intérêt légitime (sécurité, amélioration du service)
+
+Le consentement lorsque requis
+
+4. Données des prospects importés
+
+Les utilisateurs de MAX sont responsables des données qu’ils importent dans l’application.
+
+MACREA agit en qualité de sous-traitant technique pour ces données.
+
+L’utilisateur garantit disposer des autorisations nécessaires pour traiter les données de ses prospects.
+
+5. Durée de conservation
+
+Données utilisateur : durée de l’abonnement
+
+Données de facturation : selon obligations légales
+
+Données techniques : durée raisonnable de sécurité
+
+6. Sous-traitants techniques
+
+Nous utilisons des prestataires pour assurer le fonctionnement du service :
+
+Supabase
+
+Scaleway 
+
+Vercel 
+
+Mailjet 
+
+OVH (SMS)
+(WhatsApp)
+
+PayPal 
+
+Certains de ces prestataires peuvent être situés hors Union Européenne.
+
+7. Sécurité
+
+MAX met en œuvre des mesures de sécurité techniques :
+
+Isolation des comptes 
+
+Règles d’accès aux données
+
+Chiffrement des informations sensibles
+
+Journalisation des accès
+
+8. Droits des utilisateurs
+
+Conformément au RGPD, vous disposez des droits suivants :
+
+Accès
+
+Rectification
+
+Suppression
+
+Opposition
+
+Portabilité
+
+Pour exercer vos droits : contact@malalacrea.fr
+
+Vous pouvez également déposer une réclamation auprès de la CNIL.
+
+Politique de confidentialité – UGC
+
+Dans le cadre des prestations de création de contenu (UGC, marketing, consulting), MACREA collecte :
+
+Nom
+
+Email
+
+Informations communiquées dans le brief
+
+Données de facturation
+
+Ces données sont utilisées uniquement pour :
+
+Répondre aux demandes
+
+Établir des devis
+
+Réaliser la prestation
+
+Facturation et comptabilité
+
+Les données ne sont pas revendues.
+
+CGV – Conditions Générales de Vente (MAX)
+
+(Contrat abonnement SaaS)
+
+1. Objet
+
+Les présentes Conditions Générales de Vente régissent l’abonnement au logiciel MAX édité par MACREA .
+
+MAX est un logiciel SaaS permettant la gestion de contacts, l’automatisation marketing (email, SMS, WhatsApp) et l’assistance IA.
+
+2. Abonnement
+
+L’accès au service est proposé sous forme d’abonnement mensuel ou annuel.
+
+L’abonnement est payable d’avance.
+
+Tout mois commencé est dû.
+
+3. Prix
+
+Les prix sont indiqués en euros HT ou TTC selon le statut du client.
+
+MACREA SARL se réserve le droit de modifier ses tarifs.
+Toute modification n’affectera pas les abonnements en cours jusqu’à leur renouvellement.
+
+4. Paiement
+
+Le paiement est effectué via PayPal ou tout autre prestataire indiqué.
+
+En cas d’échec de paiement, l’accès au service peut être suspendu.
+
+5. Accès au service
+
+MACREA s’engage à mettre en œuvre tous les moyens raisonnables pour assurer l’accès au service.
+
+Cependant, l’éditeur ne peut garantir une disponibilité continue sans interruption.
+
+6. Responsabilité
+
+MAX est un outil d’assistance marketing.
+
+MACREA  ne garantit aucun résultat commercial (ventes, conversions, chiffre d’affaires).
+
+L’utilisateur reste seul responsable :
+
+Du contenu de ses campagnes
+
+Du respect des lois anti-spam
+
+Des données importées
+
+7. Résiliation
+
+L’utilisateur peut résilier son abonnement à tout moment.
+
+La résiliation prend effet à la fin de la période en cours.
+
+Aucun remboursement prorata temporis n’est effectué.
+
+8. Suspension
+
+MACREA peut suspendre un compte en cas :
+
+D’usage frauduleux
+
+De spam massif
+
+De violation des présentes conditions
+
+CGU – Conditions Générales d’Utilisation (MAX)
+1. Acceptation
+
+L’utilisation de MAX implique l’acceptation pleine et entière des présentes CGU.
+
+2. Compte utilisateur
+
+L’utilisateur est responsable de la confidentialité de ses identifiants.
+
+Toute activité réalisée depuis son compte est réputée effectuée par lui.
+
+3. Usage autorisé
+
+L’utilisateur s’engage à utiliser MAX dans un cadre légal.
+
+Il est interdit d’utiliser MAX pour :
+
+Envoi massif non sollicité (spam)
+
+Activités illégales
+
+Contenu frauduleux ou trompeur
+
+Collecte illégale de données
+
+4. Données importées
+
+L’utilisateur garantit disposer des autorisations nécessaires pour traiter les données de ses prospects.
+
+MAX agit comme outil technique.
+
+5. Limitation de responsabilité
+
+MACREA ne pourra être tenue responsable :
+
+D’une mauvaise utilisation du service
+
+De la qualité des bases de données importées
+
+De sanctions liées au non-respect des lois marketing
+
+Clause Anti-Spam (à ajouter dans CGU + CGV)
+
+Très important pour toi.
+
+Clause anti-spam
+
+L’utilisateur s’engage à respecter la réglementation applicable en matière de prospection commerciale (RGPD, ePrivacy, lois anti-spam).
+
+Il garantit que :
+
+Les destinataires ont donné leur consentement lorsque requis
+
+Les messages incluent une possibilité de désinscription
+
+Les bases de données sont licites
+
+En cas de signalement pour spam, MACREA SARL se réserve le droit de suspendre immédiatement le compte sans préavis.
+

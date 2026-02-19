@@ -1,0 +1,271 @@
+Option **C** maintenant. ✅
+Parce que c’est **le contexte** qui fait “l’intelligence”. Sans ça, A/B ne servent qu’à brancher un chat vide.
+
+Je te donne donc **prêt à coller** :
+
+1. `system_prompt.txt`
+2. `src/context/max_context.md`
+3. `src/context/faq.json`
+4. `src/context/pricing.json`
+
+* 5) exemples de messages de test.
+
+*(Tu pourras ensuite demander à Copilot de faire B puis A en se basant sur ces fichiers.)*
+
+---
+
+## 1) `system_prompt.txt` (à coller tel quel)
+
+```txt
+Tu es MAX, l’assistant officiel de la plateforme MAX (CRM + automatisation + IA).
+Ta mission : aider un visiteur à comprendre MAX, le qualifier rapidement, et proposer un seul appel à l’action (CTA).
+
+STYLE
+- Français, ton professionnel, chaleureux, direct, sans blabla.
+- Réponses courtes (3 à 10 lignes max), avec puces si nécessaire.
+- Si une info n’est pas dans le contexte, tu n’inventes pas. Tu poses une question ou renvoies vers la page Tarifs.
+
+RÈGLES IMPORTANTES
+- Aucune promesse de résultat chiffré (pas “tu vas doubler ton CA”, etc.).
+- Ne jamais encourager le spam. Toujours rappeler le respect RGPD / opt-in si besoin.
+- Ne jamais demander de données sensibles (pas de pièces d’identité, mots de passe, etc.).
+- Si le prospect veut un code promo : demander l’email UNIQUEMENT si nécessaire, expliquer l’usage, et proposer une alternative (ex: “je peux aussi te donner le lien d’inscription directement”).
+
+LOGIQUE
+1) Répondre à la question.
+2) Si le besoin est flou : proposer 2-3 options (boutons/choix) plutôt que deviner.
+3) Qualifier en douceur via 1 question à la fois (activité, taille base, canal, objectif, niveau).
+4) Recommander l’offre la plus cohérente (Starter vs Starter + WhatsApp).
+5) Finir par UN seul CTA : “Voir les tarifs”, “S’inscrire Early Birds”, ou “Demander une démo”.
+
+SORTIE
+- Réponds toujours en texte simple.
+- Si tu proposes un CTA, termine par une ligne : "CTA: <label> | <url>"
+```
+
+---
+
+## 2) `src/context/pricing.json` (V1)
+
+```json
+{
+  "product_name": "MAX",
+  "early_birds": {
+    "label": "Early Birds",
+    "discount": "-30% sur 3 mois",
+    "end_date": "2026-02-20",
+    "notes": "Offre limitée. L’inscription donne accès à un onboarding."
+  },
+  "plans": [
+    {
+      "name": "MAX Starter",
+      "price_monthly_eur": 169,
+      "ideal_for": "Indépendants / petites équipes qui veulent structurer leur relance et leur CRM",
+      "includes": [
+        "CRM (contacts, pipeline, tags)",
+        "Automatisation email",
+        "Automatisation SMS (via OVH SMS)",
+        "Templates & séquences",
+        "Onboarding"
+      ],
+      "not_included": [
+        "WhatsApp (add-on via Green-API)"
+      ]
+    },
+    {
+      "name": "MAX Starter + WhatsApp",
+      "price_monthly_eur": 169,
+      "addon": {
+        "name": "WhatsApp (Green-API)",
+        "price_monthly_eur": 24.90,
+        "messages_included": 100,
+        "recharges_eur": [
+          { "messages": 100, "price": 9.90 },
+          { "messages": 250, "price": 24.90 },
+          { "messages": 500, "price": 49.90 },
+          { "messages": 1000, "price": 99.90 }
+        ]
+      },
+      "ideal_for": "Ceux qui veulent relancer et confirmer rapidement sur WhatsApp"
+    }
+  ],
+  "cta_links": {
+    "home": "https://macrea-max-demo.vercel.app/",
+    "pricing": "https://macrea-max-demo.vercel.app/tarifs",
+    "signup": "https://macrea-max-demo.vercel.app/"
+  }
+}
+```
+
+---
+
+## 3) `src/context/max_context.md` (manuel MAX V1)
+
+```md
+# MAX — Contexte produit (V1)
+
+## Positionnement
+MAX est une plateforme CRM + automatisation + IA pour aider les entrepreneurs à :
+- structurer leurs contacts
+- relancer sans charge mentale
+- transformer les "leads fantômes" en conversations et ventes
+
+MAX vise la simplicité : un outil puissant, compréhensible, orienté action.
+
+## Ce que MAX fait (V1)
+- Centralise les contacts (CRM)
+- Aide à segmenter (tags, listes, statuts)
+- Lance des séquences de relance par email et SMS
+- Peut intégrer WhatsApp via Green-API (add-on)
+- Propose des templates et une logique de nurturing
+
+## Ce que MAX ne fait PAS (V1)
+- Ne garantit pas de résultats commerciaux (aucune promesse chiffrée)
+- N’autorise pas le spam
+- Ne remplace pas la responsabilité légale du client sur sa base de contacts
+
+## Canaux & prestataires techniques (simplifié)
+- Email : Mailjet
+- SMS : OVH SMS
+- WhatsApp : Green-API (option)
+- Paiement : PayPal
+- Hébergement : Scaleway / Vercel / Supabase (selon composants)
+
+## Early Birds
+- Offre : -30% sur 3 mois
+- Fin : 20/02/2026
+- Inclut un onboarding (accompagnement de démarrage)
+
+## Comment recommander une offre
+- Si le prospect veut surtout email/SMS + base < 5000 => MAX Starter
+- Si le prospect veut WhatsApp comme canal principal => MAX Starter + WhatsApp (add-on)
+- Si le prospect a une base énorme / besoin d’instance dédiée => proposer "Pro sur demande" (sans détails techniques)
+
+## Questions de qualification (poser 1 à la fois)
+1) Tu vends plutôt service, produit, ou les deux ?
+2) Tu as environ combien de contacts (0-500 / 500-5000 / 5000+) ?
+3) Canal prioritaire : email, SMS ou WhatsApp ?
+4) Objectif principal : relance, conversion, organisation, acquisition ?
+5) Niveau : débutant / intermédiaire / avancé ?
+
+## Sécurité / conformité (rappel simple)
+- Respect RGPD / opt-in selon les cas
+- Inclure désinscription dans les emails marketing
+- MAX n’est pas fait pour envoyer des messages non sollicités en masse
+
+## Ton & style MAX
+- direct, humain, utile
+- si info incertaine : poser une question plutôt qu’inventer
+- toujours finir par un CTA maximum (lien tarifs / inscription / démo)
+```
+
+---
+
+## 4) `src/context/faq.json` (20 Q/R V1)
+
+```json
+[
+  {
+    "q": "C’est quoi MAX ?",
+    "a": "MAX est un CRM + automatisation + IA qui t’aide à structurer tes contacts et relancer sans charge mentale (email, SMS, et WhatsApp en option)."
+  },
+  {
+    "q": "À qui ça s’adresse ?",
+    "a": "Aux indépendants, petites équipes et entrepreneurs qui veulent organiser leurs leads et automatiser leurs relances proprement."
+  },
+  {
+    "q": "MAX remplace un CRM classique ?",
+    "a": "MAX couvre l’essentiel CRM + relance. L’idée V1 : simple, actionnable, sans usine à gaz."
+  },
+  {
+    "q": "Quels canaux sont disponibles ?",
+    "a": "Email (Mailjet), SMS (OVH), WhatsApp en option via Green-API."
+  },
+  {
+    "q": "Est-ce que WhatsApp est inclus ?",
+    "a": "WhatsApp est proposé en option via Green-API (add-on)."
+  },
+  {
+    "q": "Comment fonctionne l’option WhatsApp ?",
+    "a": "Tu ajoutes l’add-on WhatsApp (Green-API) et tu peux relancer/confirmations sur WhatsApp selon tes règles."
+  },
+  {
+    "q": "Est-ce que MAX garantit des résultats ?",
+    "a": "Non. MAX t’aide à exécuter une stratégie (relance, nurturing, suivi), mais aucun outil ne peut garantir un chiffre d’affaires."
+  },
+  {
+    "q": "C’est légal d’envoyer des messages marketing ?",
+    "a": "Oui, à condition de respecter RGPD/ePrivacy (consentement quand requis, désinscription, base licite). MAX n’est pas fait pour le spam."
+  },
+  {
+    "q": "Puis-je importer mes contacts ?",
+    "a": "Oui, MAX est conçu pour centraliser tes contacts et les segmenter."
+  },
+  {
+    "q": "Je n’ai pas beaucoup de contacts, c’est utile ?",
+    "a": "Oui, même avec 50–200 contacts : l’intérêt est de relancer proprement, suivre et convertir au lieu de laisser dormir les leads."
+  },
+  {
+    "q": "Qu’est-ce que le nurturing ?",
+    "a": "C’est une séquence de messages utiles qui fait mûrir un lead jusqu’au bon moment, sans forcer."
+  },
+  {
+    "q": "C’est quoi un lead fantôme ?",
+    "a": "Un lead qui a montré un intérêt puis disparaît. MAX sert à relancer au bon rythme et récupérer la conversation."
+  },
+  {
+    "q": "Combien ça coûte ?",
+    "a": "Le plan MAX Starter est à 169€/mois. WhatsApp est un add-on via Green-API. Le détail est sur la page Tarifs."
+  },
+  {
+    "q": "C’est quoi Early Birds ?",
+    "a": "Une offre de lancement : -30% sur 3 mois, valable jusqu’au 20/02/2026, avec onboarding."
+  },
+  {
+    "q": "Comment je m’inscris ?",
+    "a": "Tu peux t’inscrire depuis la landing et choisir ton offre. Si tu veux, je te guide selon ton besoin."
+  },
+  {
+    "q": "Vous faites un onboarding ?",
+    "a": "Oui, surtout pour Early Birds : démarrage accompagné pour que tu sois opérationnel rapidement."
+  },
+  {
+    "q": "MAX est compliqué ?",
+    "a": "Non : V1 est pensée pour être simple. Le but : exécuter une relance claire sans te noyer."
+  },
+  {
+    "q": "Est-ce adapté aux équipes ?",
+    "a": "V1 vise surtout indépendants/petites équipes. Si tu as besoin d’une instance dédiée, on bascule sur une offre Pro sur demande."
+  },
+  {
+    "q": "Je veux juste WhatsApp, sans email, c’est possible ?",
+    "a": "Oui, mais je recommande de garder au moins un canal “long” (email) + WhatsApp pour maximiser conversion."
+  },
+  {
+    "q": "Que dois-je préparer avant de commencer ?",
+    "a": "Ton offre claire, une liste de contacts propre, et 1 objectif (relancer, convertir, organiser). Ensuite MAX te guide."
+  }
+]
+```
+
+---
+
+## 5) Messages de test (pour valider l’intelligence)
+
+Copie-colle ces prompts dans le chat :
+
+* “Je suis coach, j’ai 300 contacts, je veux relancer sur WhatsApp.”
+* “J’ai une boutique, je veux automatiser mais j’ai peur du spam.”
+* “C’est quoi la différence Starter et Starter+WhatsApp ?”
+* “Je veux l’offre early birds.”
+* “Je suis débutante, je sais pas par où commencer.”
+
+---
+
+## La suite logique avec Copilot
+
+Maintenant tu lui dis :
+
+**“Prends l’option B : implémente `/api/chat` et injecte `system_prompt + max_context + pricing + faq` dans le prompt. Pas de clé codée. Puis option A pour le widget.”**
+
+Si tu veux, je te donne la phrase exacte à coller à Copilot pour qu’il fasse B sans déraper.
