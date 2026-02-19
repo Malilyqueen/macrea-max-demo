@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 type Message = { role: 'user' | 'assistant' | 'system'; content: string; cta?: { label: string; url: string } | null }
 
 export default function ChatWidget() {
-  const [tabId, setTabId] = useState<string | null>(null)
+  const [clientId, setClientId] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -13,16 +13,16 @@ export default function ChatWidget() {
   const boxRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    // initialize per-tab id and restore state from sessionStorage (per-tab)
+    // initialize persistent client id and restore state from localStorage (shared per browser)
     if (typeof window === 'undefined') return
     try {
-      let id = sessionStorage.getItem('chat_tab_id')
+      let id = localStorage.getItem('chat_client_id')
       if (!id) {
-        id = 'tab_' + Math.random().toString(36).slice(2)
-        sessionStorage.setItem('chat_tab_id', id)
+        id = 'client_' + Math.random().toString(36).slice(2)
+        localStorage.setItem('chat_client_id', id)
       }
-      setTabId(id)
-      const raw = sessionStorage.getItem('chat_state_' + id)
+      setClientId(id)
+      const raw = localStorage.getItem('chat_state_' + id)
       if (raw) {
         const obj = JSON.parse(raw)
         if (Array.isArray(obj.messages)) setMessages(obj.messages)
@@ -65,12 +65,12 @@ export default function ChatWidget() {
       if (json.lead_profile) setLeadProfile(json.lead_profile)
       // save immediately for persistence
       try {
-        if (tabId && typeof sessionStorage !== 'undefined') {
+        if (clientId && typeof localStorage !== 'undefined') {
           const state = { messages: [...messages.slice(-9), userMsg, { role: 'assistant', content: reply, cta }], leadProfile: json.lead_profile || leadProfile, open }
-          sessionStorage.setItem('chat_state_' + tabId, JSON.stringify(state))
+          localStorage.setItem('chat_state_' + clientId, JSON.stringify(state))
         }
       } catch (e) {
-        // ignore session storage failures
+        // ignore localStorage failures
       }
       setLoading(false)
     } catch (e: any) {
@@ -82,16 +82,16 @@ export default function ChatWidget() {
 
   // Persist state on every messages or leadProfile change
   useEffect(() => {
-    if (!tabId) return
+    if (!clientId) return
     try {
-      if (typeof sessionStorage !== 'undefined') {
+      if (typeof localStorage !== 'undefined') {
         const state = { messages, leadProfile, open }
-        sessionStorage.setItem('chat_state_' + tabId, JSON.stringify(state))
+        localStorage.setItem('chat_state_' + clientId, JSON.stringify(state))
       }
     } catch (e) {
       // ignore
     }
-  }, [messages, leadProfile, open, tabId])
+  }, [messages, leadProfile, open, clientId])
 
   return (
     <div>
