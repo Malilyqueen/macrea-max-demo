@@ -57,7 +57,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   rateMap.set(ip, state)
 
   const payload = req.body || {}
-  const { messages, page, lead_profile, meta, page_context } = payload
+  const { messages, page, lead_profile, page_context } = payload
 
   // Validation
   if (!messages || !Array.isArray(messages)) {
