@@ -18,6 +18,10 @@ const safeRead = (p: string) => {
   }
 }
 
+function toError(err: unknown): Error {
+  return err instanceof Error ? err : new Error(String(err))
+}
+
 const summarizeJson = (jsonStr: string, maxLen = 2000) => {
   try {
     const obj = JSON.parse(jsonStr)
@@ -105,15 +109,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     try {
       // prefer CommonJS client to be robust in this mixed ESM repo
       sendToLLM = require('../src/services/llmClient.cjs').sendToLLM
-    } catch (e) {
+    } catch (e: unknown) {
       try {
         sendToLLM = require('../src/services/llmClient').sendToLLM
-      } catch (e2) {
-        console.error('[api/chat] could not require llmClient', e && (e.stack || e.message || e), e2 && (e2.stack || e2.message || e2))
+      } catch (e2: unknown) {
+        const errObj = toError(e)
+        const err2Obj = toError(e2)
+        console.error('[api/chat] could not require llmClient', { message: errObj.message, stack: errObj.stack }, { message: err2Obj.message, stack: err2Obj.stack })
         const debugHeader = (req.headers && (req.headers['x-debug'] as string)) || ''
         const isDebug = debugHeader === '1' || debugHeader === 'true'
         if (isDebug) {
-          return res.status(500).json({ error: 'LLM client require failed', stack: [e && (e.stack || e.message || String(e)), e2 && (e2.stack || e2.message || String(e2))] })
+          return res.status(500).json({ error: 'LLM client require failed', stack: [errObj.stack || errObj.message, err2Obj.stack || err2Obj.message] })
         }
         return res.status(200).json({ reply: 'LLM non configuré. (client absent)', lead_profile: lead_profile || {} })
       }
@@ -137,13 +143,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.log('[api/chat] provider=%s status=success time_ms=%d', llmResponse.provider || 'none', duration)
 
     return res.status(200).json({ reply: replyText, lead_profile: llmResponse.lead_profile || lead_profile || {}, cta })
-    } catch (err: any) {
-      console.error('[api/chat] error', err && err.message)
+    } catch (err: unknown) {
+      const e = toError(err)
+      console.error('[api/chat] error', { message: e.message, stack: e.stack })
       // fallback stub
       return res.status(200).json({ reply: 'LLM non configuré ou erreur. Essayez plus tard.', lead_profile: lead_profile || {} })
     }
   } catch (err: any) {
-    console.error('[api/chat] UNHANDLED ERROR', err && (err.stack || err.message || err))
-    return res.status(500).json({ error: 'Internal server error', message: err && (err.message || String(err)) })
+    const e = toError(err)
+    console.error('[api/chat] UNHANDLED ERROR', { message: e.message, stack: e.stack })
+    return res.status(500).json({ error: 'Internal server error', message: e.message })
   }
 }

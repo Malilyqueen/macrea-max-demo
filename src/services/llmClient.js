@@ -35,7 +35,8 @@ const sendToOpenAI = async ({ prompt, model }) => {
   if (!key) throw new Error('OPENAI_API_KEY not set')
 
   const body = {
-    model: model || process.env.MODEL || 'gpt-4o-mini',
+    const chosenModel = model || process.env.LLM_MODEL || process.env.OPENAI_MODEL || process.env.MODEL || 'gpt-4o-mini'
+    model: chosenModel,
     messages: [{ role: 'system', content: prompt }],
     max_tokens: 600
   }
