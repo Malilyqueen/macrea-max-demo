@@ -221,6 +221,32 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Minimal logging
     console.log('[api/chat] provider=%s status=success time_ms=%d', llmResponse.provider || 'none', duration)
 
+    // Enforce internal URLs for CTAs: allow only macrea-max-demo.vercel.app
+    try {
+      const ALLOWED_BASE = 'https://macrea-max-demo.vercel.app/'
+      if (cta) {
+        if (cta.url) {
+          try {
+            const u = new URL(cta.url)
+            if (!u.href.startsWith(ALLOWED_BASE)) {
+              cta = null
+            }
+          } catch (_) {
+            cta = null
+          }
+        } else if (cta.label && /tarif/i.test(cta.label)) {
+          cta.url = ALLOWED_BASE + 'tarifs'
+          cta.label = 'Voir les tarifs'
+        }
+      }
+
+      if (!cta && /voir les tarifs/i.test(replyText)) {
+        cta = { label: 'Voir les tarifs', url: 'https://macrea-max-demo.vercel.app/tarifs' }
+      }
+    } catch (_) {
+      // keep existing behavior on unexpected errors
+    }
+
     return res.status(200).json({ reply: replyText, lead_profile: llmResponse.lead_profile || lead_profile || {}, cta })
     } catch (err: unknown) {
       const e = toError(err)
