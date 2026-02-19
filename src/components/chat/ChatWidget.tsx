@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 type Message = { role: 'user' | 'assistant' | 'system'; content: string; cta?: { label: string; url: string } | null }
 
 export default function ChatWidget() {
+  const [tabId, setTabId] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -12,8 +13,28 @@ export default function ChatWidget() {
   const boxRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    // initial quick replies
-    setMessages([{ role: 'system', content: 'Bonjour 👋 Je suis votre Guide, que désirez-vous savoir sur MAX ?' }])
+    // initialize per-tab id and restore state from sessionStorage (per-tab)
+    if (typeof window === 'undefined') return
+    try {
+      let id = sessionStorage.getItem('chat_tab_id')
+      if (!id) {
+        id = 'tab_' + Math.random().toString(36).slice(2)
+        sessionStorage.setItem('chat_tab_id', id)
+      }
+      setTabId(id)
+      const raw = sessionStorage.getItem('chat_state_' + id)
+      if (raw) {
+        const obj = JSON.parse(raw)
+        if (Array.isArray(obj.messages)) setMessages(obj.messages)
+        if (obj.leadProfile) setLeadProfile(obj.leadProfile)
+        if (typeof obj.open === 'boolean') setOpen(obj.open)
+      } else {
+        // initial quick replies when no saved state
+        setMessages([{ role: 'system', content: 'Bonjour 👋 Je suis votre Guide, que désirez-vous savoir sur MAX ?' }])
+      }
+    } catch (e) {
+      setMessages([{ role: 'system', content: 'Bonjour 👋 Je suis votre Guide, que désirez-vous savoir sur MAX ?' }])
+    }
   }, [])
 
   useEffect(() => {
@@ -42,6 +63,15 @@ export default function ChatWidget() {
       const cta = json.cta || null
       setMessages((m) => [...m, { role: 'assistant', content: reply, cta }])
       if (json.lead_profile) setLeadProfile(json.lead_profile)
+      // save immediately for persistence
+      try {
+        if (tabId && typeof sessionStorage !== 'undefined') {
+          const state = { messages: [...messages.slice(-9), userMsg, { role: 'assistant', content: reply, cta }], leadProfile: json.lead_profile || leadProfile, open }
+          sessionStorage.setItem('chat_state_' + tabId, JSON.stringify(state))
+        }
+      } catch (e) {
+        // ignore session storage failures
+      }
       setLoading(false)
     } catch (e: any) {
       setLoading(false)
@@ -49,6 +79,19 @@ export default function ChatWidget() {
       setMessages((m) => [...m, { role: 'assistant', content: 'Erreur serveur — réessaye plus tard.' }])
     }
   }
+
+  // Persist state on every messages or leadProfile change
+  useEffect(() => {
+    if (!tabId) return
+    try {
+      if (typeof sessionStorage !== 'undefined') {
+        const state = { messages, leadProfile, open }
+        sessionStorage.setItem('chat_state_' + tabId, JSON.stringify(state))
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, [messages, leadProfile, open, tabId])
 
   return (
     <div>
@@ -80,7 +123,8 @@ export default function ChatWidget() {
                 {m.role === 'assistant' && m.cta && (
                   <div className="mt-2">
                     <button
-                      onClick={() => window.open(m.cta!.url, '_blank', 'noopener')}
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); window.open(m.cta!.url, '_blank', 'noopener,noreferrer') }}
                       className="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-3 py-2 rounded"
                       aria-label={m.cta.label}
                     >
