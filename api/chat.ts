@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import fs from 'fs'
 import path from 'path'
+import { pathToFileURL } from 'url'
 // We'll require the LLM client inside the handler to avoid module-load crashes
 // (if require throws at module initialization, the function would fail before responding).
 
@@ -104,40 +105,67 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const finalPrompt = promptParts.join('\n\n')
 
-  // Call LLM client: prefer dynamic ESM import, gracefully handle CommonJS fallback
+  // Call LLM client: prefer dynamic import using file:// absolute paths so
+  // runtime bundlers (Vercel) can resolve the actual served file location.
   let sendToLLM: any = undefined
-  try {
-    // try importing the CJS build first (dynamic import will expose CommonJS as `default`)
+  const tryImportFile = async (absPath: string) => {
     try {
-      const mod = await import('../src/services/llmClient.cjs')
-      sendToLLM = (mod && (mod.sendToLLM || (mod as any).default?.sendToLLM || (mod as any).default))
+      const url = pathToFileURL(absPath).href
+      const m = await import(url)
+      return m
     } catch (e) {
-      // try ESM/regular JS variant
-      const mod2 = await import('../src/services/llmClient')
-      sendToLLM = (mod2 && (mod2.sendToLLM || (mod2 as any).default?.sendToLLM || (mod2 as any).default))
+      return null
+    }
+  }
+
+  try {
+    const cwd = process.cwd()
+    const candidates = [
+      path.resolve(cwd, 'src', 'services', 'llmClient.cjs'),
+      path.resolve(cwd, 'src', 'services', 'llmClient.js'),
+      path.resolve(cwd, 'src', 'services', 'llmClient')
+    ]
+    for (const c of candidates) {
+      const mod = await tryImportFile(c)
+      if (mod) {
+        sendToLLM = (mod && (mod.sendToLLM || (mod as any).default?.sendToLLM || (mod as any).default))
+        if (sendToLLM) break
+      }
     }
   } catch (e: unknown) {
-    // final attempt: if `require` exists (older runtimes), use it
+    // ignore here; we'll handle below
+  }
+
+  // As a last resort, try legacy require if available in this runtime
+  if (!sendToLLM) {
     try {
       // @ts-ignore
       if (typeof (global as any).require === 'function') {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        const r = (global as any).require('../src/services/llmClient.cjs')
-        sendToLLM = r && r.sendToLLM
+        // attempt both cjs and js paths relative to project
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          const r = (global as any).require(path.resolve(process.cwd(), 'src', 'services', 'llmClient.cjs'))
+          sendToLLM = r && r.sendToLLM
+        } catch (_) {
+          try {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            const r2 = (global as any).require(path.resolve(process.cwd(), 'src', 'services', 'llmClient.js'))
+            sendToLLM = r2 && r2.sendToLLM
+          } catch (_) {}
+        }
       }
-    } catch (e3: unknown) {
-      // ignore
-    }
-    const errObj = toError(e)
-    console.error('[api/chat] could not import llmClient', { message: errObj.message, stack: errObj.stack })
+    } catch (_) {}
+  }
+
+  if (!sendToLLM) {
+    const errObj = new Error('LLM client import/require did not resolve')
+    console.error('[api/chat] could not load llmClient', { message: errObj.message })
     const debugHeader = (req.headers && (req.headers['x-debug'] as string)) || ''
     const isDebug = debugHeader === '1' || debugHeader === 'true'
-    if (!sendToLLM) {
-      if (isDebug) {
-        return res.status(500).json({ error: 'LLM client import failed', stack: [errObj.stack || errObj.message] })
-      }
-      return res.status(200).json({ reply: 'LLM non configuré. (client absent)', lead_profile: lead_profile || {} })
+    if (isDebug) {
+      return res.status(500).json({ error: 'LLM client import failed', detail: 'tried file:// imports and global.require fallbacks' })
     }
+    return res.status(200).json({ reply: 'LLM non configuré. (client absent)', lead_profile: lead_profile || {} })
   }
 
   try {
