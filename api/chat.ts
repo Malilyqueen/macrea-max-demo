@@ -96,6 +96,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (maxContext) promptParts.push(maxContext)
   if (pricingSummary) promptParts.push('Pricing:\n' + pricingSummary)
   if (faqSummary) promptParts.push('FAQ:\n' + faqSummary)
+  // Add promo context: explicit promo text on /tarifs starting 2026-02-21
+  try {
+    const promoStart = new Date('2026-02-21T00:00:00Z')
+    const nowDate = new Date()
+    const pageStr = page ? String(page) : ''
+    if (nowDate >= promoStart && pageStr.includes('tarif')) {
+      promptParts.push(
+        'PROMO:\n- Offre promo : -20% sur 2 mois. Code : MAX20.\n- Applicable uniquement sur la page /tarifs.\n- NE PAS demander d\'email pour fournir ce code.'
+      )
+    }
+  } catch (e) {
+    // ignore date parsing errors
+  }
   if (page_context) promptParts.push('Page context:\n' + String(page_context))
   if (lead_profile) promptParts.push('Lead profile:\n' + JSON.stringify(lead_profile))
 

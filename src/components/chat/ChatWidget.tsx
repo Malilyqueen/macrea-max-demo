@@ -41,7 +41,7 @@ export default function ChatWidget() {
     if (open && boxRef.current) boxRef.current.scrollTop = boxRef.current.scrollHeight
   }, [open, messages])
 
-  const quick = ['Tarifs', 'Ce que MAX fait', 'Early Birds -30%']
+  const quick = ['Tarifs', 'Ce que MAX fait', 'Code -20%']
 
   async function sendMessage(text: string) {
     if (!text) return
@@ -49,12 +49,22 @@ export default function ChatWidget() {
     const userMsg: Message = { role: 'user', content: text }
     setMessages((m) => [...m, userMsg])
     setInput('')
+
+    // Local shortcut: if user asks for promo code on /tarifs, reply immediately with the global code
+    if (typeof window !== 'undefined' && window.location.pathname.includes('tarif') && /code|promo|MAX20|PROMO20/i.test(text)) {
+      const promoText = 'Code -20%: MAX20'
+      setMessages((m) => [...m, { role: 'assistant', content: promoText }])
+      // optionally save code for easy access
+      try { localStorage.setItem('promo_code', 'MAX20') } catch (_) {}
+      return
+    }
+
     setLoading(true)
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [...messages.slice(-9), userMsg], page: window.location.pathname, lead_profile: leadProfile, clientId: clientId })
+        body: JSON.stringify({ messages: [...messages.slice(-9), userMsg], page: typeof window !== 'undefined' ? window.location.pathname : '/', lead_profile: leadProfile, clientId: clientId })
       })
       const json = await res.json()
       let reply = json.reply || 'Désolé, pas de réponse.'
@@ -79,6 +89,23 @@ export default function ChatWidget() {
       setMessages((m) => [...m, { role: 'assistant', content: 'Erreur serveur — réessaye plus tard.' }])
     }
   }
+
+  // Proactive promo suggestion on /tarifs after promo start date — show only once
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const path = window.location.pathname || ''
+    const promoStart = new Date('2026-02-21T00:00:00Z')
+    const nowDate = new Date()
+    try {
+      const shown = localStorage.getItem('promo_hint_shown')
+      if (path.includes('tarif') && nowDate >= promoStart && !shown) {
+        setMessages((m) => [...m, { role: 'assistant', content: "Si tu veux, j’ai un code -20% valable en ce moment." }])
+        localStorage.setItem('promo_hint_shown', '1')
+      }
+    } catch (e) {
+      // localStorage may fail in private modes — ignore
+    }
+  }, [])
 
   // Persist state on every messages or leadProfile change
   useEffect(() => {
