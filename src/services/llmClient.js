@@ -1,11 +1,27 @@
-const fetch = globalThis.fetch || require('node-fetch')
-const { AbortController } = globalThis || require('abort-controller')
+let fetch
+let AbortController
+try {
+  fetch = globalThis.fetch
+  AbortController = globalThis.AbortController
+} catch (e) {
+  // ignore
+}
+try {
+  if (!fetch) fetch = require('node-fetch')
+} catch (e) {
+  // node-fetch not installed; fetch may exist in runtime (Vercel) or not
+}
+try {
+  if (!AbortController) AbortController = require('abort-controller').AbortController
+} catch (e) {
+  // optional
+}
 
 const timeoutFetch = async (url, opts = {}, timeout = 15000) => {
-  const controller = new AbortController()
-  const id = setTimeout(() => controller.abort(), timeout)
+  const controller = AbortController ? new AbortController() : undefined
+  const id = setTimeout(() => controller && controller.abort(), timeout)
   try {
-    const res = await fetch(url, { ...opts, signal: controller.signal })
+    const res = await (fetch)(url, { ...opts, signal: controller && controller.signal })
     clearTimeout(id)
     return res
   } catch (e) {
@@ -15,7 +31,7 @@ const timeoutFetch = async (url, opts = {}, timeout = 15000) => {
 }
 
 const sendToOpenAI = async ({ prompt, model }) => {
-  const key = process.env.OPENAI_API_KEY
+  const key = process.env.OPENAI_API_KEY || process.env.LLM_OPENAI_KEY || process.env.LLM_PROVIDER_OPENAI_KEY
   if (!key) throw new Error('OPENAI_API_KEY not set')
 
   const body = {
@@ -64,7 +80,7 @@ const sendToOllama = async ({ prompt, model }) => {
 }
 
 async function sendToLLM({ prompt, page, lead_profile, messages }) {
-  const provider = process.env.LLM_PROVIDER || process.env.PROVIDER || ''
+  const provider = process.env.LLM_PROVIDER || process.env.LLM_PROVIDER_OPENAI || process.env.PROVIDER || ''
   if (!provider) {
     // stub response when not configured
     return { reply: "LLM non configuré. Contacte l'administrateur.", provider: 'stub', lead_profile: lead_profile || {} }

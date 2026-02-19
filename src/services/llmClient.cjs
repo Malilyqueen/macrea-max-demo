@@ -74,7 +74,7 @@ const sendToOllama = async ({ prompt, model }) => {
 }
 
 async function sendToLLM({ prompt, page, lead_profile, messages }) {
-  const provider = process.env.LLM_PROVIDER || process.env.PROVIDER || ''
+  const provider = process.env.LLM_PROVIDER || process.env.LLM_PROVIDER_OPENAI || process.env.PROVIDER || ''
   if (!provider) {
     return { reply: "LLM non configuré. Contacte l'administrateur.", provider: 'stub', lead_profile: lead_profile || {} }
   }
