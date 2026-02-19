@@ -121,6 +121,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const cwd = process.cwd()
     const candidates = [
+      // prefer an API-local copy (ensures function bundle contains the client)
+      path.resolve(cwd, 'api', 'llmClient.cjs'),
+      path.resolve(cwd, 'api', 'llmClient.js'),
+      // then fall back to src variants if present in deployed package
       path.resolve(cwd, 'src', 'services', 'llmClient.cjs'),
       path.resolve(cwd, 'src', 'services', 'llmClient.js'),
       path.resolve(cwd, 'src', 'services', 'llmClient')
