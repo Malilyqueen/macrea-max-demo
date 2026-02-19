@@ -1,0 +1,102 @@
+# Petit projet : Chatbot contextuel pour la landing MAX (V1)
+
+## Objectif
+Créer un widget chat "simple mais intelligent" sur la landing page MAX, capable de :
+1) répondre aux questions sur MAX (fonctionnalités, tarifs, early birds, onboarding)
+2) qualifier le prospect (activité, taille base, canal, objectif)
+3) proposer un CTA (s’inscrire / demander démo / obtenir code promo)
+
+## Question clé : faut-il une IA / API ?
+- Si on veut un bot "vraiment intelligent" (réponses libres + adaptation au contexte), OUI.
+    => On a besoin d’un endpoint backend `POST /api/chat` qui appelle un LLM :
+      OpenAI <REDACTED - DO NOT COMMIT API KEYS>
+     -modele gpt GPT-4.1 nano
+
+=> Décision V1 : utiliser un LLM via notre backend (API) + contexte contrôlé (pas de RAG complexe).
+
+---
+
+## Périmètre V1 (minimum viable)
+### Front (React/Vite)
+- Composant `ChatWidget.jsx` :
+  - bouton flottant "Parler à MAX"
+  - fenêtre chat (messages user/assistant)
+  - 3 quick replies au démarrage : "Tarifs", "Ce que MAX fait", "Early Birds -30%"
+  - état local : messages + loading + erreurs
+- Le chat envoie au backend :
+  - `messages` (10 derniers tours max)
+  - `page` (route actuelle ex: "/tarifs")
+  - `lead_profile` (objet progressif)
+  - `utm/referrer` si dispo (optionnel, pas de tracking lourd)
+
+### Back (Node/Express)
+- Route `POST /api/chat`
+  Entrée:
+  {
+    messages: [{role:"user"|"assistant", content:"..."}],
+    page: "/tarifs" | "/",
+    lead_profile: { type_activite?, taille_base?, canal_prioritaire?, objectif?, niveau? },
+    meta?: { referrer?, utm? }
+  }
+  Sortie:
+  {
+    reply: "texte assistant",
+    lead_profile: { ...mis à jour... },
+    cta?: { label: "S'inscrire", url: "..." } | null
+  }
+
+- Injection du contexte (très important) :
+  On charge au démarrage 2 fichiers :
+  - `context/max_context.md` (manuel MAX : offre, prix, règles, ton)
+  - `context/faq.json` (questions/réponses)
+  On construit le prompt final = system_prompt + max_context + page_context + lead_profile + derniers messages.
+
+- Garde-fous V1 :
+  - rate limit simple (ex: 20 requêtes / jour / IP)
+  - anti-abus : refuser liens suspects + longueur max
+  - pas de promesse de résultats (règle dans system prompt)
+  - si incertain => poser une question, proposer 2 choix
+
+---
+
+## Fichiers à créer
+Front:
+- `src/components/chat/ChatWidget.jsx`
+- `src/components/chat/chat.css` (ou module CSS)
+- (option) `src/components/chat/chatUtils.js`
+
+Back:
+- `src/routes/chat.js` (ou `routes/chat.js`)
+- `src/services/llmClient.js` (OpenAI ou Ollama)
+- `src/context/max_context.md`
+- `src/context/faq.json`
+- `src/context/pricing.json` (tarifs + early birds)
+
+---
+
+## Règles de réponse (à mettre dans system prompt)
+- Ton : clair, humain, direct, pas de blabla
+- Ne pas inventer : si info inconnue => demander / renvoyer vers page tarifs
+- Ne jamais promettre des résultats chiffrés
+- Toujours finir par 1 CTA max (inscription / démo / tarifs)
+- Ne pas demander de données sensibles
+- Si email demandé pour code promo : expliquer pourquoi + option "non"
+
+---
+
+## Bonus V1 (facultatif)
+- `POST /api/promo` : génère un code promo (si on veut)
+- stockage minimal : fichier JSON ou table (selon stack)
+- logs : uniquement technique, pas de données sensibles
+
+---
+
+## Définition de "Terminé" (done)
+- Le widget apparaît sur la landing, fonctionne sur mobile.
+- Il répond correctement sur :
+  - "c’est quoi MAX ?"
+  - "tarifs ?"
+  - "early birds ?"
+  - "je veux automatiser WhatsApp"
+- Il remplit au moins 3 champs du `lead_profile` pendant la conversation.
+- Il propose un CTA cohérent.
