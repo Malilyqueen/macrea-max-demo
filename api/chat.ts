@@ -177,13 +177,32 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const llmResponse = await sendToLLM({ prompt: finalPrompt, page, lead_profile, messages: messages.slice(-10) })
     const duration = Date.now() - start
 
-    // parse CTA if present at end of text
+    // parse CTA if present at end of text (support several formats)
     let replyText = llmResponse.reply || ''
     let cta = llmResponse.cta || null
-    const ctaMatch = replyText.match(/\n?CTA:\s*(.+?)\s*\|\s*(https?:\/\/\S+)\s*$/m)
-    if (ctaMatch) {
-      cta = { label: ctaMatch[1].trim(), url: ctaMatch[2].trim() }
-      replyText = replyText.replace(ctaMatch[0], '').trim()
+
+    const ctaPatterns: Array<{re: RegExp; groups: 'labelUrl' | 'urlOnly'}> = [
+      { re: /\n?CTA:\s*(.+?)\s*\|\s*(https?:\/\/\S+)\s*$/m, groups: 'labelUrl' }, // Label | url
+      { re: /\n?CTA:\s*(.+?)\s*\((https?:\/\/\S+)\)\s*$/m, groups: 'labelUrl' }, // Label (url)
+      { re: /\n?CTA:\s*(.+?)\s*[-–]\s*(https?:\/\/\S+)\s*$/m, groups: 'labelUrl' }, // Label - url
+      { re: /\n?CTA:\s*(https?:\/\/\S+)\s*$/m, groups: 'urlOnly' } // url only
+    ]
+
+    for (const p of ctaPatterns) {
+      const m = replyText.match(p.re)
+      if (m) {
+        if (p.groups === 'labelUrl') {
+          const label = m[1] && m[1].trim()
+          const url = m[2] && m[2].trim()
+          if (url) cta = { label: label || 'Voir', url }
+        } else {
+          const url = m[1] && m[1].trim()
+          if (url) cta = { label: 'Voir', url }
+        }
+        // strip the CTA line from the reply text
+        replyText = replyText.replace(m[0], '').trim()
+        break
+      }
     }
 
     // Minimal logging
