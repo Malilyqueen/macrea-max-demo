@@ -7,6 +7,10 @@ import ContactPage from './routes/ContactPage';
 import DemoPage from './routes/DemoPage';
 import DemoBoardPage from './pages/_DemoBoardPage';
 import EarlyBirdsPage from './routes/EarlyBirdsPage';
+import MentionsLegalesPage from './routes/MentionsLegalesPage';
+import PrivacyPolicyPage from './routes/PrivacyPolicyPage';
+import CgvPage from './routes/CgvPage';
+import CguPage from './routes/CguPage';
 
 function App() {
   return (
@@ -20,6 +24,10 @@ function App() {
         <Route path="/demo" element={<DemoPage />} />
         <Route path="/demoboard" element={<DemoBoardPage />} />
         <Route path="/early-birds" element={<EarlyBirdsPage />} />
+        <Route path="/mentions-legales" element={<MentionsLegalesPage />} />
+        <Route path="/confidentialite" element={<PrivacyPolicyPage />} />
+        <Route path="/cgv" element={<CgvPage />} />
+        <Route path="/cgu" element={<CguPage />} />
       </Routes>
     </Router>
   );

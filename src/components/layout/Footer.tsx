@@ -74,8 +74,18 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4 text-[#00cfff]">Légal</h4>
             <ul className="space-y-2 text-[#64748b]">
-              <li className="hover:text-[#00cfff] cursor-pointer transition-colors">Mentions légales</li>
-              <li className="hover:text-[#00cfff] cursor-pointer transition-colors">Confidentialité</li>
+              <li>
+                <a href="/mentions-legales" className="hover:text-[#00cfff] transition-colors">Mentions légales</a>
+              </li>
+              <li>
+                <a href="/confidentialite" className="hover:text-[#00cfff] transition-colors">Confidentialité</a>
+              </li>
+              <li>
+                <a href="/cgv" className="hover:text-[#00cfff] transition-colors">CGV</a>
+              </li>
+              <li>
+                <a href="/cgu" className="hover:text-[#00cfff] transition-colors">CGU</a>
+              </li>
             </ul>
           </div>
         </div>
