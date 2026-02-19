@@ -102,12 +102,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Call LLM client (require dynamically to avoid module-load failures)
   let sendToLLM
-  try {
-    sendToLLM = require('../src/services/llmClient').sendToLLM
-  } catch (e) {
-    console.error('[api/chat] could not require llmClient', e && (e.stack || e.message || e))
-    return res.status(200).json({ reply: 'LLM non configuré. (client absent)', lead_profile: lead_profile || {} })
-  }
+    try {
+      // prefer CommonJS client to be robust in this mixed ESM repo
+      sendToLLM = require('../src/services/llmClient.cjs').sendToLLM
+    } catch (e) {
+      try {
+        sendToLLM = require('../src/services/llmClient').sendToLLM
+      } catch (e2) {
+        console.error('[api/chat] could not require llmClient', e && (e.stack || e.message || e), e2 && (e2.stack || e2.message || e2))
+        return res.status(200).json({ reply: 'LLM non configuré. (client absent)', lead_profile: lead_profile || {} })
+      }
+    }
 
   try {
     const start = Date.now()
