@@ -110,6 +110,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         sendToLLM = require('../src/services/llmClient').sendToLLM
       } catch (e2) {
         console.error('[api/chat] could not require llmClient', e && (e.stack || e.message || e), e2 && (e2.stack || e2.message || e2))
+        const debugHeader = (req.headers && (req.headers['x-debug'] as string)) || ''
+        const isDebug = debugHeader === '1' || debugHeader === 'true'
+        if (isDebug) {
+          return res.status(500).json({ error: 'LLM client require failed', stack: [e && (e.stack || e.message || String(e)), e2 && (e2.stack || e2.message || String(e2))] })
+        }
         return res.status(200).json({ reply: 'LLM non configuré. (client absent)', lead_profile: lead_profile || {} })
       }
     }
