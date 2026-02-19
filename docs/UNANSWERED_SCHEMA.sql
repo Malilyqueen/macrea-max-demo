@@ -1,12 +1,14 @@
 -- SQL for Supabase / Postgres: create table to store unanswered questions
 -- Run this once in your Supabase SQL editor
 
+
 CREATE TABLE IF NOT EXISTS public.unanswered_questions (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   client_id text,
   question text NOT NULL,
   page text,
   snippet text,
+  country text,
   resolved boolean DEFAULT false,
   created_at timestamptz DEFAULT now()
 );

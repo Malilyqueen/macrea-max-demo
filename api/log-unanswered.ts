@@ -14,7 +14,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Supabase not configured' })
   }
 
-  const { question, page, clientId, snippet } = req.body || {}
+  const { question, page, clientId, snippet, country } = req.body || {}
   if (!question || typeof question !== 'string') {
     return res.status(400).json({ error: 'question required' })
   }
@@ -25,6 +25,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     question: sanitize(question, 2000),
     page: sanitize(page, 1000),
     snippet: sanitize(snippet, 2000),
+    country: sanitize(country, 100),
     resolved: false
   }
 
