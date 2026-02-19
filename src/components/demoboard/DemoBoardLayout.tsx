@@ -55,19 +55,7 @@ export default function DemoBoardLayout() {
         </svg>
       </button>
 
-      {/* Floating quick-menu (mobile, bottom-right) as a fallback if top is covered */}
-      <button
-        onClick={() => setSidebarOpen(true)}
-        className="md:hidden fixed bottom-6 right-4 z-[100000] bg-[#0091ff] text-white p-3 rounded-full shadow-2xl flex items-center justify-center"
-        aria-label="Ouvrir le menu"
-        title="Menu"
-      >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white">
-          <line x1="3" y1="12" x2="21" y2="12"/>
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      </button>
+      {/* Note: single mobile hamburger (top-left) retained. Removed bottom-right fallback to avoid duplicate buttons */}
       {/* Sidebar mobile overlay */}
       {sidebarOpen && (
         <div 
@@ -77,11 +65,11 @@ export default function DemoBoardLayout() {
       )}
 
       {/* Sidebar */}
-      <div className={`
-        fixed inset-y-0 left-0 z-[10000] w-64 bg-[#F0F6FF] border-r border-[rgba(0,145,255,0.15)] transform transition-transform duration-300 ease-in-out overflow-y-auto h-screen"
-        md:relative md:translate-x-0 md:z-auto
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-      `} style={{ WebkitOverflowScrolling: 'touch' }}>
+      {/* Sidebar: use inline transform to avoid runtime-dependent Tailwind class generation issues */}
+      <div
+        className="fixed inset-y-0 left-0 z-[10000] w-64 bg-[#F0F6FF] border-r border-[rgba(0,145,255,0.15)] overflow-y-auto h-screen md:relative md:translate-x-0 md:z-auto"
+        style={{ WebkitOverflowScrolling: 'touch', transform: sidebarOpen ? 'translateX(0%)' : 'translateX(-100%)', transition: 'transform 300ms ease-in-out' }}
+      >
         <DemoBoardSidebar 
           activeTab={activeTab} 
           setActiveTab={setActiveTab}
