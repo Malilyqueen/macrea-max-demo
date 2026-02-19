@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-type Message = { role: 'user' | 'assistant' | 'system'; content: string }
+type Message = { role: 'user' | 'assistant' | 'system'; content: string; cta?: { label: string; url: string } | null }
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false)
@@ -13,7 +13,7 @@ export default function ChatWidget() {
 
   useEffect(() => {
     // initial quick replies
-    setMessages([{ role: 'system', content: 'Bienvenue — je suis MAX. Posez une question !' }])
+    setMessages([{ role: 'system', content: 'Bonjour 👋 Je suis votre Guide, que désirez-vous savoir sur MAX ?' }])
   }, [])
 
   useEffect(() => {
@@ -36,8 +36,11 @@ export default function ChatWidget() {
         body: JSON.stringify({ messages: [...messages.slice(-9), userMsg], page: window.location.pathname, lead_profile: leadProfile })
       })
       const json = await res.json()
-      const reply = json.reply || 'Désolé, pas de réponse.'
-      setMessages((m) => [...m, { role: 'assistant', content: reply }])
+      let reply = json.reply || 'Désolé, pas de réponse.'
+      // remove any trailing CTA line present in reply text to avoid duplication
+      reply = reply.replace(/\n?CTA:\s*[\s\S]*$/m, '').trim()
+      const cta = json.cta || null
+      setMessages((m) => [...m, { role: 'assistant', content: reply, cta }])
       if (json.lead_profile) setLeadProfile(json.lead_profile)
       setLoading(false)
     } catch (e: any) {
@@ -74,6 +77,13 @@ export default function ChatWidget() {
                 <div className={m.role === 'user' ? 'inline-block bg-sky-100 text-sky-900 px-3 py-2 rounded-lg' : 'inline-block bg-gray-100 text-gray-900 px-3 py-2 rounded-lg'}>
                   {m.content}
                 </div>
+                {m.role === 'assistant' && m.cta && (
+                  <div className="mt-2">
+                    <a href={m.cta.url} target="_blank" rel="noopener noreferrer" className="inline-block bg-sky-600 text-white px-3 py-1 rounded">
+                      {m.cta.label}
+                    </a>
+                  </div>
+                )}
               </div>
             ))}
             {loading && <div className="text-left text-sm text-gray-500">...</div>}
