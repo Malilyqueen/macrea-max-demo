@@ -104,26 +104,41 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const finalPrompt = promptParts.join('\n\n')
 
-  // Call LLM client (require dynamically to avoid module-load failures)
-  let sendToLLM
+  // Call LLM client: prefer dynamic ESM import, gracefully handle CommonJS fallback
+  let sendToLLM: any = undefined
+  try {
+    // try importing the CJS build first (dynamic import will expose CommonJS as `default`)
     try {
-      // prefer CommonJS client to be robust in this mixed ESM repo
-      sendToLLM = require('../src/services/llmClient.cjs').sendToLLM
-    } catch (e: unknown) {
-      try {
-        sendToLLM = require('../src/services/llmClient').sendToLLM
-      } catch (e2: unknown) {
-        const errObj = toError(e)
-        const err2Obj = toError(e2)
-        console.error('[api/chat] could not require llmClient', { message: errObj.message, stack: errObj.stack }, { message: err2Obj.message, stack: err2Obj.stack })
-        const debugHeader = (req.headers && (req.headers['x-debug'] as string)) || ''
-        const isDebug = debugHeader === '1' || debugHeader === 'true'
-        if (isDebug) {
-          return res.status(500).json({ error: 'LLM client require failed', stack: [errObj.stack || errObj.message, err2Obj.stack || err2Obj.message] })
-        }
-        return res.status(200).json({ reply: 'LLM non configuré. (client absent)', lead_profile: lead_profile || {} })
-      }
+      const mod = await import('../src/services/llmClient.cjs')
+      sendToLLM = (mod && (mod.sendToLLM || (mod as any).default?.sendToLLM || (mod as any).default))
+    } catch (e) {
+      // try ESM/regular JS variant
+      const mod2 = await import('../src/services/llmClient')
+      sendToLLM = (mod2 && (mod2.sendToLLM || (mod2 as any).default?.sendToLLM || (mod2 as any).default))
     }
+  } catch (e: unknown) {
+    // final attempt: if `require` exists (older runtimes), use it
+    try {
+      // @ts-ignore
+      if (typeof (global as any).require === 'function') {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        const r = (global as any).require('../src/services/llmClient.cjs')
+        sendToLLM = r && r.sendToLLM
+      }
+    } catch (e3: unknown) {
+      // ignore
+    }
+    const errObj = toError(e)
+    console.error('[api/chat] could not import llmClient', { message: errObj.message, stack: errObj.stack })
+    const debugHeader = (req.headers && (req.headers['x-debug'] as string)) || ''
+    const isDebug = debugHeader === '1' || debugHeader === 'true'
+    if (!sendToLLM) {
+      if (isDebug) {
+        return res.status(500).json({ error: 'LLM client import failed', stack: [errObj.stack || errObj.message] })
+      }
+      return res.status(200).json({ reply: 'LLM non configuré. (client absent)', lead_profile: lead_profile || {} })
+    }
+  }
 
   try {
     const start = Date.now()
