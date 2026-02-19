@@ -81,6 +81,9 @@ export default function Footer() {
                 <a href="/confidentialite" className="hover:text-[#00cfff] transition-colors">Confidentialité</a>
               </li>
               <li>
+                <a href="/cookies" className="hover:text-[#00cfff] transition-colors">Cookies</a>
+              </li>
+              <li>
                 <a href="/cgv" className="hover:text-[#00cfff] transition-colors">CGV</a>
               </li>
               <li>

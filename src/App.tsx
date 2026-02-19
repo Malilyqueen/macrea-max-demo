@@ -11,6 +11,7 @@ import MentionsLegalesPage from './routes/MentionsLegalesPage';
 import PrivacyPolicyPage from './routes/PrivacyPolicyPage';
 import CgvPage from './routes/CgvPage';
 import CguPage from './routes/CguPage';
+import CookiesPage from './routes/CookiesPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/confidentialite" element={<PrivacyPolicyPage />} />
         <Route path="/cgv" element={<CgvPage />} />
         <Route path="/cgu" element={<CguPage />} />
+        <Route path="/cookies" element={<CookiesPage />} />
       </Routes>
     </Router>
   );
