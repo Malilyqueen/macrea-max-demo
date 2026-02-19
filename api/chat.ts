@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import fs from 'fs'
 import path from 'path'
-// require CommonJS module to avoid ESM/CJS interop issues at runtime
-const { sendToLLM } = require('../src/services/llmClient')
+// We'll require the LLM client inside the handler to avoid module-load crashes
+// (if require throws at module initialization, the function would fail before responding).
 
 // Simple in-memory rate limiter: map IP -> {count, windowStart}
 const RATE_LIMIT = 30 // requests
@@ -100,7 +100,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const finalPrompt = promptParts.join('\n\n')
 
-  // Call LLM client
+  // Call LLM client (require dynamically to avoid module-load failures)
+  let sendToLLM
+  try {
+    sendToLLM = require('../src/services/llmClient').sendToLLM
+  } catch (e) {
+    console.error('[api/chat] could not require llmClient', e && (e.stack || e.message || e))
+    return res.status(200).json({ reply: 'LLM non configuré. (client absent)', lead_profile: lead_profile || {} })
+  }
+
   try {
     const start = Date.now()
     const llmResponse = await sendToLLM({ prompt: finalPrompt, page, lead_profile, messages: messages.slice(-10) })
