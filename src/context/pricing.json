@@ -3,8 +3,8 @@
   "early_birds": {
     "label": "Early Birds",
     "discount": "-30% sur 3 mois",
-    "end_date": "2026-02-20",
-    "notes": "Offre limitée. L’inscription donne accès à un onboarding."
+    "end_date": "2026-12-31",
+    "notes": "Offre spéciale toujours disponible. L'inscription donne accès à un onboarding prioritaire."
   },
   "plans": [
     {

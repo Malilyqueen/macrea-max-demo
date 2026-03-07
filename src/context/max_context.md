@@ -29,8 +29,8 @@
 
  ## Early Birds
  - Offre : -30% sur 3 mois
- - Fin : 20/02/2026
- - Inclut un onboarding (accompagnement de démarrage)
+ - Fin : 31/12/2026 (offre prolongée)
+ - Inclut un onboarding prioritaire (accompagnement de démarrage)
 
  ## Comment recommander une offre
  - Si le prospect veut surtout email/SMS + base < 5000 => MAX Starter
